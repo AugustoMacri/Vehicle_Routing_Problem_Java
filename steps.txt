@@ -1,0 +1,9 @@
+1. Create Client object to store all clients from benchmarks
+    - Clients need to have id, x, y, demand, distance, readyTime, dueDate, serviceTime
+
+2. We have to implement the function to read all the benchmarks
+    - We had to implement a ProblemInstance that store de instances of the problem
+
+3. Now we need to implement a configuration file, this file will store all variables that we will need
+
+4. We need to implement the initialization em subPop distribution
