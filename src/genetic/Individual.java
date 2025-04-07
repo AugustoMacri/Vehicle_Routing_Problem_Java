@@ -2,25 +2,41 @@ package genetic;
 
 import java.util.List;
 
+import main.App;
+import main.App.numClients;
 import vrp.Client;
 
 public class Individual {
     private int id;
-    private List<Client> route;
+    private int[][] route;
     private double fitness;
     private double fitnessDistance;
     private double fitnessTime;
     private double fitnessFuel;
 
-    public Individual(int id, List<Client> route, double fitness, double fitnessDistance, double fitnessTime,
+    public Individual(int id, double fitness, double fitnessDistance, double fitnessTime,
             double fitnessFuel) {
         this.id = id;
-        this.route = route;
+        this.route = new int[App.numVehicles][App.numClients];
         this.fitness = fitness;
         this.fitnessDistance = fitnessDistance;
         this.fitnessTime = fitnessTime;
         this.fitnessFuel = fitnessFuel;
     }
+
+    public void printRoutes() {
+        for (int v = 0; v < App.numVehicles; v++) {
+            System.out.print("Vehicle " + v + ": 0 → ");
+            for (int c = 0; c < App.numClients; c++) {
+                int clientId = this.route[v][c];
+                if (clientId == -1) break;
+                System.out.print(clientId + "");
+            }
+            System.out.println("0");
+        }
+        System.out.println();
+    }
+    
 
     public int getId() {
         return id;
@@ -30,12 +46,12 @@ public class Individual {
         this.id = id;
     }
 
-    public List<Client> getRoute() {
+    public int[][] getRoute() {
         return route;
     }
 
-    public void setRoute(List<Client> route) {
-        this.route = route;
+    public void setClientInRoute(int vehicle, int position, int clientId) {
+        this.route[vehicle][position] = clientId;
     }
 
     public double getFitness() {

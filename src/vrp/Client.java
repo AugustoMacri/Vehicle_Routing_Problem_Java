@@ -11,7 +11,7 @@ public class Client {
     private int readyTime;
     private int dueTime;
     private int serviceTime;
-    private int distanceFromDepot;
+    private double distanceFromDepot;
 
     public Client(int id, double x, double y, int demand, int readyTime, int dueTime, int serviceTime) {
         this.id = id;
@@ -79,11 +79,11 @@ public class Client {
         this.serviceTime = serviceTime;
     }
 
-    public int getDistanceFromDepot() {
+    public double getDistanceFromDepot() {
         return distanceFromDepot;
     }
 
-    public void setDistanceFromDepot(int distanceFromDepot) {
+    public void setDistanceFromDepot(double distanceFromDepot) {
         this.distanceFromDepot = distanceFromDepot;
     }
 
