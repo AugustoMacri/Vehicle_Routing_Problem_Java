@@ -95,27 +95,24 @@ public class Population {
     }
 
     public void distributeSubpopulations() {
-        int SUBPOP_SIZE = App.pop_size / 3; // Tamanho de cada subpopulação
 
-        // Inicializa as subpopulações
-        subPopDistance = new ArrayList<>(SUBPOP_SIZE);
-        subPopTime = new ArrayList<>(SUBPOP_SIZE);
-        subPopFuel = new ArrayList<>(SUBPOP_SIZE);
-        subPopPonderation = new ArrayList<>(SUBPOP_SIZE);
+        subPopDistance = new ArrayList<>(App.SUBPOP_SIZE);
+        subPopTime = new ArrayList<>(App.SUBPOP_SIZE);
+        subPopFuel = new ArrayList<>(App.SUBPOP_SIZE);
+        subPopPonderation = new ArrayList<>(App.SUBPOP_SIZE);
 
-        // Preenche as subpopulações com indivíduos vazios para evitar
-        // NullPointerException
-        for (int i = 0; i < SUBPOP_SIZE; i++) {
+        // Fill the subpopulation lists with empty individuals to avoid null pointer exceptions
+        for (int i = 0; i < App.SUBPOP_SIZE; i++) {
             subPopDistance.add(new Individual(-1, 0, 0, 0, 0));
             subPopTime.add(new Individual(-1, 0, 0, 0, 0));
             subPopFuel.add(new Individual(-1, 0, 0, 0, 0));
             subPopPonderation.add(new Individual(-1, 0, 0, 0, 0));
         }
 
-        // Distribui os indivíduos da população principal para as subpopulações
+        // Distribute the population initialized in subpopulations
         for (int i = 0; i < App.pop_size; i++) {
-            int index = i / SUBPOP_SIZE; // Determina a subpopulação (0, 1 ou 2)
-            int index2 = i % SUBPOP_SIZE; // Determina a posição dentro da subpopulação
+            int index = i / App.SUBPOP_SIZE; // Determines the subpopulation (0, 1 or 2)
+            int index2 = i % App.SUBPOP_SIZE; // Determines the position in the subpopulation
 
             Individual source = individuals.get(i); // Indivíduo da população principal
 
@@ -141,7 +138,7 @@ public class Population {
                             break;
                     }
 
-                    // Adiciona o indivíduo à subpopulação de ponderação
+                    // Putting the individual in the ponderation subpopulation
                     subPopPonderation.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
                     subPopPonderation.get(index2).setId(source.getId());
                 }
