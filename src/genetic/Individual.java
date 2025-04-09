@@ -29,6 +29,7 @@ public class Individual {
         }
     }
 
+    // Function just to print the routes of the vehicles
     public void printRoutes() {
         for (int v = 0; v < App.numVehicles; v++) {
             System.out.print("Vehicle " + v + ":");
@@ -37,9 +38,20 @@ public class Individual {
                 if (clientId == -1) break;
                 System.out.print(clientId + " ");
             }
-            System.out.println(""); // Return to depot
+            System.out.println("");
         }
         System.out.println();
+    }
+
+    //Function to clone every parameter of the individual
+    public Individual deepCopy() {
+        Individual clone = new Individual(this.id, this.fitness, this.fitnessDistance, this.fitnessTime, this.fitnessFuel);
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 0; c < App.numClients; c++) {
+                clone.route[v][c] = this.route[v][c];
+            }
+        }
+        return clone;
     }
     
 

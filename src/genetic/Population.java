@@ -1,6 +1,5 @@
 package genetic;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -11,6 +10,10 @@ import vrp.Client;
 
 public class Population {
     private List<Individual> individuals;
+    private List<Individual> subPopDistance;
+    private List<Individual> subPopTime;
+    private List<Individual> subPopFuel;
+    private List<Individual> subPopPonderation;
 
     public Population(List<Individual> individuals) {
         this.individuals = individuals;
@@ -91,6 +94,61 @@ public class Population {
 
     }
 
+    public void distributeSubpopulations() {
+        int SUBPOP_SIZE = App.pop_size / 3; // Tamanho de cada subpopulação
+
+        // Inicializa as subpopulações
+        subPopDistance = new ArrayList<>(SUBPOP_SIZE);
+        subPopTime = new ArrayList<>(SUBPOP_SIZE);
+        subPopFuel = new ArrayList<>(SUBPOP_SIZE);
+        subPopPonderation = new ArrayList<>(SUBPOP_SIZE);
+
+        // Preenche as subpopulações com indivíduos vazios para evitar
+        // NullPointerException
+        for (int i = 0; i < SUBPOP_SIZE; i++) {
+            subPopDistance.add(new Individual(-1, 0, 0, 0, 0));
+            subPopTime.add(new Individual(-1, 0, 0, 0, 0));
+            subPopFuel.add(new Individual(-1, 0, 0, 0, 0));
+            subPopPonderation.add(new Individual(-1, 0, 0, 0, 0));
+        }
+
+        // Distribui os indivíduos da população principal para as subpopulações
+        for (int i = 0; i < App.pop_size; i++) {
+            int index = i / SUBPOP_SIZE; // Determina a subpopulação (0, 1 ou 2)
+            int index2 = i % SUBPOP_SIZE; // Determina a posição dentro da subpopulação
+
+            Individual source = individuals.get(i); // Indivíduo da população principal
+
+            for (int j = 0; j < App.numVehicles; j++) {
+                for (int k = 0; k < App.numClients; k++) {
+                    switch (index) {
+                        case 0:
+                            subPopDistance.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
+                            subPopDistance.get(index2).setId(source.getId());
+                            break;
+
+                        case 1:
+                            subPopTime.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
+                            subPopTime.get(index2).setId(source.getId());
+                            break;
+
+                        case 2:
+                            subPopFuel.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
+                            subPopFuel.get(index2).setId(source.getId());
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    // Adiciona o indivíduo à subpopulação de ponderação
+                    subPopPonderation.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
+                    subPopPonderation.get(index2).setId(source.getId());
+                }
+            }
+        }
+    }
+
     // Function to calculate the distance beetwen two points
     private double calculateDistance(Client c1, Client c2) {
         return Math.sqrt(Math.pow(c1.getX() - c2.getX(), 2) + Math.pow(c1.getY() - c2.getY(), 2));
@@ -114,4 +172,25 @@ public class Population {
         return closestClient;
     }
 
+    // Function for printing the individual of the subpopulation (just testing)
+    public void printSubPopulations() {
+        System.out.println("SubPop Distance:");
+        printSubPop(subPopDistance);
+
+        System.out.println("SubPop Time:");
+        printSubPop(subPopTime);
+
+        System.out.println("SubPop Fuel:");
+        printSubPop(subPopFuel);
+
+        System.out.println("SubPop Ponderation:");
+        printSubPop(subPopPonderation);
+    }
+
+    private void printSubPop(List<Individual> subPop) {
+        for (Individual ind : subPop) {
+            System.out.print("Individual " + ind.getId() + ": \n");
+            ind.printRoutes();
+        }
+    }
 }

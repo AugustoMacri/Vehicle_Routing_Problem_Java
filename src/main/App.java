@@ -44,13 +44,17 @@ public class App {
             // Initializing Population
             Population population = new Population(individuals);
             population.initializePopulation(instance.getClients());
+            population.distributeSubpopulations();
 
             // Printando os 5 primeiros indivíduos
-            for (int i = 0; i < Math.min(1, individuals.size()); i++) {
-                Individual ind = individuals.get(i);
-                System.out.println("Individual " + i + ":");
-                ind.printRoutes();
-            }
+            // for (int i = 0; i < Math.min(1, individuals.size()); i++) {
+            //     Individual ind = individuals.get(i);
+            //     System.out.println("Individual " + i + ":");
+            //     ind.printRoutes();
+            // }
+
+            // Printando os individuos das subpopulações
+            population.printSubPopulations();
 
         } catch (IOException e) {
             System.out.println("Error reading the file");
