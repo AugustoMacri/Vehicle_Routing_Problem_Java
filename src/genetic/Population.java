@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import main.App;
-import main.App.numClients;
 import vrp.Client;
 
 public class Population {
@@ -19,56 +18,63 @@ public class Population {
 
     public void initializePopulation(List<Client> clients) {
 
-        //Condition to see if the list of clients isn't null
-        if (clients == null || clients.isEmpty()){
+        // Condition to see if the list of clients isn't null
+        if (clients == null || clients.isEmpty()) {
             throw new IllegalArgumentException("Client list cannot be empty");
-        }else{
+        } else {
             System.out.println("Passed\n");
         }
 
-        //Copying the clients array
+        // Copying the clients array
         List<Client> clientsCopy = new ArrayList<>(clients);
 
-
-        for(int h=0; h<App.pop_size; h++){
+        for (int h = 0; h < App.pop_size; h++) {
             Individual individual = new Individual(h, 0, 0, 0, 0);
             boolean[] visited = new boolean[App.numClients];
 
-            visited[0] = true; //Distribution center is the starting point
-            
-            //"Cleaning" the array
+            // "Cleaning" the array
             Arrays.fill(visited, false);
-            
 
-            //Initializing the population empty (-1)
+            visited[0] = true; // Distribution center is the starting point
+
+            // Initializing the population empty (-1)
             Client distributionCenter = clientsCopy.get(0);
 
+            // Calculating the distance beetween the distributioncenter and the clients
+            for (Client client : clientsCopy) {
 
-            //Calculating the distance beetween the distributioncenter and the clients
-            for (Client client: clientsCopy){
+                if (client.getId() == 0)
+                    continue; // Skip the distribution center
+
                 double distance = calculateDistance(client, distributionCenter);
                 client.setDistanceFromDepot(distance);
             }
 
-            //Sorting the clients list
+            // Sorting the clients list
             clientsCopy.sort(Comparator.comparingDouble(Client::getDistanceFromDepot));
 
             int clientIndex = 1;
 
-            for(int v=0; v<App.numVehicles; v++){
+            for (int v = 0; v < App.numVehicles; v++) {
                 int capacity = 0;
                 int pos = 0;
                 int currentClient = 0;
 
-                while (clientIndex < App.numClients){
+                // Adding the distribution center as the first client in the route
+                individual.setClientInRoute(v, pos, 0);
+                pos++;
+
+                while (clientIndex < App.numClients) {
                     int nextClient = findClosestClient(currentClient, clientsCopy, visited);
 
-                    if (nextClient == -1) break;
+                    if (nextClient == -1)
+                        break; // To this work, we need to have all routes -1
 
                     Client client = clients.get(nextClient);
                     int demand = client.getDemand();
 
-                    if(capacity + demand > App.vehicleCapacity) break;
+                    if (capacity + demand > App.vehicleCapacity)
+                        break;
 
                     individual.setClientInRoute(v, pos, nextClient);
                     visited[nextClient] = true;
@@ -76,6 +82,8 @@ public class Population {
                     currentClient = nextClient;
                     pos++;
                 }
+
+                individual.setClientInRoute(v, pos, 0); // Return to depot
             }
 
             individuals.add(individual);
@@ -83,20 +91,20 @@ public class Population {
 
     }
 
-    //Function to calculate the distance beetwen two points
-    private double calculateDistance(Client c1, Client c2){
+    // Function to calculate the distance beetwen two points
+    private double calculateDistance(Client c1, Client c2) {
         return Math.sqrt(Math.pow(c1.getX() - c2.getX(), 2) + Math.pow(c1.getY() - c2.getY(), 2));
     }
 
-    //Function to locate the closest client from the current client
-    private int findClosestClient(int currentClient, List<Client> clients, boolean[] visited){
+    // Function to locate the closest client from the current client
+    private int findClosestClient(int currentClient, List<Client> clients, boolean[] visited) {
         double minDistance = Double.MAX_VALUE;
         int closestClient = -1;
 
-        for(Client client : clients){
-            if (!visited[client.getId()]){
+        for (Client client : clients) {
+            if (!visited[client.getId()]) {
                 double distance = calculateDistance(clients.get(currentClient), client);
-                if(distance < minDistance){
+                if (distance < minDistance) {
                     minDistance = distance;
                     closestClient = client.getId();
                 }

@@ -3,7 +3,6 @@ package genetic;
 import java.util.List;
 
 import main.App;
-import main.App.numClients;
 import vrp.Client;
 
 public class Individual {
@@ -22,17 +21,23 @@ public class Individual {
         this.fitnessDistance = fitnessDistance;
         this.fitnessTime = fitnessTime;
         this.fitnessFuel = fitnessFuel;
+
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 0; c < App.numClients; c++) {
+                this.route[v][c] = -1;
+            }
+        }
     }
 
     public void printRoutes() {
         for (int v = 0; v < App.numVehicles; v++) {
-            System.out.print("Vehicle " + v + ": 0 → ");
+            System.out.print("Vehicle " + v + ":");
             for (int c = 0; c < App.numClients; c++) {
                 int clientId = this.route[v][c];
                 if (clientId == -1) break;
-                System.out.print(clientId + "");
+                System.out.print(clientId + " ");
             }
-            System.out.println("0");
+            System.out.println(""); // Return to depot
         }
         System.out.println();
     }

@@ -18,7 +18,7 @@ public class App {
     public static int numClients;
 
     // EAs Variables
-    public static int pop_size = 300;
+    public static int pop_size = 10;
 
     public static void main(String[] args) throws Exception {
 
@@ -37,21 +37,19 @@ public class App {
             System.out.println(("Number of clients: " + instance.getClients().size()));
 
 
-
             // Criando lista vazia de indivíduos
             List<Individual> individuals = new ArrayList<>();
 
-            // Criando população
-            Population population = new Population(individuals);
 
-            // Inicializando população com algoritmo guloso
+            // Initializing Population
+            Population population = new Population(individuals);
             population.initializePopulation(instance.getClients());
 
             // Printando os 5 primeiros indivíduos
-            for (int i = 0; i < Math.min(5, individuals.size()); i++) {
+            for (int i = 0; i < Math.min(1, individuals.size()); i++) {
                 Individual ind = individuals.get(i);
                 System.out.println("Individual " + i + ":");
-                ind.printRoutes(); // <-- certifique-se de implementar isso em Individual
+                ind.printRoutes();
             }
 
         } catch (IOException e) {
@@ -60,6 +58,4 @@ public class App {
         }
     }
 
-    public @interface numClients {
-    }
 }
