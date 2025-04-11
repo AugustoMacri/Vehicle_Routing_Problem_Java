@@ -8,6 +8,8 @@ import vrp.BenchMarkReader;
 import vrp.Client;
 import vrp.ProblemInstance;
 import configuration.*;
+import genetic.DefaultFitnessCalculator;
+import genetic.FitnessCalculator;
 import genetic.Individual;
 import genetic.Population;
 
@@ -16,6 +18,17 @@ public class App {
     public static int numVehicles;
     public static int vehicleCapacity;
     public static int numClients;
+    public static int VEHICLE_SPEED = 50;
+    public static int NUM_FUEL_TYPES = 3;
+    public static double G_FUEL_PRICE = 5.48;
+    public static double E_FUEL_PRICE = 3.99;
+    public static double D_FUEL_PRICE = 8.79;
+    public static double G_FUEL_CONSUMPTION = 7.53;
+    public static double E_FUEL_CONSUMPTION = 5;
+    public static double D_FUEL_CONSUMPTION = 12;
+    public static double WEIGHT_NUM_VEHICLES = 0.25;
+    public static double WEIGHT_NUM_VIOLATIONS = 0.5;
+    public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
     public static int pop_size = 10;
@@ -27,35 +40,43 @@ public class App {
 
         try {
             ProblemInstance instance = reader.readInstaces("src/instances/solomon/C101.txt");
-            
+
             // Getting the number of vehicles, vehicle capacity and clients
             numVehicles = instance.getNumVehicles();
             vehicleCapacity = instance.getVehicleCapacity();
-            numClients = instance.getClients().size();  
+            numClients = instance.getClients().size();
 
             System.out.println(("Number of vehicles: " + instance.getNumVehicles()));
             System.out.println(("Vehicle capacity: " + instance.getVehicleCapacity()));
             System.out.println(("Number of clients: " + instance.getClients().size()));
 
-
             // Criando lista vazia de indivíduos
             List<Individual> individuals = new ArrayList<>();
-
 
             // Initializing Population
             Population population = new Population(individuals);
             population.initializePopulation(instance.getClients());
             population.distributeSubpopulations();
 
+            // Criando o FitnessCalculator
+            FitnessCalculator fitnessCalculator = new DefaultFitnessCalculator();
+
+            System.out.println("\nCalculando fitness para subPopPonderation:");
+            for (Individual ind : population.getSubPopPonderation()) {
+                double fitness = fitnessCalculator.calculateFitness(ind, instance.getClients());
+                ind.setFitness(fitness);
+                System.out.println("Fitness do indivíduo " + ind.getId() + ": " + fitness);
+            }
+
             // Printando os 5 primeiros indivíduos
             // for (int i = 0; i < Math.min(1, individuals.size()); i++) {
-            //     Individual ind = individuals.get(i);
-            //     System.out.println("Individual " + i + ":");
-            //     ind.printRoutes();
+            // Individual ind = individuals.get(i);
+            // System.out.println("Individual " + i + ":");
+            // ind.printRoutes();
             // }
 
             // Printando os individuos das subpopulações
-            population.printSubPopulations();
+            //population.printSubPopulations();
 
         } catch (IOException e) {
             System.out.println("Error reading the file");

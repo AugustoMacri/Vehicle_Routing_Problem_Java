@@ -101,7 +101,8 @@ public class Population {
         subPopFuel = new ArrayList<>(App.SUBPOP_SIZE);
         subPopPonderation = new ArrayList<>(App.SUBPOP_SIZE);
 
-        // Fill the subpopulation lists with empty individuals to avoid null pointer exceptions
+        // Fill the subpopulation lists with empty individuals to avoid null pointer
+        // exceptions
         for (int i = 0; i < App.SUBPOP_SIZE; i++) {
             subPopDistance.add(new Individual(-1, 0, 0, 0, 0));
             subPopTime.add(new Individual(-1, 0, 0, 0, 0));
@@ -189,5 +190,21 @@ public class Population {
             System.out.print("Individual " + ind.getId() + ": \n");
             ind.printRoutes();
         }
+    }
+
+    public List<Individual> getSubPopDistance() {
+        return subPopDistance;
+    }
+
+    public List<Individual> getSubPopTime() {
+        return subPopTime;
+    }
+
+    public List<Individual> getSubPopFuel() {
+        return subPopFuel;
+    }
+
+    public List<Individual> getSubPopPonderation() {
+        return subPopPonderation;
     }
 }
