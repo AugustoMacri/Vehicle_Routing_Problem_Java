@@ -17,6 +17,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
         for (int v = 0; v < App.numVehicles; v++) {
             double currentTime = 0;
             double vehicleDistance = 0;
+            int numViolationsVehicle = 0;
 
             for (int c = 0; c < App.numClients - 1; c++) {
                 int currentClientId = individual.getRoute()[v][c];
@@ -42,6 +43,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()
                         || (currentTime + currentClient.getServiceTime()) > currentClient.getDueTime()) {
                     numViolations++;
+                    numViolationsVehicle++;
                 }
 
                 currentTime += currentClient.getServiceTime(); // Add service time
@@ -52,12 +54,13 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
 
             // Adding the total distance, time and fuel
             totalDistance += vehicleDistance;
-            totalTime += currentTime;
+            totalTime = currentTime;
             totalFuel += fuelCost;
 
             // Debugging
-            System.out.printf("Vehicle %d | Distance: %.2f | Time: %.2f | Fuel: %.2f | Violations: %d%n",
-                    v, vehicleDistance, currentTime, fuelCost(vehicleDistance), numViolations);
+            System.out.printf(
+                    "Vehicle %d | Distance: %.2f | Time: %.2f | Fuel: %.2f | ViolationsVehicle: %d | Violations: %d%n",
+                    v, vehicleDistance, currentTime, fuelCost(vehicleDistance), numViolationsVehicle, numViolations);
 
         }
 

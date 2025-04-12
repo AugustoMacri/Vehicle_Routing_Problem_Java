@@ -9,9 +9,11 @@ import vrp.Client;
 import vrp.ProblemInstance;
 import configuration.*;
 import genetic.DefaultFitnessCalculator;
+import genetic.DistanceFitnessCalculator;
 import genetic.FitnessCalculator;
 import genetic.Individual;
 import genetic.Population;
+import genetic.TimeFitnessCalculator;
 
 public class App {
     // VRP Variables
@@ -59,10 +61,10 @@ public class App {
             population.distributeSubpopulations();
 
             // Criando o FitnessCalculator
-            FitnessCalculator fitnessCalculator = new DefaultFitnessCalculator();
+            FitnessCalculator fitnessCalculator = new TimeFitnessCalculator();
 
-            System.out.println("\nCalculando fitness para subPopPonderation:");
-            for (Individual ind : population.getSubPopPonderation()) {
+            System.out.println("\nCalculando fitness para subPopDistance:");
+            for (Individual ind : population.getSubPopTime()) {
                 double fitness = fitnessCalculator.calculateFitness(ind, instance.getClients());
                 ind.setFitness(fitness);
                 System.out.println("Fitness do indivíduo " + ind.getId() + ": " + fitness);
@@ -76,7 +78,7 @@ public class App {
             // }
 
             // Printando os individuos das subpopulações
-            //population.printSubPopulations();
+            // population.printSubPopulations();
 
         } catch (IOException e) {
             System.out.println("Error reading the file");

@@ -192,6 +192,7 @@ public class Population {
         }
     }
 
+    // Getters and Setters of the subpopulations
     public List<Individual> getSubPopDistance() {
         return subPopDistance;
     }
