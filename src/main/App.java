@@ -35,6 +35,8 @@ public class App {
     // EAs Variables
     public static int pop_size = 10;
     public static int SUBPOP_SIZE = (int) Math.floor((double) pop_size / 3);
+    public static double elitismRate = 0.1;
+    public static int QUANTITYSELECTEDTOURNAMENT = 2;
 
     public static void main(String[] args) throws Exception {
 

@@ -55,7 +55,6 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                     "Vehicle %d | Time: %.2f | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",
                     v, currentTime, numViolationsVehicle, numViolations, App.VEHICLE_SPEED, vehicleDistance);
 
-
         }
 
         // Calculating the total cost of the Individual
@@ -69,5 +68,5 @@ public class TimeFitnessCalculator implements FitnessCalculator {
     private double calculateDistance(Client c1, Client c2) {
         return Math.sqrt(Math.pow(c1.getX() - c2.getX(), 2) + Math.pow(c1.getY() - c2.getY(), 2));
     }
-    
+
 }
