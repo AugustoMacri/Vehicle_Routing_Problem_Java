@@ -96,14 +96,14 @@ public class Population {
 
     public void distributeSubpopulations() {
 
-        subPopDistance = new ArrayList<>(App.SUBPOP_SIZE);
-        subPopTime = new ArrayList<>(App.SUBPOP_SIZE);
-        subPopFuel = new ArrayList<>(App.SUBPOP_SIZE);
-        subPopPonderation = new ArrayList<>(App.SUBPOP_SIZE);
+        subPopDistance = new ArrayList<>(App.sub_pop_size);
+        subPopTime = new ArrayList<>(App.sub_pop_size);
+        subPopFuel = new ArrayList<>(App.sub_pop_size);
+        subPopPonderation = new ArrayList<>(App.sub_pop_size);
 
         // Fill the subpopulation lists with empty individuals to avoid null pointer
         // exceptions
-        for (int i = 0; i < App.SUBPOP_SIZE; i++) {
+        for (int i = 0; i < App.sub_pop_size; i++) {
             subPopDistance.add(new Individual(-1, 0, 0, 0, 0));
             subPopTime.add(new Individual(-1, 0, 0, 0, 0));
             subPopFuel.add(new Individual(-1, 0, 0, 0, 0));
@@ -112,8 +112,8 @@ public class Population {
 
         // Distribute the population initialized in subpopulations
         for (int i = 0; i < App.pop_size; i++) {
-            int index = i / App.SUBPOP_SIZE; // Determines the subpopulation (0, 1 or 2)
-            int index2 = i % App.SUBPOP_SIZE; // Determines the position in the subpopulation
+            int index = i / App.sub_pop_size; // Determines the subpopulation (0, 1 or 2)
+            int index2 = i % App.sub_pop_size; // Determines the position in the subpopulation
 
             Individual source = individuals.get(i); // Indivíduo da população principal
 

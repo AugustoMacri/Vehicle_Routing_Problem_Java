@@ -74,13 +74,15 @@ public class SelectionUtils {
     // ou algo assim
 
     /*
-     * Se não me engano é alguma cosia do tipo, pode cruzar dois indivíduos de duas subpopulações diferentes
-     * Mas ai quando seleciona as duas populações iguais, ele salva o id para evitar que o mesmo indivíduo seja escolhido duas vezes
+     * Se não me engano é alguma cosia do tipo, pode cruzar dois indivíduos de duas
+     * subpopulações diferentes
+     * Mas ai quando seleciona as duas populações iguais, ele salva o id para evitar
+     * que o mesmo indivíduo seja escolhido duas vezes
      */
     public static List<Individual> subPopSelection(Population population, int numSelections) {
         Random rand = new Random();
-        int index1 = rand.nextInt(subpopulations.size());
-        int index2 = rand.nextInt(subpopulations.size());
+        int index1 = rand.nextInt(App.sub_pop_size); //Analizar essa parte do sub_pop_size
+        int index2 = rand.nextInt(App.sub_pop_size);
 
         int fitnessType1 = index1;
         int fitnessType2 = index2;
@@ -88,12 +90,13 @@ public class SelectionUtils {
         Set<Integer> previousWinners = new HashSet<>();
         List<Individual> selectedParents = new ArrayList<>();
 
-        Individual parent1 = tournamentSelection(subpopulations.get(index1), tournamentSize, previousWinners, fitnessType1);
+        Individual parent1 = tournamentSelection(subpopulations.get(index1), App.tournamentSize, previousWinners,
+                fitnessType1);
         if (parent1 != null)
             previousWinners.add(parent1.getId());
         selectedParents.add(parent1);
 
-        Individual parent2 = tournamentSelection(subpopulations.get(index2), tournamentSize, previousWinners,
+        Individual parent2 = tournamentSelection(subpopulations.get(index2), App.tournamentSize, previousWinners,
                 fitnessType2);
         if (parent2 != null)
             previousWinners.add(parent2.getId());
