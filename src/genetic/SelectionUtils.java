@@ -26,52 +26,44 @@ public class SelectionUtils {
         }
     }
 
-    public static List<Individual> tournamentSelection(List<Individual> subPop, int fitnessType) {
-        List<Individual> parents = new ArrayList<>();
 
-        for (int i = 0; i < 2; i++) {
-            Individual parent = null;
+    public static Individual tournamentSelection(List<Individual> subPop, int tournamentSize, Set<Integer> previousWinners, int fitnessType) {
+        
+        Individual parent = null;
 
-            while (parent == null) {
+        while (parent == null) {
 
-                List<Individual> tournament = new ArrayList<>();
+            List<Individual> tournament = new ArrayList<>();
 
-                // Select two random individual from the subpopulation to participate in the
-                // tournament
-                for (int j = 0; j < App.QUANTITYSELECTEDTOURNAMENT; j++) {
-                    int randomIndex = random.nextInt(subPop.size());
-                    tournament.add(subPop.get(randomIndex));
-                }
-
-                Individual winner = Collections.min(tournament, (ind1, ind2) -> {
-                    switch (fitnessType) {
-                        case 0:
-                            return Double.compare(ind1.getFitnessDistance(), ind2.getFitnessDistance());
-                        case 1:
-                            return Double.compare(ind1.getFitnessTime(), ind2.getFitnessTime());
-                        case 2:
-                            return Double.compare(ind1.getFitnessFuel(), ind2.getFitnessFuel());
-                        default:
-                            throw new IllegalArgumentException("Invalid fitness type");
-                    }
-                });
-
-                // Verify if the individual is already in the parents list
-                if (!parents.contains(winner)) {
-                    parent = winner;
-                }
+            // Select two random individual from the subpopulation to participate in the
+            // tournament
+            for (int j = 0; j < tournamentSize; j++) {
+                int randomIndex = random.nextInt(subPop.size());
+                tournament.add(subPop.get(randomIndex));
             }
 
-            parents.add(parent);
+            Individual winner = Collections.min(tournament, (ind1, ind2) -> {
+                switch (fitnessType) {
+                    case 0:
+                        return Double.compare(ind1.getFitnessDistance(), ind2.getFitnessDistance());
+                    case 1:
+                        return Double.compare(ind1.getFitnessTime(), ind2.getFitnessTime());
+                    case 2:
+                        return Double.compare(ind1.getFitnessFuel(), ind2.getFitnessFuel());
+                    default:
+                        throw new IllegalArgumentException("Invalid fitness type");
+                }
+            });
+
+            // Verify if the individual is already in the parents list
+            if (!previousWinners.contains(winner.getId())) {
+                parent = winner;
+            }
         }
 
-        return parents;
-    }
+        return parent;
 
-    // Isso aqui serve para alguma coisa do gênero tipo, seleciona qualquer dois
-    // indivíduos para cruzamento
-    // mas se escolher a mesma subpopulação duas vezes, o mesmo pai não podera ser,
-    // ou algo assim
+    }
 
     /*
      * Se não me engano é alguma cosia do tipo, pode cruzar dois indivíduos de duas
@@ -79,28 +71,41 @@ public class SelectionUtils {
      * Mas ai quando seleciona as duas populações iguais, ele salva o id para evitar
      * que o mesmo indivíduo seja escolhido duas vezes
      */
-    public static List<Individual> subPopSelection(Population population, int numSelections) {
+    public static List<Individual> subPopSelection(Population population) {
         Random rand = new Random();
-        int index1 = rand.nextInt(App.sub_pop_size); //Analizar essa parte do sub_pop_size
-        int index2 = rand.nextInt(App.sub_pop_size);
 
-        int fitnessType1 = index1;
-        int fitnessType2 = index2;
+        // Lista de subpopulações disponíveis
+        List<List<Individual>> subPopulations = List.of(
+                population.getSubPopDistance(),
+                population.getSubPopTime(),
+                population.getSubPopFuel());
 
-        Set<Integer> previousWinners = new HashSet<>();
+        String[] subPopNames = { "subPopDistance", "subPopTime", "subPopFuel", "subPopPonderation" };
+
         List<Individual> selectedParents = new ArrayList<>();
 
-        Individual parent1 = tournamentSelection(subpopulations.get(index1), App.tournamentSize, previousWinners,
-                fitnessType1);
-        if (parent1 != null)
-            previousWinners.add(parent1.getId());
-        selectedParents.add(parent1);
+        // Keep track of the ID of the winners
+        Set<Integer> previousWinners = new HashSet<>();
 
-        Individual parent2 = tournamentSelection(subpopulations.get(index2), App.tournamentSize, previousWinners,
-                fitnessType2);
-        if (parent2 != null)
-            previousWinners.add(parent2.getId());
-        selectedParents.add(parent2);
+        // Select two subpopulations randomly
+        for (int i = 0; i < 2; i++) {
+
+            int subPopIndex = rand.nextInt(3); // Select a random subpopulation index (0, 1, or 2)
+
+            List<Individual> selectedSubPop = subPopulations.get(subPopIndex);
+            int fitnessType = subPopIndex; // Define o tipo de fitness com base na subpopulação
+
+            System.out.println("Selected subpopulation: " + subPopNames[subPopIndex]);
+
+            // Realiza a seleção por torneio na subpopulação escolhida
+            Individual parent = tournamentSelection(selectedSubPop, App.tournamentSize, previousWinners, fitnessType);
+
+            // Adiciona o pai selecionado à lista de pais
+            if (parent != null) {
+                selectedParents.add(parent);
+                previousWinners.add(parent.getId()); // Adiciona o ID do vencedor ao conjunto de rastreamento
+            }
+        }
 
         return selectedParents;
     }

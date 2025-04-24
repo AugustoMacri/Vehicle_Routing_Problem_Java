@@ -13,6 +13,7 @@ import genetic.DistanceFitnessCalculator;
 import genetic.FitnessCalculator;
 import genetic.Individual;
 import genetic.Population;
+import genetic.SelectionUtils;
 import genetic.TimeFitnessCalculator;
 
 public class App {
@@ -66,11 +67,20 @@ public class App {
             // Criando o FitnessCalculator
             FitnessCalculator fitnessCalculator = new TimeFitnessCalculator();
 
-            System.out.println("\nCalculando fitness para subPopDistance:");
+            // System.out.println("\nCalculando fitness para subPopDistance:");
             for (Individual ind : population.getSubPopTime()) {
                 double fitness = fitnessCalculator.calculateFitness(ind, instance.getClients());
                 ind.setFitness(fitness);
-                System.out.println("Fitness do indivíduo " + ind.getId() + ": " + fitness);
+                // System.out.println("Fitness do indivíduo " + ind.getId() + ": " + fitness);
+            }
+
+            // Seleciona dois pais de subpopulações aleatórias
+            List<Individual> parents = SelectionUtils.subPopSelection(population);
+
+            System.out.println("Pais selecionados:");
+            for (Individual parent : parents) {
+                System.out.println("Indivíduo ID: " + parent.getId() + ", Fitness: " + parent.getFitness());
+                parent.printRoutes();
             }
 
             // Printando os 5 primeiros indivíduos
