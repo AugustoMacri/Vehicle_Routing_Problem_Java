@@ -67,6 +67,14 @@ public class Individual {
         return route;
     }
 
+    public void setRoute(int[][] route) {
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 0; c < App.numClients; c++) {
+                this.route[v][c] = route[v][c];
+            }
+        }
+    }
+
     public void setClientInRoute(int vehicle, int position, int clientId) {
         this.route[vehicle][position] = clientId;
     }

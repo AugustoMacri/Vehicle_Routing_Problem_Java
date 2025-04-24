@@ -8,6 +8,7 @@ import vrp.BenchMarkReader;
 import vrp.Client;
 import vrp.ProblemInstance;
 import configuration.*;
+import genetic.Crossover;
 import genetic.DefaultFitnessCalculator;
 import genetic.DistanceFitnessCalculator;
 import genetic.FitnessCalculator;
@@ -80,18 +81,20 @@ public class App {
             System.out.println("Pais selecionados:");
             for (Individual parent : parents) {
                 System.out.println("Indivíduo ID: " + parent.getId() + ", Fitness: " + parent.getFitness());
-                parent.printRoutes();
+                //parent.printRoutes();
             }
 
-            // Printando os 5 primeiros indivíduos
-            // for (int i = 0; i < Math.min(1, individuals.size()); i++) {
-            // Individual ind = individuals.get(i);
-            // System.out.println("Individual " + i + ":");
-            // ind.printRoutes();
-            // }
+            // Realiza o cruzamento
+            int idTrack = 1; // Rastreador de IDs para os filhos
+            Individual parent1 = parents.get(0);
+            Individual parent2 = parents.get(1);
 
-            // Printando os individuos das subpopulações
-            // population.printSubPopulations();
+            Individual newSon = Crossover.onePointCrossing(parent1, parent2, idTrack);
+
+            // Imprime as rotas do filho gerado
+            System.out.println("\nFilho gerado (ID: " + newSon.getId() + "):");
+            newSon.printRoutes();
+
 
         } catch (IOException e) {
             System.out.println("Error reading the file");
