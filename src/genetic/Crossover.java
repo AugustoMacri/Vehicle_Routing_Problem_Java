@@ -64,7 +64,11 @@ public class Crossover {
                 for (int k = c + 1; k < App.numClients; k++) {
                     int val2 = childRoute[v][k];
                     if (val1 == val2 && val1 != 0 && val2 != 0) {
-                        int substituto = compareFatherSon(parent1, parent2, childRoute, v, dadChosen); //Continue with the parents, not the normalized ones
+                        int substituto = compareFatherSon(parent1, parent2, childRoute, v, dadChosen); // Continue with
+                                                                                                       // the parents,
+                                                                                                       // not the
+                                                                                                       // normalized
+                                                                                                       // ones
                         childRoute[v][k] = substituto;
                     }
                 }
@@ -103,7 +107,7 @@ public class Crossover {
         return normalizedRoute;
     }
 
-    // Denormalize the route of the child to have the same size as the others 
+    // Denormalize the route of the child to have the same size as the others
     private static int[][] denormalizeRoute(int[][] route) {
         int[][] denormalizedRoute = new int[App.numVehicles][App.numClients];
 

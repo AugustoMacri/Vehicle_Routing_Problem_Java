@@ -13,6 +13,7 @@ import genetic.DefaultFitnessCalculator;
 import genetic.DistanceFitnessCalculator;
 import genetic.FitnessCalculator;
 import genetic.Individual;
+import genetic.Mutation;
 import genetic.Population;
 import genetic.SelectionUtils;
 import genetic.TimeFitnessCalculator;
@@ -40,6 +41,7 @@ public class App {
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
+    public static double mutationRate = 0.1;
 
     public static void main(String[] args) throws Exception {
 
@@ -93,6 +95,11 @@ public class App {
 
             // Imprime as rotas do filho gerado
             System.out.println("\nFilho gerado (ID: " + newSon.getId() + "):");
+            newSon.printRoutes();
+
+            // Mutação
+            Mutation.mutate(newSon, mutationRate);
+            System.out.println("\nFilho após mutação (ID: " + newSon.getId() + "):");
             newSon.printRoutes();
 
 
