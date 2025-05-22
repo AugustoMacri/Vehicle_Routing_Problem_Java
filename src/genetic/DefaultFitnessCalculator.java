@@ -42,6 +42,11 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 // time)
                 if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()
                         || (currentTime + currentClient.getServiceTime()) > currentClient.getDueTime()) {
+
+                    System.out.println("Vehicle " + v + " | Client Id " + currentClientId + " | Current time: " + currentTime
+                            + " | Ready time: " + currentClient.getReadyTime() + " | Due time: "
+                            + currentClient.getDueTime());
+
                     numViolations++;
                     numViolationsVehicle++;
                 }

@@ -83,7 +83,7 @@ public class App {
             System.out.println("Pais selecionados:");
             for (Individual parent : parents) {
                 System.out.println("Indivíduo ID: " + parent.getId() + ", Fitness: " + parent.getFitness());
-                //parent.printRoutes();
+                // parent.printRoutes();
             }
 
             // Realiza o cruzamento
@@ -101,7 +101,6 @@ public class App {
             Mutation.mutate(newSon, mutationRate);
             System.out.println("\nFilho após mutação (ID: " + newSon.getId() + "):");
             newSon.printRoutes();
-
 
         } catch (IOException e) {
             System.out.println("Error reading the file");

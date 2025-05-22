@@ -40,7 +40,6 @@ public class Population {
 
             visited[0] = true; // Distribution center is the starting point
 
-            // Initializing the population empty (-1)
             Client distributionCenter = clientsCopy.get(0);
 
             // Calculating the distance beetween the distributioncenter and the clients
@@ -115,7 +114,7 @@ public class Population {
             int index = i / App.sub_pop_size; // Determines the subpopulation (0, 1 or 2)
             int index2 = i % App.sub_pop_size; // Determines the position in the subpopulation
 
-            Individual source = individuals.get(i); // Indivíduo da população principal
+            Individual source = individuals.get(i); // Take the individual from position i in the list and copy it
 
             for (int j = 0; j < App.numVehicles; j++) {
                 for (int k = 0; k < App.numClients; k++) {
@@ -138,11 +137,17 @@ public class Population {
                         default:
                             break;
                     }
-
-                    // Putting the individual in the ponderation subpopulation
-                    subPopPonderation.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
-                    subPopPonderation.get(index2).setId(source.getId());
                 }
+            }
+
+            // Will copy just the necessary individuals to the ponderation (before was overwriting every time)
+            if (i < App.sub_pop_size) {
+                for (int j = 0; j < App.numVehicles; j++) {
+                    for (int k = 0; k < App.numClients; k++) {
+                        subPopPonderation.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
+                    }
+                }
+                subPopPonderation.get(index2).setId(source.getId());
             }
         }
     }
