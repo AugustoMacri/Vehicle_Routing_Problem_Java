@@ -40,8 +40,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 // Check if the vehicle arrives between the ready time and due time and if the
                 // service time plus current time is less than the due time (respect the due
                 // time)
-                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()
-                        || (currentTime + currentClient.getServiceTime()) > currentClient.getDueTime()) {
+                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()) {
 
                     System.out.println("Vehicle " + v + " | Client Id " + currentClientId + " | Current time: " + currentTime
                             + " | Ready time: " + currentClient.getReadyTime() + " | Due time: "
@@ -59,7 +58,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
 
             // Adding the total distance, time and fuel
             totalDistance += vehicleDistance;
-            totalTime = currentTime;
+            totalTime += currentTime;
             totalFuel += fuelCost;
 
             // Debugging

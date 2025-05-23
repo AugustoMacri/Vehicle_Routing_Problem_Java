@@ -38,8 +38,13 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                 // Check if the vehicle arrives between the ready time and due time and if the
                 // service time plus current time is less than the due time (respect the due
                 // time)
-                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()
-                        || (currentTime + currentClient.getServiceTime()) > currentClient.getDueTime()) {
+                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()){
+
+                    // System.out.println("Vehicle " + v + " | Client Id " + currentClientId + " | Current time: " + currentTime
+                    //         + " | Ready time: " + currentClient.getReadyTime() + " | Due time: "
+                    //         + currentClient.getDueTime());
+                    
+
                     numViolations++;
                     numViolationsVehicle++;
                 }
@@ -48,17 +53,17 @@ public class TimeFitnessCalculator implements FitnessCalculator {
             }
 
             // Adding the time
-            totalTime = currentTime;
+            totalTime += currentTime;
 
             // Debugging
             System.out.printf(
-                    "Vehicle %d | Time: %.2f | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",
-                    v, currentTime, numViolationsVehicle, numViolations, App.VEHICLE_SPEED, vehicleDistance);
+                    "Vehicle %d | Time: %.2f | TotalTime (vai no fitness): %.2f | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",
+                    v, currentTime, totalTime, numViolationsVehicle, numViolations, App.VEHICLE_SPEED, vehicleDistance);
 
         }
 
         // Calculating the total cost of the Individual
-        double fitnessTime = (numViolations * App.WEIGHT_NUM_VIOLATIONS) + (totalTime * 0.5);
+        double fitnessTime = (numViolations * App.WEIGHT_NUM_VIOLATIONS) + (totalTime * 0.5); //Tava dando 50 pq total time era 0, e já que dava 100 violações com peso de 0,50, então dava 50 po
 
         return fitnessTime;
 
