@@ -76,7 +76,7 @@ public class Crossover {
             }
         }
 
-        // Desnormaliza a rota do filho
+        // Denormalize the child route
         int[][] denormalizedChildRoute = denormalizeRoute(childRoute);
 
         Individual newSon = new Individual(App.pop_size + idTrack, 0, 0, 0, 0);

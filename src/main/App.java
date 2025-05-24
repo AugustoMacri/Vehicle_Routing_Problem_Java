@@ -78,29 +78,29 @@ public class App {
             }
 
             // Seleciona dois pais de subpopulações aleatórias
-            // List<Individual> parents = SelectionUtils.subPopSelection(population);
+            List<Individual> parents = SelectionUtils.subPopSelection(population);
 
-            // System.out.println("Pais selecionados:");
-            // for (Individual parent : parents) {
-            //     System.out.println("Indivíduo ID: " + parent.getId() + ", Fitness: " + parent.getFitness());
-            //     // parent.printRoutes();
-            // }
+            System.out.println("Pais selecionados:");
+            for (Individual parent : parents) {
+                System.out.println("Indivíduo ID: " + parent.getId() + ", Fitness: " + parent.getFitness());
+                // parent.printRoutes();
+            }
 
-            // // Realiza o cruzamento
-            // int idTrack = 1; // Rastreador de IDs para os filhos
-            // Individual parent1 = parents.get(0);
-            // Individual parent2 = parents.get(1);
+            // Realiza o cruzamento
+            int idTrack = 1; // Rastreador de IDs para os filhos
+            Individual parent1 = parents.get(0);
+            Individual parent2 = parents.get(1);
 
-            // Individual newSon = Crossover.onePointCrossing(parent1, parent2, idTrack);
+            Individual newSon = Crossover.onePointCrossing(parent1, parent2, idTrack);
 
-            // // Imprime as rotas do filho gerado
-            // System.out.println("\nFilho gerado (ID: " + newSon.getId() + "):");
-            // newSon.printRoutes();
+            // Imprime as rotas do filho gerado
+            System.out.println("\nFilho gerado (ID: " + newSon.getId() + "):");
+            newSon.printRoutes();
 
-            // // Mutação
-            // Mutation.mutate(newSon, mutationRate);
-            // System.out.println("\nFilho após mutação (ID: " + newSon.getId() + "):");
-            // newSon.printRoutes();
+            // Mutação
+            Mutation.mutate(newSon, mutationRate);
+            System.out.println("\nFilho após mutação (ID: " + newSon.getId() + "):");
+            newSon.printRoutes();
 
         } catch (IOException e) {
             System.out.println("Error reading the file");

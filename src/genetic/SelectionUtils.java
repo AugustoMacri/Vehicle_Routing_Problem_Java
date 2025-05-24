@@ -14,6 +14,7 @@ public class SelectionUtils {
 
     private static final Random random = new Random();
 
+    // Elitism fuction to monoObjetctive version
     public static void elitism(List<Individual> population, List<Individual> nextPopulation, double elitismRate) {
         int numElites = (int) Math.ceil(population.size() * App.elitismRate);
 
@@ -26,9 +27,39 @@ public class SelectionUtils {
         }
     }
 
+    // Elitism function to multiObjetctive version
+    public static void selectElite(List<Individual> subPop, List<Individual> nextPop, int fitnessType,
+            int elitismRate) {
 
-    public static Individual tournamentSelection(List<Individual> subPop, int tournamentSize, Set<Integer> previousWinners, int fitnessType) {
-        
+        List<Individual> sortedSubPop = new ArrayList<>(subPop);
+
+        switch (fitnessType) {
+            case 0:
+                sortedSubPop.sort(Comparator.comparingDouble(Individual::getFitnessDistance));
+                break;
+            case 1:
+                sortedSubPop.sort(Comparator.comparingDouble(Individual::getFitnessTime));
+                break;
+            case 2:
+                sortedSubPop.sort(Comparator.comparingDouble(Individual::getFitnessFuel));
+                break;
+            case 3:
+                sortedSubPop.sort(Comparator.comparingDouble(Individual::getFitness));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid fitness type");
+        }
+
+        // Select the top individuals based on the elitism rate
+        for(int i = 0; i < elitismRate && i < sortedSubPop.size(); i++) {
+            Individual elite = sortedSubPop.get(i).deepCopy();
+            nextPop.add(elite);
+        }
+    }
+
+    public static Individual tournamentSelection(List<Individual> subPop, int tournamentSize,
+            Set<Integer> previousWinners, int fitnessType) {
+
         Individual parent = null;
 
         while (parent == null) {

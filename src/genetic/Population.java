@@ -140,7 +140,8 @@ public class Population {
                 }
             }
 
-            // Will copy just the necessary individuals to the ponderation (before was overwriting every time)
+            // Will copy just the necessary individuals to the ponderation (before was
+            // overwriting every time)
             if (i < App.sub_pop_size) {
                 for (int j = 0; j < App.numVehicles; j++) {
                     for (int k = 0; k < App.numClients; k++) {
@@ -156,6 +157,103 @@ public class Population {
     private double calculateDistance(Client c1, Client c2) {
         return Math.sqrt(Math.pow(c1.getX() - c2.getX(), 2) + Math.pow(c1.getY() - c2.getY(), 2));
     }
+
+    // Function to update the current subpopulation to the next subpopulation
+    public void updateSubPop(List<Individual> subPop, List<Individual> nextSubPop) {
+        int size = Math.min(subPop.size(), nextSubPop.size());
+
+        for (int i = 0; i < size; i++) {
+            Individual src = nextSubPop.get(i);
+            Individual dest = subPop.get(i);
+
+            dest.setId(src.getId());
+            dest.setFitnessDistance(src.getFitnessDistance());
+            dest.setFitnessTime(src.getFitnessTime());
+            dest.setFitnessFuel(src.getFitnessFuel());
+            dest.setFitness(src.getFitness());
+
+            int[][] srcRoute = src.getRoute();
+            for (int j = 0; j < App.numVehicles; j++) {
+                for (int k = 0; k < App.numClients; k++) {
+                    dest.setClientInRoute(j, k, srcRoute[j][k]);
+                }
+            }
+        }
+
+        // Reset all individuals from nextSubPop
+        for (int i = 0; i < nextSubPop.size(); i++) {
+            Individual ind = nextSubPop.get(i);
+            ind.setId(-1);
+            ind.setFitnessDistance(0);
+            ind.setFitnessTime(0);
+            ind.setFitnessFuel(0);
+            ind.setFitness(0);
+
+            int[][] route = ind.getRoute();
+            for (int j = 0; j < App.numVehicles; j++) {
+                for (int k = 0; k < App.numClients; k++) {
+                    ind.setClientInRoute(j, k, 0);
+                }
+            }
+        }
+    }
+
+    // Function to compare the son that is generated in the crossing with every subpopulation
+    public static void compareSonSubPop(
+            Individual newSon,
+            List<Individual> subPop,
+            List<Individual> nextPop,
+            int fitnessType,
+            int individualIndex) {
+        Individual sub = subPop.get(individualIndex);
+        Individual next = nextPop.get(individualIndex);
+
+        boolean replaced = false;
+
+        switch (fitnessType) {
+            case 0:
+                if (newSon.getFitnessDistance() < sub.getFitnessDistance()) {
+                    next.setFitnessDistance(newSon.getFitnessDistance());
+                    replaced = true;
+                }
+                break;
+            case 1:
+                if (newSon.getFitnessTime() < sub.getFitnessTime()) {
+                    next.setFitnessTime(newSon.getFitnessTime());
+                    replaced = true;
+                }
+                break;
+            case 2: 
+                if (newSon.getFitnessFuel() < sub.getFitnessFuel()) {
+                    next.setFitnessFuel(newSon.getFitnessFuel());
+                    replaced = true;
+                }
+                break;
+            case 3: 
+                if (newSon.getFitness() < sub.getFitness()) {
+                    next.setFitness(newSon.getFitness());
+                    replaced = true;
+                }
+                break;
+            default:
+                break;
+        }
+
+        if (replaced) {
+            next.setId(newSon.getId());
+            int[][] sonRoute = newSon.getRoute();
+            for (int j = 0; j < App.numVehicles; j++) {
+                for (int k = 0; k < App.numClients; k++) {
+                    next.setClientInRoute(j, k, sonRoute[j][k]);
+                }
+            }
+            System.out.println("Substituiu indivíduo de ID: " + sub.getId());
+        } else {
+            System.out.println("Não substituiu");
+        }
+    }
+
+    // Function to Evolve the population
 
     // Function to locate the closest client from the current client
     private int findClosestClient(int currentClient, List<Client> clients, boolean[] visited) {
