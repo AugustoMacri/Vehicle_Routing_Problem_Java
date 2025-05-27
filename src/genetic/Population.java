@@ -198,7 +198,8 @@ public class Population {
         }
     }
 
-    // Function to compare the son that is generated in the crossing with every subpopulation
+    // Function to compare the son that is generated in the crossing with every
+    // subpopulation
     public static void compareSonSubPop(
             Individual newSon,
             List<Individual> subPop,
@@ -223,13 +224,13 @@ public class Population {
                     replaced = true;
                 }
                 break;
-            case 2: 
+            case 2:
                 if (newSon.getFitnessFuel() < sub.getFitnessFuel()) {
                     next.setFitnessFuel(newSon.getFitnessFuel());
                     replaced = true;
                 }
                 break;
-            case 3: 
+            case 3:
                 if (newSon.getFitness() < sub.getFitness()) {
                     next.setFitness(newSon.getFitness());
                     replaced = true;
@@ -254,6 +255,70 @@ public class Population {
     }
 
     // Function to Evolve the population
+    public void evolvePopMulti(
+            int generation,
+            List<Individual> subPopDistance, List<Individual> nextSubPopDistance,
+            List<Individual> subPopTime, List<Individual> nextSubPopTime,
+            List<Individual> subPopFuel, List<Individual> nextSubPopFuel,
+            List<Individual> subPopPonderation, List<Individual> nextSubPopPonderation,
+            List<Client> clients,
+            int elitismSize,
+            int generationsBeforeComparison,
+            int crossingType // 1: one-point, 2: two-point (futuro)
+    ) {
+        // 1. Seleção dos elites
+        SelectionUtils.selectElite(subPopDistance, nextSubPopDistance, 0, elitismSize);
+        SelectionUtils.selectElite(subPopTime, nextSubPopTime, 1, elitismSize);
+        SelectionUtils.selectElite(subPopFuel, nextSubPopFuel, 2, elitismSize);
+        SelectionUtils.selectElite(subPopPonderation, nextSubPopPonderation, 3, elitismSize);
+
+        // 2. Geração dos filhos
+        for (int i = elitismSize; i < App.sub_pop_size; i++) {
+            Individual newSon = null;
+            List<Individual> parents = SelectionUtils.subPopSelection(this);
+
+            // Cruzamento
+            switch (crossingType) {
+                case 1: // One-point
+                    newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1), i);
+                    break;
+                // case 2: // Two-point (implementar depois)
+                // newSon = Crossover.twoPointCrossing(parents.get(0), parents.get(1), i);
+                // break;
+                default:
+                    throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+            }
+
+            // Mutação
+            Mutation.mutate(newSon, App.mutationRate);
+
+            // Cálculo do fitness
+            newSon.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSon, clients));
+            newSon.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSon, clients));
+            newSon.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSon, clients));
+            newSon.setFitness(new DefaultFitnessCalculator().calculateFitness(newSon, clients));
+
+            // Para as primeiras gerações, apenas preenche a próxima população com os filhos
+            if (generation < generationsBeforeComparison) {
+                nextSubPopDistance.set(i, newSon.deepCopy());
+                nextSubPopTime.set(i, newSon.deepCopy());
+                nextSubPopFuel.set(i, newSon.deepCopy());
+                nextSubPopPonderation.set(i, newSon.deepCopy());
+            } else {
+                // Compara e substitui se o filho for melhor
+                compareSonSubPop(newSon, subPopDistance, nextSubPopDistance, 0, i);
+                compareSonSubPop(newSon, subPopTime, nextSubPopTime, 1, i);
+                compareSonSubPop(newSon, subPopFuel, nextSubPopFuel, 2, i);
+                compareSonSubPop(newSon, subPopPonderation, nextSubPopPonderation, 3, i);
+            }
+        }
+
+        // 3. Atualiza as subpopulações com os indivíduos da próxima geração
+        updateSubPop(subPopDistance, nextSubPopDistance);
+        updateSubPop(subPopTime, nextSubPopTime);
+        updateSubPop(subPopFuel, nextSubPopFuel);
+        updateSubPop(subPopPonderation, nextSubPopPonderation);
+    }
 
     // Function to locate the closest client from the current client
     private int findClosestClient(int currentClient, List<Client> clients, boolean[] visited) {
