@@ -102,6 +102,47 @@ public class App {
             System.out.println("\nFilho após mutação (ID: " + newSon.getId() + "):");
             newSon.printRoutes();
 
+            // Cria uma lista para armazenar os elites selecionados
+            List<Individual> eliteDistance = new ArrayList<>();
+
+            // Define o tamanho do elitismo (por exemplo, 2)
+            int elitismSize = 2;
+
+            // Seleciona os melhores indivíduos da subpopulação de distância
+            SelectionUtils.selectElite(
+                    population.getSubPopTime(), // subpopulação de onde selecionar
+                    eliteDistance, // lista onde serão colocados os elites
+                    1, // 0 = fitnessDistance
+                    elitismSize // quantidade de elites
+            );
+
+            // Imprime os elites selecionados
+            System.out.println("\nElites da subpopulação de distância:");
+            for (Individual elite : eliteDistance) {
+                System.out.println("ID: " + elite.getId() + " | FitnessDistance: " + elite.getFitnessTime());
+            }
+
+            // Calcula o fitness de tempo para todos da subpopulação de tempo
+            for (Individual ind : population.getSubPopTime()) {
+                ind.setFitnessTime(new TimeFitnessCalculator().calculateFitness(ind, instance.getClients()));
+            }
+
+            // Define manualmente o fitness do primeiro indivíduo para 0
+            population.getSubPopTime().get(0).setFitnessTime(0.0);
+
+            // Seleciona os melhores indivíduos da subpopulação de tempo
+            SelectionUtils.selectElite(
+                    population.getSubPopTime(),
+                    eliteDistance,
+                    1, // 1 = fitnessTime
+                    elitismSize);
+
+            // Imprime os elites selecionados
+            System.out.println("\nElites da subpopulação de tempo:");
+            for (Individual elite : eliteDistance) {
+                System.out.println("ID: " + elite.getId() + " | FitnessTime: " + elite.getFitnessTime());
+            }
+
         } catch (IOException e) {
             System.out.println("Error reading the file");
             e.printStackTrace();
