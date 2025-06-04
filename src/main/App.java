@@ -13,6 +13,7 @@ import genetic.Crossover;
 import genetic.DefaultFitnessCalculator;
 import genetic.DistanceFitnessCalculator;
 import genetic.FitnessCalculator;
+import genetic.FuelFitnessCalculator;
 import genetic.Individual;
 import genetic.Mutation;
 import genetic.Population;
@@ -43,6 +44,7 @@ public class App {
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
+    public static int numGenerations = 1000;
 
     public static void main(String[] args) throws Exception {
 
@@ -67,6 +69,30 @@ public class App {
             population.initializePopulation(instance.getClients());
             population.distributeSubpopulations();
 
+            // Calculando o fitness de cada subpopulação
+            System.out.println("Calculando fitness para todas as subpopulações...");
+            List<Client> clients = instance.getClients();
+
+            for (Individual ind : population.getSubPopDistance()) {
+                double fitnessDistance = new DistanceFitnessCalculator().calculateFitness(ind, clients);
+                ind.setFitnessDistance(fitnessDistance);
+            }
+
+            for (Individual ind : population.getSubPopTime()) {
+                double fitnessTime = new TimeFitnessCalculator().calculateFitness(ind, clients);
+                ind.setFitnessTime(fitnessTime);
+            }
+
+            for (Individual ind : population.getSubPopFuel()) {
+                double fitnessFuel = new FuelFitnessCalculator().calculateFitness(ind, clients);
+                ind.setFitnessFuel(fitnessFuel);
+            }
+
+            for (Individual ind : population.getSubPopPonderation()) {
+                double fitnessPond = new DefaultFitnessCalculator().calculateFitness(ind, clients);
+                ind.setFitness(fitnessPond);
+            }
+
             // Inicializando as subpopulações auxiliares para a próxima geração
             List<Individual> nextSubPopDistance = new ArrayList<>();
             List<Individual> nextSubPopTime = new ArrayList<>();
@@ -79,62 +105,99 @@ public class App {
                 nextSubPopPonderation.add(new Individual(-1, 0, 0, 0, 0));
             }
 
-            // Imprimir o primeiro indivíduo da subpopulação de distância
-            Individual first = population.getSubPopDistance().get(0);
-            System.out.println("\nPrimeiro indivíduo da subpopulação de distância:");
-            System.out.println("ID: " + first.getId());
-            System.out.println("FitnessDistance: " + first.getFitnessDistance());
-            System.out.println("FitnessTime: " + first.getFitnessTime());
-            System.out.println("FitnessFuel: " + first.getFitnessFuel());
-            System.out.println("Fitness (Ponderado): " + first.getFitness());
-            System.out.println("Rotas:");
-            int[][] route = first.getRoute();
-            for (int v = 0; v < App.numVehicles; v++) {
-                System.out.print("Veículo " + v + ": ");
-                for (int c = 0; c < App.numClients; c++) {
-                    System.out.print(route[v][c] + " ");
-                }
-                System.out.println();
-            }
-
             int elitismSize = Math.max(1, (int) (sub_pop_size * elitismRate));
             int generationsBeforeComparison = 5;
-            int selectionType = 2; // Torneio
+            int selectionType = 2; // Tournament
             int crossingType = 1; // One-point
 
-            // Rodar apenas uma geração para teste
-            int generation = 0;
-            System.out.println("\nGeração: " + generation);
+            for (int generation = 0; generation < numGenerations; generation++) {
+                System.out.println("\nGeração: " + generation);
 
-            population.evolvePopMulti(
-                    generation,
-                    population.getSubPopDistance(), nextSubPopDistance,
-                    population.getSubPopTime(), nextSubPopTime,
-                    population.getSubPopFuel(), nextSubPopFuel,
-                    population.getSubPopPonderation(), nextSubPopPonderation,
-                    instance.getClients(),
-                    elitismSize,
-                    generationsBeforeComparison,
-                    selectionType,
-                    crossingType);
+                try {
+                    System.out.println("Iniciando evolução...");
 
-            // Imprimir o primeiro indivíduo da subpopulação de distância
-            Individual first1 = population.getSubPopDistance().get(0);
-            System.out.println("\nPrimeiro indivíduo da subpopulação de distância:");
-            System.out.println("ID: " + first1.getId());
-            System.out.println("FitnessDistance: " + first1.getFitnessDistance());
-            System.out.println("FitnessTime: " + first1.getFitnessTime());
-            System.out.println("FitnessFuel: " + first1.getFitnessFuel());
-            System.out.println("Fitness (Ponderado): " + first1.getFitness());
-            System.out.println("Rotas:");
-            int[][] route1 = first1.getRoute();
-            for (int v = 0; v < App.numVehicles; v++) {
-                System.out.print("Veículo " + v + ": ");
-                for (int c = 0; c < App.numClients; c++) {
-                    System.out.print(route1[v][c] + " ");
+                    population.evolvePopMulti(
+                            generation,
+                            population.getSubPopDistance(), nextSubPopDistance,
+                            population.getSubPopTime(), nextSubPopTime,
+                            population.getSubPopFuel(), nextSubPopFuel,
+                            population.getSubPopPonderation(), nextSubPopPonderation,
+                            instance.getClients(),
+                            elitismSize,
+                            generationsBeforeComparison,
+                            selectionType,
+                            crossingType);
+
+                    System.out.println("Evolução concluída!");
+
+                    if (generation % 100 == 0 || generation == numGenerations - 1) {
+                        System.out.println("--- Estatísticas da geração " + generation + " ---");
+                    }
+                } catch (Exception e) {
+                    System.out.println("ERRO NA GERAÇÃO " + generation + ": " + e.getMessage());
+                    e.printStackTrace();
+                    break;
                 }
-                System.out.println();
             }
+
+            // Printar IDs de todos os indivíduos em cada subpopulação
+            System.out.println("\n--- IDs dos indivíduos em cada subpopulação ---");
+
+            System.out.print("SubPopDistance IDs: ");
+            for (Individual ind : population.getSubPopDistance()) {
+                System.out.print(ind.getId() + " " +
+                        "(Fitness Distance: " + ind.getFitnessDistance() + ") ");
+            }
+            System.out.println();
+
+            System.out.print("SubPopTime IDs: ");
+            for (Individual ind : population.getSubPopTime()) {
+                System.out.print(ind.getId() + " " +
+                        "(Fitness Time: " + ind.getFitnessTime() + ") ");
+            }
+            System.out.println();
+
+            System.out.print("SubPopFuel IDs: ");
+            for (Individual ind : population.getSubPopFuel()) {
+                System.out.print(ind.getId() + " " +
+                        "(Fitness Fuel: " + ind.getFitnessFuel() + ") ");
+            }
+            System.out.println();
+
+            System.out.print("SubPopPonderation IDs: ");
+            for (Individual ind : population.getSubPopPonderation()) {
+                System.out.print(ind.getId() + " " +
+                        "(Fitness Pond: " + ind.getFitness() + ") ");
+            }
+            System.out.println();
+
+            // Você também pode imprimir os IDs das nextSubPop para verificar se estão
+            // vazios
+            System.out.println("\n--- IDs dos indivíduos nas próximas subpopulações ---");
+
+            System.out.print("NextSubPopDistance IDs: ");
+            for (Individual ind : nextSubPopDistance) {
+                System.out.print(ind.getId() + " ");
+            }
+            System.out.println();
+
+            System.out.print("NextSubPopTime IDs: ");
+            for (Individual ind : nextSubPopTime) {
+                System.out.print(ind.getId() + " ");
+            }
+            System.out.println();
+
+            System.out.print("NextSubPopFuel IDs: ");
+            for (Individual ind : nextSubPopFuel) {
+                System.out.print(ind.getId() + " ");
+            }
+            System.out.println();
+
+            System.out.print("NextSubPopPonderation IDs: ");
+            for (Individual ind : nextSubPopPonderation) {
+                System.out.print(ind.getId() + " ");
+            }
+            System.out.println();
 
         } catch (IOException e) {
             System.out.println("Error reading the file");

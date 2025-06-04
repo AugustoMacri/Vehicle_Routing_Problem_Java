@@ -17,6 +17,8 @@ public class Mutation {
             return;
         }
 
+        System.out.println("Mutating individual: " + individual.getId());
+
         int[][] route = individual.getRoute();
 
         for (int v = 0; v < App.numVehicles; v++) {

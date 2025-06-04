@@ -253,7 +253,7 @@ public class Population {
 
             System.out.println("Substituiu indivíduo de ID: " + sub.getId());
         } else {
-            System.out.println("Não substituiu");
+            //System.out.println("Não substituiu");
         }
     }
 
@@ -343,18 +343,17 @@ public class Population {
             }
         }
 
-        // ...após os prints DEBUG nextSubPopPonderation...
-
-        System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
-        Individual ind0 = nextSubPopDistance.get(0);
-        for (int v = 0; v < App.numVehicles; v++) {
+        /*
+         System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
+         Individual ind0 = nextSubPopDistance.get(0);
+         for (int v = 0; v < App.numVehicles; v++) {
             System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
                 System.out.print(ind0.getRoute()[v][c] + " ");
             }
             System.out.println();
         }
-
+        
         System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
         ind0 = nextSubPopTime.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
@@ -364,7 +363,7 @@ public class Population {
             }
             System.out.println();
         }
-
+        
         System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
         ind0 = nextSubPopFuel.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
@@ -374,7 +373,7 @@ public class Population {
             }
             System.out.println();
         }
-
+        
         System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
         ind0 = nextSubPopPonderation.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
@@ -384,7 +383,8 @@ public class Population {
             }
             System.out.println();
         }
-
+        */
+        
         // Updates subpopulations with individuals from the next generation
         updateSubPop(subPopDistance, nextSubPopDistance);
         updateSubPop(subPopTime, nextSubPopTime);
