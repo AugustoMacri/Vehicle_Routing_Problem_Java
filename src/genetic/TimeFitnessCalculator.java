@@ -56,9 +56,7 @@ public class TimeFitnessCalculator implements FitnessCalculator {
             totalTime += currentTime;
 
             // Debugging
-            System.out.printf(
-                    "Vehicle %d | Time: %.2f | TotalTime (vai no fitness): %.2f | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",
-                    v, currentTime, totalTime, numViolationsVehicle, numViolations, App.VEHICLE_SPEED, vehicleDistance);
+            //System.out.printf("Vehicle %d | Time: %.2f | TotalTime (vai no fitness): %.2f | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",v, currentTime, totalTime, numViolationsVehicle, numViolations, App.VEHICLE_SPEED, vehicleDistance);
 
         }
 

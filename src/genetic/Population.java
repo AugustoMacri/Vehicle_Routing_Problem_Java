@@ -178,6 +178,7 @@ public class Population {
                     dest.setClientInRoute(j, k, srcRoute[j][k]);
                 }
             }
+
         }
 
         // Reset all individuals from nextSubPop
@@ -214,25 +215,21 @@ public class Population {
         switch (fitnessType) {
             case 0:
                 if (newSon.getFitnessDistance() < sub.getFitnessDistance()) {
-                    next.setFitnessDistance(newSon.getFitnessDistance());
                     replaced = true;
                 }
                 break;
             case 1:
                 if (newSon.getFitnessTime() < sub.getFitnessTime()) {
-                    next.setFitnessTime(newSon.getFitnessTime());
                     replaced = true;
                 }
                 break;
             case 2:
                 if (newSon.getFitnessFuel() < sub.getFitnessFuel()) {
-                    next.setFitnessFuel(newSon.getFitnessFuel());
                     replaced = true;
                 }
                 break;
             case 3:
                 if (newSon.getFitness() < sub.getFitness()) {
-                    next.setFitness(newSon.getFitness());
                     replaced = true;
                 }
                 break;
@@ -248,6 +245,12 @@ public class Population {
                     next.setClientInRoute(j, k, sonRoute[j][k]);
                 }
             }
+
+            next.setFitnessDistance(newSon.getFitnessDistance());
+            next.setFitnessTime(newSon.getFitnessTime());
+            next.setFitnessFuel(newSon.getFitnessFuel());
+            next.setFitness(newSon.getFitness());
+
             System.out.println("Substituiu indivíduo de ID: " + sub.getId());
         } else {
             System.out.println("Não substituiu");
@@ -264,48 +267,75 @@ public class Population {
             List<Client> clients,
             int elitismSize,
             int generationsBeforeComparison,
+            int selectionType, // 1: roulette (futuro), 2: tournament
             int crossingType // 1: one-point, 2: two-point (futuro)
     ) {
-        // 1. Seleção dos elites
+
         SelectionUtils.selectElite(subPopDistance, nextSubPopDistance, 0, elitismSize);
         SelectionUtils.selectElite(subPopTime, nextSubPopTime, 1, elitismSize);
         SelectionUtils.selectElite(subPopFuel, nextSubPopFuel, 2, elitismSize);
         SelectionUtils.selectElite(subPopPonderation, nextSubPopPonderation, 3, elitismSize);
 
-        // 2. Geração dos filhos
-        for (int i = elitismSize; i < App.sub_pop_size; i++) {
-            Individual newSon = null;
-            List<Individual> parents = SelectionUtils.subPopSelection(this);
+        // Evolving the population
+        if (generation < generationsBeforeComparison) {
 
-            // Cruzamento
-            switch (crossingType) {
-                case 1: // One-point
-                    newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1), i);
-                    break;
-                // case 2: // Two-point (implementar depois)
-                // newSon = Crossover.twoPointCrossing(parents.get(0), parents.get(1), i);
-                // break;
-                default:
-                    throw new IllegalArgumentException("Tipo de cruzamento não implementado");
-            }
+            // Ensures diversity: inserts children directly into the next generation
+            for (int i = elitismSize; i < App.sub_pop_size; i++) {
+                List<Individual> parents = SelectionUtils.subPopSelection(this);
+                Individual newSon = null;
 
-            // Mutação
-            Mutation.mutate(newSon, App.mutationRate);
+                switch (crossingType) {
+                    case 1:
+                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1), i);
+                        break;
 
-            // Cálculo do fitness
-            newSon.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSon, clients));
-            newSon.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSon, clients));
-            newSon.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSon, clients));
-            newSon.setFitness(new DefaultFitnessCalculator().calculateFitness(newSon, clients));
+                    // case 2: // Two-point (implementar depois)
+                    // newSon = Crossover.twoPointCrossing(parents.get(0), parents.get(1), i);
+                    // break;
 
-            // Para as primeiras gerações, apenas preenche a próxima população com os filhos
-            if (generation < generationsBeforeComparison) {
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+
+                Mutation.mutate(newSon, App.mutationRate);
+
+                newSon.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSon, clients));
+                newSon.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSon, clients));
+                newSon.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSon, clients));
+                newSon.setFitness(new DefaultFitnessCalculator().calculateFitness(newSon, clients));
+
                 nextSubPopDistance.set(i, newSon.deepCopy());
                 nextSubPopTime.set(i, newSon.deepCopy());
                 nextSubPopFuel.set(i, newSon.deepCopy());
                 nextSubPopPonderation.set(i, newSon.deepCopy());
-            } else {
-                // Compara e substitui se o filho for melhor
+            }
+        } else {
+
+            // After the first generations, compare and only replace if the child is better
+            for (int i = elitismSize; i < App.sub_pop_size; i++) {
+                List<Individual> parents = SelectionUtils.subPopSelection(this);
+                Individual newSon = null;
+
+                switch (crossingType) {
+                    case 1:
+                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1), i);
+                        break;
+
+                    // case 2: // Two-point (implementar depois)
+                    // newSon = Crossover.twoPointCrossing(parents.get(0), parents.get(1), i);
+                    // break;
+
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+
+                Mutation.mutate(newSon, App.mutationRate);
+
+                newSon.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSon, clients));
+                newSon.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSon, clients));
+                newSon.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSon, clients));
+                newSon.setFitness(new DefaultFitnessCalculator().calculateFitness(newSon, clients));
+
                 compareSonSubPop(newSon, subPopDistance, nextSubPopDistance, 0, i);
                 compareSonSubPop(newSon, subPopTime, nextSubPopTime, 1, i);
                 compareSonSubPop(newSon, subPopFuel, nextSubPopFuel, 2, i);
@@ -313,7 +343,49 @@ public class Population {
             }
         }
 
-        // 3. Atualiza as subpopulações com os indivíduos da próxima geração
+        // ...após os prints DEBUG nextSubPopPonderation...
+
+        System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
+        Individual ind0 = nextSubPopDistance.get(0);
+        for (int v = 0; v < App.numVehicles; v++) {
+            System.out.print("Veículo " + v + ": ");
+            for (int c = 0; c < App.numClients; c++) {
+                System.out.print(ind0.getRoute()[v][c] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
+        ind0 = nextSubPopTime.get(0);
+        for (int v = 0; v < App.numVehicles; v++) {
+            System.out.print("Veículo " + v + ": ");
+            for (int c = 0; c < App.numClients; c++) {
+                System.out.print(ind0.getRoute()[v][c] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
+        ind0 = nextSubPopFuel.get(0);
+        for (int v = 0; v < App.numVehicles; v++) {
+            System.out.print("Veículo " + v + ": ");
+            for (int c = 0; c < App.numClients; c++) {
+                System.out.print(ind0.getRoute()[v][c] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
+        ind0 = nextSubPopPonderation.get(0);
+        for (int v = 0; v < App.numVehicles; v++) {
+            System.out.print("Veículo " + v + ": ");
+            for (int c = 0; c < App.numClients; c++) {
+                System.out.print(ind0.getRoute()[v][c] + " ");
+            }
+            System.out.println();
+        }
+
+        // Updates subpopulations with individuals from the next generation
         updateSubPop(subPopDistance, nextSubPopDistance);
         updateSubPop(subPopTime, nextSubPopTime);
         updateSubPop(subPopFuel, nextSubPopFuel);

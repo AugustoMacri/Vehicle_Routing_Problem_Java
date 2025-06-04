@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import vrp.BenchMarkReader;
@@ -50,97 +51,89 @@ public class App {
         try {
             ProblemInstance instance = reader.readInstaces("src/instances/solomon/C101.txt");
 
-            // Getting the number of vehicles, vehicle capacity and clients
             numVehicles = instance.getNumVehicles();
             vehicleCapacity = instance.getVehicleCapacity();
             numClients = instance.getClients().size();
 
-            System.out.println(("Number of vehicles: " + instance.getNumVehicles()));
-            System.out.println(("Vehicle capacity: " + instance.getVehicleCapacity()));
-            System.out.println(("Number of clients: " + instance.getClients().size()));
+            System.out.println("Number of vehicles: " + numVehicles);
+            System.out.println("Vehicle capacity: " + vehicleCapacity);
+            System.out.println("Number of clients: " + numClients);
 
             // Criando lista vazia de indivíduos
             List<Individual> individuals = new ArrayList<>();
 
-            // Initializing Population
+            // Inicializando população
             Population population = new Population(individuals);
             population.initializePopulation(instance.getClients());
             population.distributeSubpopulations();
 
-            // Criando o FitnessCalculator
-            FitnessCalculator fitnessCalculator = new TimeFitnessCalculator();
-
-            // System.out.println("\nCalculando fitness para subPopDistance:");
-            for (Individual ind : population.getSubPopTime()) {
-                double fitness = fitnessCalculator.calculateFitness(ind, instance.getClients());
-                ind.setFitness(fitness);
-                // System.out.println("Fitness do indivíduo " + ind.getId() + ": " + fitness);
+            // Inicializando as subpopulações auxiliares para a próxima geração
+            List<Individual> nextSubPopDistance = new ArrayList<>();
+            List<Individual> nextSubPopTime = new ArrayList<>();
+            List<Individual> nextSubPopFuel = new ArrayList<>();
+            List<Individual> nextSubPopPonderation = new ArrayList<>();
+            for (int i = 0; i < sub_pop_size; i++) {
+                nextSubPopDistance.add(new Individual(-1, 0, 0, 0, 0));
+                nextSubPopTime.add(new Individual(-1, 0, 0, 0, 0));
+                nextSubPopFuel.add(new Individual(-1, 0, 0, 0, 0));
+                nextSubPopPonderation.add(new Individual(-1, 0, 0, 0, 0));
             }
 
-            // Seleciona dois pais de subpopulações aleatórias
-            List<Individual> parents = SelectionUtils.subPopSelection(population);
-
-            System.out.println("Pais selecionados:");
-            for (Individual parent : parents) {
-                System.out.println("Indivíduo ID: " + parent.getId() + ", Fitness: " + parent.getFitness());
-                // parent.printRoutes();
+            // Imprimir o primeiro indivíduo da subpopulação de distância
+            Individual first = population.getSubPopDistance().get(0);
+            System.out.println("\nPrimeiro indivíduo da subpopulação de distância:");
+            System.out.println("ID: " + first.getId());
+            System.out.println("FitnessDistance: " + first.getFitnessDistance());
+            System.out.println("FitnessTime: " + first.getFitnessTime());
+            System.out.println("FitnessFuel: " + first.getFitnessFuel());
+            System.out.println("Fitness (Ponderado): " + first.getFitness());
+            System.out.println("Rotas:");
+            int[][] route = first.getRoute();
+            for (int v = 0; v < App.numVehicles; v++) {
+                System.out.print("Veículo " + v + ": ");
+                for (int c = 0; c < App.numClients; c++) {
+                    System.out.print(route[v][c] + " ");
+                }
+                System.out.println();
             }
 
-            // Realiza o cruzamento
-            int idTrack = 1; // Rastreador de IDs para os filhos
-            Individual parent1 = parents.get(0);
-            Individual parent2 = parents.get(1);
+            int elitismSize = Math.max(1, (int) (sub_pop_size * elitismRate));
+            int generationsBeforeComparison = 5;
+            int selectionType = 2; // Torneio
+            int crossingType = 1; // One-point
 
-            Individual newSon = Crossover.onePointCrossing(parent1, parent2, idTrack);
+            // Rodar apenas uma geração para teste
+            int generation = 0;
+            System.out.println("\nGeração: " + generation);
 
-            // Imprime as rotas do filho gerado
-            System.out.println("\nFilho gerado (ID: " + newSon.getId() + "):");
-            newSon.printRoutes();
+            population.evolvePopMulti(
+                    generation,
+                    population.getSubPopDistance(), nextSubPopDistance,
+                    population.getSubPopTime(), nextSubPopTime,
+                    population.getSubPopFuel(), nextSubPopFuel,
+                    population.getSubPopPonderation(), nextSubPopPonderation,
+                    instance.getClients(),
+                    elitismSize,
+                    generationsBeforeComparison,
+                    selectionType,
+                    crossingType);
 
-            // Mutação
-            Mutation.mutate(newSon, mutationRate);
-            System.out.println("\nFilho após mutação (ID: " + newSon.getId() + "):");
-            newSon.printRoutes();
-
-            // Cria uma lista para armazenar os elites selecionados
-            List<Individual> eliteDistance = new ArrayList<>();
-
-            // Define o tamanho do elitismo (por exemplo, 2)
-            int elitismSize = 2;
-
-            // Seleciona os melhores indivíduos da subpopulação de distância
-            SelectionUtils.selectElite(
-                    population.getSubPopTime(), // subpopulação de onde selecionar
-                    eliteDistance, // lista onde serão colocados os elites
-                    1, // 0 = fitnessDistance
-                    elitismSize // quantidade de elites
-            );
-
-            // Imprime os elites selecionados
-            System.out.println("\nElites da subpopulação de distância:");
-            for (Individual elite : eliteDistance) {
-                System.out.println("ID: " + elite.getId() + " | FitnessDistance: " + elite.getFitnessTime());
-            }
-
-            // Calcula o fitness de tempo para todos da subpopulação de tempo
-            for (Individual ind : population.getSubPopTime()) {
-                ind.setFitnessTime(new TimeFitnessCalculator().calculateFitness(ind, instance.getClients()));
-            }
-
-            // Define manualmente o fitness do primeiro indivíduo para 0
-            population.getSubPopTime().get(0).setFitnessTime(0.0);
-
-            // Seleciona os melhores indivíduos da subpopulação de tempo
-            SelectionUtils.selectElite(
-                    population.getSubPopTime(),
-                    eliteDistance,
-                    1, // 1 = fitnessTime
-                    elitismSize);
-
-            // Imprime os elites selecionados
-            System.out.println("\nElites da subpopulação de tempo:");
-            for (Individual elite : eliteDistance) {
-                System.out.println("ID: " + elite.getId() + " | FitnessTime: " + elite.getFitnessTime());
+            // Imprimir o primeiro indivíduo da subpopulação de distância
+            Individual first1 = population.getSubPopDistance().get(0);
+            System.out.println("\nPrimeiro indivíduo da subpopulação de distância:");
+            System.out.println("ID: " + first1.getId());
+            System.out.println("FitnessDistance: " + first1.getFitnessDistance());
+            System.out.println("FitnessTime: " + first1.getFitnessTime());
+            System.out.println("FitnessFuel: " + first1.getFitnessFuel());
+            System.out.println("Fitness (Ponderado): " + first1.getFitness());
+            System.out.println("Rotas:");
+            int[][] route1 = first1.getRoute();
+            for (int v = 0; v < App.numVehicles; v++) {
+                System.out.print("Veículo " + v + ": ");
+                for (int c = 0; c < App.numClients; c++) {
+                    System.out.print(route1[v][c] + " ");
+                }
+                System.out.println();
             }
 
         } catch (IOException e) {

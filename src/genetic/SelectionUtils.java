@@ -51,9 +51,9 @@ public class SelectionUtils {
         }
 
         // Select the top individuals based on the elitism rate
-        for(int i = 0; i < elitismRate && i < sortedSubPop.size(); i++) {
+        for (int i = 0; i < elitismRate && i < sortedSubPop.size(); i++) {
             Individual elite = sortedSubPop.get(i).deepCopy();
-            nextPop.add(elite);
+            nextPop.set(i, elite);  // Substituir na posição i
         }
     }
 
@@ -115,18 +115,19 @@ public class SelectionUtils {
 
         List<Individual> selectedParents = new ArrayList<>();
 
+        // Limpa a lista de pais antes de selecionar novos
+        selectedParents.clear();
+
         // Keep track of the ID of the winners
         Set<Integer> previousWinners = new HashSet<>();
 
         // Select two subpopulations randomly
         for (int i = 0; i < 2; i++) {
-
             int subPopIndex = rand.nextInt(3); // Select a random subpopulation index (0, 1, or 2)
-
             List<Individual> selectedSubPop = subPopulations.get(subPopIndex);
             int fitnessType = subPopIndex; // Define o tipo de fitness com base na subpopulação
 
-            System.out.println("Selected subpopulation: " + subPopNames[subPopIndex]);
+            //System.out.println("Selected subpopulation: " + subPopNames[subPopIndex]);
 
             // Realiza a seleção por torneio na subpopulação escolhida
             Individual parent = tournamentSelection(selectedSubPop, App.tournamentSize, previousWinners, fitnessType);
@@ -134,7 +135,7 @@ public class SelectionUtils {
             // Adiciona o pai selecionado à lista de pais
             if (parent != null) {
                 selectedParents.add(parent);
-                previousWinners.add(parent.getId()); // Adiciona o ID do vencedor ao conjunto de rastreamento
+                previousWinners.add(parent.getId());
             }
         }
 

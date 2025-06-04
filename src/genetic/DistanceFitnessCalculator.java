@@ -35,7 +35,7 @@ public class DistanceFitnessCalculator implements FitnessCalculator {
             totalDistance += vehicleDistance;
 
             // Debugging
-            System.out.printf("Vehicle %d | Distance: %.2f%n",v, vehicleDistance);
+            //System.out.printf("Vehicle %d | Distance: %.2f%n",v, vehicleDistance);
 
         }
 

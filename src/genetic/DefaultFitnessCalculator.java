@@ -62,9 +62,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
             totalFuel += fuelCost;
 
             // Debugging
-            System.out.printf(
-                    "Vehicle %d | Distance: %.2f | Time: %.2f | Fuel: %.2f | ViolationsVehicle: %d | Violations: %d%n",
-                    v, vehicleDistance, currentTime, fuelCost(vehicleDistance), numViolationsVehicle, numViolations);
+            //System.out.printf("Vehicle %d | Distance: %.2f | Time: %.2f | Fuel: %.2f | ViolationsVehicle: %d | Violations: %d%n",v, vehicleDistance, currentTime, fuelCost(vehicleDistance), numViolationsVehicle, numViolations);
 
         }
 

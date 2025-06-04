@@ -38,9 +38,7 @@ public class FuelFitnessCalculator implements FitnessCalculator{
             totalFuel += fuelCost;
 
             // Debugging
-            System.out.printf(
-                    "Vehicle %d | Distance: %.2f | Fuel: %.2f%n",
-                    v, vehicleDistance, fuelCost(vehicleDistance));
+            //System.out.printf("Vehicle %d | Distance: %.2f | Fuel: %.2f%n",v, vehicleDistance, fuelCost(vehicleDistance));
 
         }
 
