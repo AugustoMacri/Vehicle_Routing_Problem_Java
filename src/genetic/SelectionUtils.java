@@ -105,6 +105,8 @@ public class SelectionUtils {
     public static List<Individual> subPopSelection(Population population) {
         Random rand = new Random();
 
+        System.out.println("Entrou no subPopSelection");
+
         // Lista de subpopulações disponíveis
         List<List<Individual>> subPopulations = List.of(
                 population.getSubPopDistance(),
@@ -136,9 +138,12 @@ public class SelectionUtils {
             if (parent != null) {
                 selectedParents.add(parent);
                 previousWinners.add(parent.getId());
+            }else{
+                System.out.println("ERRO: Não foi possível selecionar um pai");
             }
         }
 
+        System.out.println("Selected parents: " + selectedParents.size());
         return selectedParents;
     }
 }

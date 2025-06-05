@@ -181,22 +181,6 @@ public class Population {
 
         }
 
-        // Reset all individuals from nextSubPop
-        for (int i = 0; i < nextSubPop.size(); i++) {
-            Individual ind = nextSubPop.get(i);
-            ind.setId(-1);
-            ind.setFitnessDistance(0);
-            ind.setFitnessTime(0);
-            ind.setFitnessFuel(0);
-            ind.setFitness(0);
-
-            int[][] route = ind.getRoute();
-            for (int j = 0; j < App.numVehicles; j++) {
-                for (int k = 0; k < App.numClients; k++) {
-                    ind.setClientInRoute(j, k, 0);
-                }
-            }
-        }
     }
 
     // Function to compare the son that is generated in the crossing with every
@@ -253,7 +237,7 @@ public class Population {
 
             System.out.println("Substituiu indivíduo de ID: " + sub.getId());
         } else {
-            //System.out.println("Não substituiu");
+            // System.out.println("Não substituiu");
         }
     }
 
@@ -270,11 +254,21 @@ public class Population {
             int selectionType, // 1: roulette (futuro), 2: tournament
             int crossingType // 1: one-point, 2: two-point (futuro)
     ) {
+        System.out.println("Início do evolvePopMulti()");
 
+        System.out.println("Selecionando elite da subPopDistance...");
         SelectionUtils.selectElite(subPopDistance, nextSubPopDistance, 0, elitismSize);
+
+        System.out.println("Selecionando elite da subPopTime...");
         SelectionUtils.selectElite(subPopTime, nextSubPopTime, 1, elitismSize);
+
+        System.out.println("Selecionando elite da subPopFuel...");
         SelectionUtils.selectElite(subPopFuel, nextSubPopFuel, 2, elitismSize);
+
+        System.out.println("Selecionando elite da subPopPonderation...");
         SelectionUtils.selectElite(subPopPonderation, nextSubPopPonderation, 3, elitismSize);
+
+        System.out.println("Elites selecionados com sucesso!");
 
         // Evolving the population
         if (generation < generationsBeforeComparison) {
@@ -286,7 +280,7 @@ public class Population {
 
                 switch (crossingType) {
                     case 1:
-                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1), i);
+                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1));
                         break;
 
                     // case 2: // Two-point (implementar depois)
@@ -311,6 +305,8 @@ public class Population {
             }
         } else {
 
+            // System.out.println("Compara o filho com os indivíduos da subpopulação...");
+
             // After the first generations, compare and only replace if the child is better
             for (int i = elitismSize; i < App.sub_pop_size; i++) {
                 List<Individual> parents = SelectionUtils.subPopSelection(this);
@@ -318,7 +314,7 @@ public class Population {
 
                 switch (crossingType) {
                     case 1:
-                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1), i);
+                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1));
                         break;
 
                     // case 2: // Two-point (implementar depois)
@@ -343,48 +339,54 @@ public class Population {
             }
         }
 
-        /*
-         System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
-         Individual ind0 = nextSubPopDistance.get(0);
-         for (int v = 0; v < App.numVehicles; v++) {
+        System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
+        Individual ind0 = nextSubPopDistance.get(0);
+        for (int v = 0; v < App.numVehicles; v++) {
             System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
-                System.out.print(ind0.getRoute()[v][c] + " ");
+                if (ind0.getRoute()[v][c] != -1) {
+                    System.out.print(ind0.getRoute()[v][c] + " ");
+                }
             }
             System.out.println();
         }
-        
+
         System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
         ind0 = nextSubPopTime.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
             System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
-                System.out.print(ind0.getRoute()[v][c] + " ");
+                if (ind0.getRoute()[v][c] != -1) {
+                    System.out.print(ind0.getRoute()[v][c] + " ");
+                }
             }
             System.out.println();
         }
-        
+
         System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
         ind0 = nextSubPopFuel.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
             System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
-                System.out.print(ind0.getRoute()[v][c] + " ");
+                if (ind0.getRoute()[v][c] != -1) {
+                    System.out.print(ind0.getRoute()[v][c] + " ");
+                }
             }
             System.out.println();
         }
-        
+
         System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
         ind0 = nextSubPopPonderation.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
             System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
-                System.out.print(ind0.getRoute()[v][c] + " ");
+                if (ind0.getRoute()[v][c] != -1) {
+                    System.out.print(ind0.getRoute()[v][c] + " ");
+                }
             }
             System.out.println();
         }
-        */
-        
+
         // Updates subpopulations with individuals from the next generation
         updateSubPop(subPopDistance, nextSubPopDistance);
         updateSubPop(subPopTime, nextSubPopTime);

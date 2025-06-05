@@ -6,7 +6,9 @@ import main.App;
 
 public class Crossover {
 
-    public static Individual onePointCrossing(Individual parent1, Individual parent2, int idTrack) {
+    public static Individual onePointCrossing(Individual parent1, Individual parent2) {
+
+        System.out.println("Entrou no onePointCrossing");
 
         Random random = new Random();
 
@@ -64,11 +66,8 @@ public class Crossover {
                 for (int k = c + 1; k < App.numClients; k++) {
                     int val2 = childRoute[v][k];
                     if (val1 == val2 && val1 != 0 && val2 != 0) {
-                        int substituto = compareFatherSon(parent1, parent2, childRoute, v, dadChosen); // Continue with
-                                                                                                       // the parents,
-                                                                                                       // not the
-                                                                                                       // normalized
-                                                                                                       // ones
+                        int substituto = compareFatherSon(parent1, parent2, childRoute, v, dadChosen);
+
                         childRoute[v][k] = substituto;
                     }
                 }
@@ -79,7 +78,8 @@ public class Crossover {
         // Denormalize the child route
         int[][] denormalizedChildRoute = denormalizeRoute(childRoute);
 
-        Individual newSon = new Individual(App.pop_size + idTrack, 0, 0, 0, 0);
+        // Usar ID único e incrementar o contador
+        Individual newSon = new Individual(App.nextIndividualId++, 0, 0, 0, 0);
         newSon.setRoute(denormalizedChildRoute);
 
         return newSon;
@@ -134,6 +134,8 @@ public class Crossover {
             int dadChosen) {
         Individual chosenParent = (dadChosen == 0) ? parent1 : parent2;
 
+        System.out.println("Entrou no compareFatherSon");
+
         for (int c = 1; c < App.numClients; c++) {
             int val1 = chosenParent.getRoute()[vehicleIndex][c];
             boolean found = false;
@@ -152,6 +154,7 @@ public class Crossover {
 
         }
 
+        System.out.println("saiu do compareFatherSon");
         return 0;
     }
 }
