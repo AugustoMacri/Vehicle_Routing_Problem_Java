@@ -8,7 +8,7 @@ public class Crossover {
 
     public static Individual onePointCrossing(Individual parent1, Individual parent2) {
 
-        System.out.println("Entrou no onePointCrossing");
+        //System.out.println("Entrou no onePointCrossing");
 
         Random random = new Random();
 
@@ -134,7 +134,7 @@ public class Crossover {
             int dadChosen) {
         Individual chosenParent = (dadChosen == 0) ? parent1 : parent2;
 
-        System.out.println("Entrou no compareFatherSon");
+        //System.out.println("Entrou no compareFatherSon");
 
         for (int c = 1; c < App.numClients; c++) {
             int val1 = chosenParent.getRoute()[vehicleIndex][c];
@@ -154,7 +154,7 @@ public class Crossover {
 
         }
 
-        System.out.println("saiu do compareFatherSon");
+        //System.out.println("saiu do compareFatherSon");
         return 0;
     }
 }

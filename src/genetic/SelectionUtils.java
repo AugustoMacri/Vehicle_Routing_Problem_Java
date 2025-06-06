@@ -105,7 +105,7 @@ public class SelectionUtils {
     public static List<Individual> subPopSelection(Population population) {
         Random rand = new Random();
 
-        System.out.println("Entrou no subPopSelection");
+        //System.out.println("Entrou no subPopSelection");
 
         // Lista de subpopulações disponíveis
         List<List<Individual>> subPopulations = List.of(
@@ -139,11 +139,11 @@ public class SelectionUtils {
                 selectedParents.add(parent);
                 previousWinners.add(parent.getId());
             }else{
-                System.out.println("ERRO: Não foi possível selecionar um pai");
+                //System.out.println("ERRO: Não foi possível selecionar um pai");
             }
         }
 
-        System.out.println("Selected parents: " + selectedParents.size());
+        //System.out.println("Selected parents: " + selectedParents.size());
         return selectedParents;
     }
 }

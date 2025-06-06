@@ -17,7 +17,7 @@ public class Mutation {
             return;
         }
 
-        System.out.println("Mutating individual: " + individual.getId());
+        //System.out.println("Mutating individual: " + individual.getId());
 
         int[][] route = individual.getRoute();
 

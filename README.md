@@ -4,22 +4,33 @@ Este projeto implementa uma solução baseada em Algoritmos Genéticos para o **
 
 ## Funcionalidades
 
-- **Algoritmo Genético Multiobjetivo:**  
-  O código suporta múltiplos critérios de otimização (distância, tempo, combustível, ponderado).
+- **Algoritmos Genéticos:**  
+  - **Multi-Objetivo:** Otimização simultânea de distância, tempo, combustível e critério ponderado
+  - **Mono-Objetivo:** Interface preparada para implementação futura
+
 - **População e Subpopulações:**  
   A população é dividida em subpopulações especializadas em diferentes objetivos.
+
 - **Cruzamento (Crossover):**  
   Implementação de cruzamento de um ponto, com normalização e desnormalização das rotas.
+
 - **Mutação:**  
   Troca de clientes aleatórios nas rotas dos veículos, respeitando restrições.
+
 - **Elitismo:**  
-  Seleção dos melhores indivíduos para a próxima geração, tanto para mono quanto para multiobjetivo.
+  Seleção dos melhores indivíduos para a próxima geração, garantindo que as melhores soluções sejam preservadas.
+
 - **Seleção por Torneio:**  
   Seleção de pais baseada em torneios dentro das subpopulações.
+
 - **Cálculo de Fitness:**  
   Critérios separados para distância, tempo, combustível e ponderado, com penalidades para violações de restrições.
+
 - **Leitura de Instâncias Solomon:**  
   Suporte para leitura de arquivos de instância padrão Solomon.
+
+- **Visualização Gráfica:**  
+  Script Python para visualizar a evolução do fitness ao longo das gerações.
 
 ## Estrutura dos Principais Arquivos
 
@@ -41,24 +52,26 @@ Este projeto implementa uma solução baseada em Algoritmos Genéticos para o **
 - `src/genetic/SelectionUtils.java`  
   Métodos de seleção de elite e seleção por torneio.
 
-- `src/genetic/FitnessCalculator.java`  
-  Interface para cálculo de fitness.
-
-- `src/genetic/DistanceFitnessCalculator.java`,  
-  `src/genetic/TimeFitnessCalculator.java`,  
-  `src/genetic/FuelFitnessCalculator.java`,  
-  `src/genetic/DefaultFitnessCalculator.java`  
-  Implementações específicas para cada critério de fitness.
+- `src/genetic/*FitnessCalculator.java`  
+  Implementações específicas para cada critério de fitness (distância, tempo, combustível, ponderado).
 
 - `src/vrp/BenchMarkReader.java`, `src/vrp/Client.java`, `src/vrp/ProblemInstance.java`  
   Utilitários para leitura e representação das instâncias do problema.
 
+- `visualize_results.py`  
+  Script Python para visualização gráfica dos resultados.
+
 ## Como Executar
 
-1. **Pré-requisitos:**  
-   - Java 11 ou superior.
+### Pré-requisitos
 
-2. **Compilação:**  
+- **Java 11 ou superior**
+- **Python 3.6 ou superior** (para visualização dos resultados)
+- **Biblioteca Matplotlib** (para visualização dos resultados)
+
+### Compilação e Execução do Java
+
+1. **Compilação:**  
    Compile todos os arquivos Java do projeto:
    ```sh
    javac -d bin src/**/*.java

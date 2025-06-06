@@ -25,7 +25,7 @@ public class Population {
         if (clients == null || clients.isEmpty()) {
             throw new IllegalArgumentException("Client list cannot be empty");
         } else {
-            System.out.println("Passed\n");
+            //System.out.println("Passed\n");
         }
 
         // Copying the clients array
@@ -301,21 +301,21 @@ public class Population {
             int selectionType, // 1: roulette (futuro), 2: tournament
             int crossingType // 1: one-point, 2: two-point (futuro)
     ) {
-        System.out.println("Início do evolvePopMulti()");
+        //System.out.println("Início do evolvePopMulti()");
 
-        System.out.println("Selecionando elite da subPopDistance...");
+        //System.out.println("Selecionando elite da subPopDistance...");
         SelectionUtils.selectElite(subPopDistance, nextSubPopDistance, 0, elitismSize);
 
-        System.out.println("Selecionando elite da subPopTime...");
+        //System.out.println("Selecionando elite da subPopTime...");
         SelectionUtils.selectElite(subPopTime, nextSubPopTime, 1, elitismSize);
 
-        System.out.println("Selecionando elite da subPopFuel...");
+        //System.out.println("Selecionando elite da subPopFuel...");
         SelectionUtils.selectElite(subPopFuel, nextSubPopFuel, 2, elitismSize);
 
-        System.out.println("Selecionando elite da subPopPonderation...");
+        //System.out.println("Selecionando elite da subPopPonderation...");
         SelectionUtils.selectElite(subPopPonderation, nextSubPopPonderation, 3, elitismSize);
 
-        System.out.println("Elites selecionados com sucesso!");
+        //System.out.println("Elites selecionados com sucesso!");
 
         // Evolving the population
         if (generation < generationsBeforeComparison) {
@@ -386,52 +386,52 @@ public class Population {
             }
         }
 
-        System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
+        //System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
         Individual ind0 = nextSubPopDistance.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
-            System.out.print("Veículo " + v + ": ");
+            //System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
                 if (ind0.getRoute()[v][c] != -1) {
-                    System.out.print(ind0.getRoute()[v][c] + " ");
+                    //System.out.print(ind0.getRoute()[v][c] + " ");
                 }
             }
-            System.out.println();
+            //System.out.println();
         }
 
-        System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
+        //System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
         ind0 = nextSubPopTime.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
-            System.out.print("Veículo " + v + ": ");
+            //System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
                 if (ind0.getRoute()[v][c] != -1) {
-                    System.out.print(ind0.getRoute()[v][c] + " ");
+                    //System.out.print(ind0.getRoute()[v][c] + " ");
                 }
             }
-            System.out.println();
+            //System.out.println();
         }
 
-        System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
+        //System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
         ind0 = nextSubPopFuel.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
-            System.out.print("Veículo " + v + ": ");
+            //System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
                 if (ind0.getRoute()[v][c] != -1) {
-                    System.out.print(ind0.getRoute()[v][c] + " ");
+                    //System.out.print(ind0.getRoute()[v][c] + " ");
                 }
             }
-            System.out.println();
+            //System.out.println();
         }
 
-        System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
+        //System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
         ind0 = nextSubPopPonderation.get(0);
         for (int v = 0; v < App.numVehicles; v++) {
-            System.out.print("Veículo " + v + ": ");
+            //System.out.print("Veículo " + v + ": ");
             for (int c = 0; c < App.numClients; c++) {
                 if (ind0.getRoute()[v][c] != -1) {
-                    System.out.print(ind0.getRoute()[v][c] + " ");
+                    //System.out.print(ind0.getRoute()[v][c] + " ");
                 }
             }
-            System.out.println();
+            //System.out.println();
         }
 
         // Updates subpopulations with individuals from the next generation
