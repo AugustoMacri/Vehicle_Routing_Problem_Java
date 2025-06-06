@@ -193,7 +193,7 @@ public class Population {
             int startIndex) {
 
         // Primeiro, encontra o pior indivíduo na subpopulação (excluindo os elites)
-        int worstIndex = startIndex;
+        int worstIndex = 0;
         double worstFitness = 0;
 
         // Define o fitness do primeiro indivíduo não-elite como pior inicialmente
