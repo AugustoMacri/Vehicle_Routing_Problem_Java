@@ -38,7 +38,7 @@ public class App {
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
-    public static int pop_size = 10;
+    public static int pop_size = 12;
     public static int sub_pop_size = (int) Math.floor((double) pop_size / 3);
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;

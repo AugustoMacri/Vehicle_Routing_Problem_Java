@@ -183,46 +183,95 @@ public class Population {
 
     }
 
-    // Function to compare the son that is generated in the crossing with every
-    // subpopulation
+    // Function to compare the son with the subpopulation and replace only the worst
+    // individual
     public static void compareSonSubPop(
             Individual newSon,
             List<Individual> subPop,
             List<Individual> nextPop,
             int fitnessType,
-            int individualIndex) {
-        Individual sub = subPop.get(individualIndex);
-        Individual next = nextPop.get(individualIndex);
+            int startIndex) {
 
-        boolean replaced = false;
+        // Primeiro, encontra o pior indivíduo na subpopulação (excluindo os elites)
+        int worstIndex = startIndex;
+        double worstFitness = 0;
 
+        // Define o fitness do primeiro indivíduo não-elite como pior inicialmente
         switch (fitnessType) {
             case 0:
-                if (newSon.getFitnessDistance() < sub.getFitnessDistance()) {
-                    replaced = true;
+                worstFitness = subPop.get(worstIndex).getFitnessDistance();
+                // Procura pelo pior fitness
+                for (int i = startIndex; i < subPop.size(); i++) {
+                    double fitness = subPop.get(i).getFitnessDistance();
+                    if (fitness > worstFitness) {
+                        worstFitness = fitness;
+                        worstIndex = i;
+                    }
                 }
                 break;
             case 1:
-                if (newSon.getFitnessTime() < sub.getFitnessTime()) {
-                    replaced = true;
+                worstFitness = subPop.get(worstIndex).getFitnessTime();
+                for (int i = startIndex; i < subPop.size(); i++) {
+                    double fitness = subPop.get(i).getFitnessTime();
+                    if (fitness > worstFitness) {
+                        worstFitness = fitness;
+                        worstIndex = i;
+                    }
                 }
                 break;
             case 2:
-                if (newSon.getFitnessFuel() < sub.getFitnessFuel()) {
-                    replaced = true;
+                worstFitness = subPop.get(worstIndex).getFitnessFuel();
+                for (int i = startIndex; i < subPop.size(); i++) {
+                    double fitness = subPop.get(i).getFitnessFuel();
+                    if (fitness > worstFitness) {
+                        worstFitness = fitness;
+                        worstIndex = i;
+                    }
                 }
                 break;
             case 3:
-                if (newSon.getFitness() < sub.getFitness()) {
-                    replaced = true;
+                worstFitness = subPop.get(worstIndex).getFitness();
+                for (int i = startIndex; i < subPop.size(); i++) {
+                    double fitness = subPop.get(i).getFitness();
+                    if (fitness > worstFitness) {
+                        worstFitness = fitness;
+                        worstIndex = i;
+                    }
                 }
                 break;
             default:
                 break;
         }
 
-        if (replaced) {
+        // Verifica se o novo filho é melhor que o pior indivíduo
+        boolean isBetter = false;
+
+        switch (fitnessType) {
+            case 0:
+                isBetter = newSon.getFitnessDistance() < worstFitness;
+                break;
+            case 1:
+                isBetter = newSon.getFitnessTime() < worstFitness;
+                break;
+            case 2:
+                isBetter = newSon.getFitnessFuel() < worstFitness;
+                break;
+            case 3:
+                isBetter = newSon.getFitness() < worstFitness;
+                break;
+            default:
+                break;
+        }
+
+        // Se o filho é melhor, substitui o pior indivíduo
+        if (isBetter) {
+            Individual worst = subPop.get(worstIndex);
+            Individual next = nextPop.get(worstIndex);
+
+            // Copia o ID (já é único conforme Crossover.java)
             next.setId(newSon.getId());
+
+            // Copia a rota
             int[][] sonRoute = newSon.getRoute();
             for (int j = 0; j < App.numVehicles; j++) {
                 for (int k = 0; k < App.numClients; k++) {
@@ -230,14 +279,12 @@ public class Population {
                 }
             }
 
+            // Copia os valores de fitness
             next.setFitnessDistance(newSon.getFitnessDistance());
             next.setFitnessTime(newSon.getFitnessTime());
             next.setFitnessFuel(newSon.getFitnessFuel());
             next.setFitness(newSon.getFitness());
 
-            System.out.println("Substituiu indivíduo de ID: " + sub.getId());
-        } else {
-            // System.out.println("Não substituiu");
         }
     }
 
