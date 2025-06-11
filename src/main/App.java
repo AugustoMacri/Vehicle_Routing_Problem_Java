@@ -41,13 +41,13 @@ public class App {
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
-    public static int pop_size = 300;
+    public static int pop_size = 1;
     public static int sub_pop_size = (int) Math.floor((double) pop_size / 3);
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
-    public static int numGenerations = 3000; //3000 gerações que era o número utilizado na versão em C
+    public static int numGenerations = 3000; // 3000 gerações que era o número utilizado na versão em C
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     public static void main(String[] args) throws Exception {
@@ -57,17 +57,18 @@ public class App {
         System.out.println("=== MENU DE SELEÇÃO DE ALGORITMO ===");
         System.out.println("1 - Algoritmo Multi-Objetivo");
         System.out.println("2 - Algoritmo Mono-Objetivo");
-        System.out.print("Digite sua escolha (1 ou 2): ");
+        System.out.println("3 - Algoritmo Passo a Passo (para depuração)");
+        System.out.print("Digite sua escolha (1, 2 ou 3): ");
 
         int algorithmChoice = 0;
-        while (algorithmChoice != 1 && algorithmChoice != 2) {
+        while (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
             try {
                 algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
                 if (algorithmChoice != 1 && algorithmChoice != 2) {
-                    System.out.print("Opção inválida. Digite 1 ou 2: ");
+                    System.out.print("Opção inválida. Digite 1, 2 ou 3: ");
                 }
             } catch (NumberFormatException e) {
-                System.out.print("Entrada inválida. Digite 1 ou 2: ");
+                System.out.print("Entrada inválida. Digite 1, 2 ou 3: ");
             }
         }
 
@@ -132,9 +133,14 @@ public class App {
             if (algorithmChoice == 1) {
                 // Executar algoritmo Multi-Objetivo (código existente)
                 runMultiObjectiveAlgorithm(instance);
-            } else {
+            } else if (algorithmChoice == 2) {
                 // Executar algoritmo Mono-Objetivo
-                runMonoObjectiveAlgorithm(instance);
+                // runMonoObjectiveAlgorithm(instance);
+            } else if (algorithmChoice == 3) {
+                // Executar versão que roda o algoritmo passo a passo, para deputação
+                runDebugAlgorithm(instance);
+            } else {
+                System.out.println("Opção inválida. Encerrando o programa.");
             }
 
         } catch (IOException e) {
@@ -291,41 +297,127 @@ public class App {
         }
         System.out.println();
 
-        // Você também pode imprimir os IDs das nextSubPop para verificar se estão
-        // vazios
-        System.out.println("\n--- IDs dos indivíduos nas próximas subpopulações ---");
+        // System.out.println("\n--- IDs dos indivíduos nas próximas subpopulações
+        // ---");
 
-        System.out.print("NextSubPopDistance IDs: ");
-        for (Individual ind : nextSubPopDistance) {
-            System.out.print(ind.getId() + " ");
-        }
-        System.out.println();
+        // System.out.print("NextSubPopDistance IDs: ");
+        // for (Individual ind : nextSubPopDistance) {
+        // System.out.print(ind.getId() + " ");
+        // }
+        // System.out.println();
 
-        System.out.print("NextSubPopTime IDs: ");
-        for (Individual ind : nextSubPopTime) {
-            System.out.print(ind.getId() + " ");
-        }
-        System.out.println();
+        // System.out.print("NextSubPopTime IDs: ");
+        // for (Individual ind : nextSubPopTime) {
+        // System.out.print(ind.getId() + " ");
+        // }
+        // System.out.println();
 
-        System.out.print("NextSubPopFuel IDs: ");
-        for (Individual ind : nextSubPopFuel) {
-            System.out.print(ind.getId() + " ");
-        }
-        System.out.println();
+        // System.out.print("NextSubPopFuel IDs: ");
+        // for (Individual ind : nextSubPopFuel) {
+        // System.out.print(ind.getId() + " ");
+        // }
+        // System.out.println();
 
-        System.out.print("NextSubPopPonderation IDs: ");
-        for (Individual ind : nextSubPopPonderation) {
-            System.out.print(ind.getId() + " ");
-        }
-        System.out.println();
+        // System.out.print("NextSubPopPonderation IDs: ");
+        // for (Individual ind : nextSubPopPonderation) {
+        // System.out.print(ind.getId() + " ");
+        // }
+        // System.out.println();
     }
 
-    private static void runMonoObjectiveAlgorithm(ProblemInstance instance) {
-        System.out.println("\n=== EXECUTANDO ALGORITMO MONO-OBJETIVO ===");
-        System.out.println("Implementação futura - Não disponível no momento");
+    // private static void runMonoObjectiveAlgorithm(ProblemInstance instance) {
 
-        // Aqui você implementará o algoritmo mono-objetivo no futuro
-        // Por enquanto, este método apenas mostra uma mensagem
+    // List<Individual> individuals = new ArrayList<>();
+
+    // // Initializing population
+    // Population population = new Population(individuals);
+    // population.initializePopulation(instance.getClients());
+    // // We will not distribute subpopulations in mono-objective algorithm
+
+    // // Calculating fitness for the initial population
+    // System.out.println("Calculating fitness for the initial population...");
+    // List<Client> clients = instance.getClients();
+    // for (Individual ind : population) {
+    // double fitness = new DefaultFitnessCalculator().calculateFitness(ind,
+    // clients);
+    // ind.setFitness(fitness);
+    // }
+
+    // // Initializing auxiliary subpopulations for the next generation
+    // List<Individual> nextPopulation = new ArrayList<>();
+    // for (int i = 0; i < pop_size; i++) {
+    // nextPopulation.add(new Individual(-1, 0, 0, 0, 0));
+    // }
+
+    // int elitismSize = Math.max(1, (int) (sub_pop_size * elitismRate));
+
+    // // List to store the best fitness every 100 generations
+    // List<Double> bestFitnessList = new ArrayList<>();
+    // List<Integer> generationsList = new ArrayList<>();
+
+    // for (int generation = 0; generation < numGenerations; generation++) {
+    // System.out.println("\nGeração: " + generation);
+
+    // try {
+    // System.out.println("Iniciando evolução...");
+
+    // evolvePopMono(
+    // generation,
+    // population,
+    // nextPopulation,
+    // instance.getClients(),
+    // elitismSize);
+
+    // System.out.println("Evolução concluída!");
+
+    // // A cada 100 gerações ou na última geração, salvamos os melhores fitness
+    // if (generation % 100 == 0 || generation == numGenerations - 1) {
+    // System.out.println("--- Estatísticas da geração " + generation + " ---");
+
+    // // Encontrar o melhor fitness da população
+    // double bestFitness = findBestFitness(population, individual ->
+    // individual.getFitness());
+
+    // // Adicionando às listas
+    // bestFitnessList.add(bestFitness);
+    // generationsList.add(generation);
+
+    // System.out.println("Melhor Fitness: " + bestFitness);
+    // }
+    // } catch (Exception e) {
+    // System.out.println("ERRO NA GERAÇÃO " + generation + ": " + e.getMessage());
+    // e.printStackTrace();
+    // break;
+    // }
+    // }
+
+    // saveResultsToFile(generationsList, bestFitnessList);
+
+    // Individual bestIndividual = findBestIndividual(population);
+    // System.out.println("\n--- Melhor indivíduo ---");
+    // System.out.println("ID: " + bestIndividual.getId());
+    // System.out.println("Fitness: " + bestIndividual.getFitness());
+    // bestIndividual.printRoutes();
+    // }
+
+    private static void runDebugAlgorithm(ProblemInstance instance) {
+        System.out.println("\n=== EXECUTANDO ALGORITMO DE DEBUG ===");
+
+        // Lista original de clientes da instância
+        List<Client> clients = instance.getClients();
+
+        // Iniciar debug da população
+        System.out.println("\n=== INICIALIZANDO POPULAÇÃO COM DEBUG ===");
+
+        // Criando uma população de debug com apenas 1 indivíduo para facilitar a
+        // visualização
+        List<Individual> individuals = new ArrayList<>();
+        Population population = new Population(individuals);
+
+        // Chamando método de inicialização com debug
+        population.initializePopulation(clients);
+
+        System.out.println("\n=== DEBUG DE INICIALIZAÇÃO CONCLUÍDO ===");
     }
 
     /**
@@ -343,9 +435,6 @@ public class App {
                 .orElse(Double.MAX_VALUE);
     }
 
-    /**
-     * Salva os resultados em um arquivo de texto
-     */
     private static void saveResultsToFile(List<Integer> generations,
             List<Double> distanceFitness,
             List<Double> timeFitness,

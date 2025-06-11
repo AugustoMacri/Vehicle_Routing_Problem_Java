@@ -21,15 +21,19 @@ public class Population {
 
     public void initializePopulation(List<Client> clients) {
 
+        boolean debugMode = true;
+
         // Condition to see if the list of clients isn't null
         if (clients == null || clients.isEmpty()) {
             throw new IllegalArgumentException("Client list cannot be empty");
         } else {
-            //System.out.println("Passed\n");
+            // System.out.println("Passed\n");
         }
 
         // Copying the clients array
         List<Client> clientsCopy = new ArrayList<>(clients);
+
+        int cont = 0;
 
         for (int h = 0; h < App.pop_size; h++) {
             Individual individual = new Individual(h, 0, 0, 0, 0);
@@ -55,6 +59,23 @@ public class Population {
             // Sorting the clients list
             clientsCopy.sort(Comparator.comparingDouble(Client::getDistanceFromDepot));
 
+            // if (debugMode && cont == 0) {
+            //     System.out.println("\n=== DEBUG: CLIENTES DA LISTA CLIENTSCOPY ===");
+            //     System.out.println("ID\tX\tY\tDemanda\tReadyTime\tDueTime\tServiceTime");
+            //     for (Client client : clientsCopy) {
+            //         System.out.printf("%d\t%.2f\t%.2f\t%d\t%d\t\t%d\t\t%d\n",
+            //                 client.getId(),
+            //                 client.getX(),
+            //                 client.getY(),
+            //                 client.getDemand(),
+            //                 client.getReadyTime(),
+            //                 client.getDueTime(),
+            //                 client.getServiceTime());
+            //     }
+
+            //     cont++;
+            // }
+
             int clientIndex = 1;
 
             for (int v = 0; v < App.numVehicles; v++) {
@@ -72,7 +93,36 @@ public class Population {
                     if (nextClient == -1)
                         break; // To this work, we need to have all routes -1
 
-                    Client client = clients.get(nextClient);
+                    // ---------------------------------------------------------------------------------------------------------
+                    // Esse trecho é porque estava tendo um problema de passar o next client como
+                    // posição, nao como ID, sendo que eu passava o ID como parâmetro
+                    // Isso é absudo, porque se o próximo cliente era o com ID 5, ele pegava o
+                    // cliente na posição 5 da lista.
+                    Client client = null;
+                    for (Client c : clientsCopy) {
+                        if (c.getId() == nextClient) {
+                            client = c;
+                            break;
+                        }
+                    }
+                    if (client == null) {
+                        throw new RuntimeException("Cliente com ID " + nextClient + " não encontrado na lista");
+                    }
+
+                    // ---------------------------------------------------------------------------------------------------------
+
+                    // // DEBUG PRINT: Informações do cliente atual e próximo cliente
+                    // if (debugMode) {
+                    //     System.out.printf(
+                    //             "Cliente atual: %d | Próximo cliente: %d (X=%.2f, Y=%.2f, ReadyTime=%d, DueTime=%d)\n",
+                    //             currentClient,
+                    //             nextClient,
+                    //             client.getX(),
+                    //             client.getY(),
+                    //             client.getReadyTime(),
+                    //             client.getDueTime());
+                    // }
+
                     int demand = client.getDemand();
 
                     if (capacity + demand > App.vehicleCapacity)
@@ -86,6 +136,19 @@ public class Population {
                 }
 
                 individual.setClientInRoute(v, pos, 0); // Return to depot
+
+                // // DEBUG PRINT: Mostrar a rota completa do veículo após finalizar
+                // if (debugMode) {
+                //     System.out.println("\n=== Rota do veículo " + v + " ===");
+                //     System.out.print("Rota: ");
+                //     for (int i = 0; i <= pos; i++) {
+                //         int clientId = individual.getRoute()[v][i];
+                //         if (clientId != -1) {
+                //             System.out.print(clientId + " ");
+                //         }
+                //     }
+                //     System.out.println("\n");
+                // }
             }
 
             individuals.add(individual);
@@ -301,21 +364,21 @@ public class Population {
             int selectionType, // 1: roulette (futuro), 2: tournament
             int crossingType // 1: one-point, 2: two-point (futuro)
     ) {
-        //System.out.println("Início do evolvePopMulti()");
+        // System.out.println("Início do evolvePopMulti()");
 
-        //System.out.println("Selecionando elite da subPopDistance...");
+        // System.out.println("Selecionando elite da subPopDistance...");
         SelectionUtils.selectElite(subPopDistance, nextSubPopDistance, 0, elitismSize);
 
-        //System.out.println("Selecionando elite da subPopTime...");
+        // System.out.println("Selecionando elite da subPopTime...");
         SelectionUtils.selectElite(subPopTime, nextSubPopTime, 1, elitismSize);
 
-        //System.out.println("Selecionando elite da subPopFuel...");
+        // System.out.println("Selecionando elite da subPopFuel...");
         SelectionUtils.selectElite(subPopFuel, nextSubPopFuel, 2, elitismSize);
 
-        //System.out.println("Selecionando elite da subPopPonderation...");
+        // System.out.println("Selecionando elite da subPopPonderation...");
         SelectionUtils.selectElite(subPopPonderation, nextSubPopPonderation, 3, elitismSize);
 
-        //System.out.println("Elites selecionados com sucesso!");
+        // System.out.println("Elites selecionados com sucesso!");
 
         // Evolving the population
         if (generation < generationsBeforeComparison) {
@@ -386,53 +449,53 @@ public class Population {
             }
         }
 
-        //System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
-        Individual ind0 = nextSubPopDistance.get(0);
-        for (int v = 0; v < App.numVehicles; v++) {
-            //System.out.print("Veículo " + v + ": ");
-            for (int c = 0; c < App.numClients; c++) {
-                if (ind0.getRoute()[v][c] != -1) {
-                    //System.out.print(ind0.getRoute()[v][c] + " ");
-                }
-            }
-            //System.out.println();
-        }
+        // //System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
+        // Individual ind0 = nextSubPopDistance.get(0);
+        // for (int v = 0; v < App.numVehicles; v++) {
+        // //System.out.print("Veículo " + v + ": ");
+        // for (int c = 0; c < App.numClients; c++) {
+        // if (ind0.getRoute()[v][c] != -1) {
+        // //System.out.print(ind0.getRoute()[v][c] + " ");
+        // }
+        // }
+        // //System.out.println();
+        // }
 
-        //System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
-        ind0 = nextSubPopTime.get(0);
-        for (int v = 0; v < App.numVehicles; v++) {
-            //System.out.print("Veículo " + v + ": ");
-            for (int c = 0; c < App.numClients; c++) {
-                if (ind0.getRoute()[v][c] != -1) {
-                    //System.out.print(ind0.getRoute()[v][c] + " ");
-                }
-            }
-            //System.out.println();
-        }
+        // //System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
+        // ind0 = nextSubPopTime.get(0);
+        // for (int v = 0; v < App.numVehicles; v++) {
+        // //System.out.print("Veículo " + v + ": ");
+        // for (int c = 0; c < App.numClients; c++) {
+        // if (ind0.getRoute()[v][c] != -1) {
+        // //System.out.print(ind0.getRoute()[v][c] + " ");
+        // }
+        // }
+        // //System.out.println();
+        // }
 
-        //System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
-        ind0 = nextSubPopFuel.get(0);
-        for (int v = 0; v < App.numVehicles; v++) {
-            //System.out.print("Veículo " + v + ": ");
-            for (int c = 0; c < App.numClients; c++) {
-                if (ind0.getRoute()[v][c] != -1) {
-                    //System.out.print(ind0.getRoute()[v][c] + " ");
-                }
-            }
-            //System.out.println();
-        }
+        // //System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
+        // ind0 = nextSubPopFuel.get(0);
+        // for (int v = 0; v < App.numVehicles; v++) {
+        // //System.out.print("Veículo " + v + ": ");
+        // for (int c = 0; c < App.numClients; c++) {
+        // if (ind0.getRoute()[v][c] != -1) {
+        // //System.out.print(ind0.getRoute()[v][c] + " ");
+        // }
+        // }
+        // //System.out.println();
+        // }
 
-        //System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
-        ind0 = nextSubPopPonderation.get(0);
-        for (int v = 0; v < App.numVehicles; v++) {
-            //System.out.print("Veículo " + v + ": ");
-            for (int c = 0; c < App.numClients; c++) {
-                if (ind0.getRoute()[v][c] != -1) {
-                    //System.out.print(ind0.getRoute()[v][c] + " ");
-                }
-            }
-            //System.out.println();
-        }
+        // //System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
+        // ind0 = nextSubPopPonderation.get(0);
+        // for (int v = 0; v < App.numVehicles; v++) {
+        // //System.out.print("Veículo " + v + ": ");
+        // for (int c = 0; c < App.numClients; c++) {
+        // if (ind0.getRoute()[v][c] != -1) {
+        // //System.out.print(ind0.getRoute()[v][c] + " ");
+        // }
+        // }
+        // //System.out.println();
+        // }
 
         // Updates subpopulations with individuals from the next generation
         updateSubPop(subPopDistance, nextSubPopDistance);
