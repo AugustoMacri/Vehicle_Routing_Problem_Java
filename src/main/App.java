@@ -41,13 +41,13 @@ public class App {
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
-    public static int pop_size = 1;
+    public static int pop_size = 5;
     public static int sub_pop_size = (int) Math.floor((double) pop_size / 3);
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
-    public static int numGenerations = 3000; // 3000 gerações que era o número utilizado na versão em C
+    public static int numGenerations = 1; // 3000 gerações que era o número utilizado na versão em C
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     public static void main(String[] args) throws Exception {
@@ -406,18 +406,19 @@ public class App {
         // Lista original de clientes da instância
         List<Client> clients = instance.getClients();
 
-        // Iniciar debug da população
-        System.out.println("\n=== INICIALIZANDO POPULAÇÃO COM DEBUG ===");
-
-        // Criando uma população de debug com apenas 1 indivíduo para facilitar a
-        // visualização
+        // Criando uma população de debug com apenas 1 indivíduo para facilitar a visualização
         List<Individual> individuals = new ArrayList<>();
         Population population = new Population(individuals);
 
         // Chamando método de inicialização com debug
         population.initializePopulation(clients);
 
-        System.out.println("\n=== DEBUG DE INICIALIZAÇÃO CONCLUÍDO ===");
+        // Realizando a seleção por torneio
+        System.out.println("\n=== INICIANDO SELEÇÃO POR TORNEIO ===");
+        List<Individual> parents = SelectionUtils.parentSelectionMono(population.getIndividuals());
+
+        
+        System.out.println("\n=== DEBUG CONCLUÍDO ===");
     }
 
     /**

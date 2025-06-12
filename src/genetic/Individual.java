@@ -35,7 +35,8 @@ public class Individual {
             System.out.print("Vehicle " + v + ":");
             for (int c = 0; c < App.numClients; c++) {
                 int clientId = this.route[v][c];
-                if (clientId == -1) break;
+                if (clientId == -1)
+                    break;
                 System.out.print(clientId + " ");
             }
             System.out.println("");
@@ -43,9 +44,10 @@ public class Individual {
         System.out.println();
     }
 
-    //Function to clone every parameter of the individual
+    // Function to clone every parameter of the individual
     public Individual deepCopy() {
-        Individual clone = new Individual(this.id, this.fitness, this.fitnessDistance, this.fitnessTime, this.fitnessFuel);
+        Individual clone = new Individual(this.id, this.fitness, this.fitnessDistance, this.fitnessTime,
+                this.fitnessFuel);
         for (int v = 0; v < App.numVehicles; v++) {
             for (int c = 0; c < App.numClients; c++) {
                 clone.route[v][c] = this.route[v][c];
@@ -53,7 +55,6 @@ public class Individual {
         }
         return clone;
     }
-    
 
     public int getId() {
         return id;

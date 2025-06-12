@@ -53,7 +53,7 @@ public class SelectionUtils {
         // Select the top individuals based on the elitism rate
         for (int i = 0; i < elitismRate && i < sortedSubPop.size(); i++) {
             Individual elite = sortedSubPop.get(i).deepCopy();
-            nextPop.set(i, elite);  // Substituir na posição i
+            nextPop.set(i, elite); // Substituir na posição i
         }
     }
 
@@ -96,6 +96,35 @@ public class SelectionUtils {
 
     }
 
+    public static Individual tournamentSelectionMono(List<Individual> pop, int tournamentSize,
+            Set<Integer> previousWinners) {
+
+        Individual parent = null;
+
+        while (parent == null) {
+
+            List<Individual> tournament = new ArrayList<>();
+
+            // Select tournamentSize random individuals from the subpopulation to
+            // participate in the tournament
+            for (int j = 0; j < tournamentSize; j++) {
+                int randomIndex = random.nextInt(pop.size());
+                tournament.add(pop.get(randomIndex));
+            }
+
+            // Select the best individual from the tournament
+            Individual winner = Collections.min(tournament, Comparator.comparingDouble(Individual::getFitness));
+
+            // Verify if the individual is already in the parents list
+            if (!previousWinners.contains(winner.getId())) {
+                parent = winner;
+            }
+        }
+
+        return parent;
+
+    }
+
     /*
      * Se não me engano é alguma cosia do tipo, pode cruzar dois indivíduos de duas
      * subpopulações diferentes
@@ -105,7 +134,7 @@ public class SelectionUtils {
     public static List<Individual> subPopSelection(Population population) {
         Random rand = new Random();
 
-        //System.out.println("Entrou no subPopSelection");
+        // System.out.println("Entrou no subPopSelection");
 
         // Lista de subpopulações disponíveis
         List<List<Individual>> subPopulations = List.of(
@@ -129,7 +158,7 @@ public class SelectionUtils {
             List<Individual> selectedSubPop = subPopulations.get(subPopIndex);
             int fitnessType = subPopIndex; // Define o tipo de fitness com base na subpopulação
 
-            //System.out.println("Selected subpopulation: " + subPopNames[subPopIndex]);
+            // System.out.println("Selected subpopulation: " + subPopNames[subPopIndex]);
 
             // Realiza a seleção por torneio na subpopulação escolhida
             Individual parent = tournamentSelection(selectedSubPop, App.tournamentSize, previousWinners, fitnessType);
@@ -138,12 +167,32 @@ public class SelectionUtils {
             if (parent != null) {
                 selectedParents.add(parent);
                 previousWinners.add(parent.getId());
-            }else{
-                //System.out.println("ERRO: Não foi possível selecionar um pai");
+            } else {
+                // System.out.println("ERRO: Não foi possível selecionar um pai");
             }
         }
 
-        //System.out.println("Selected parents: " + selectedParents.size());
+        // System.out.println("Selected parents: " + selectedParents.size());
         return selectedParents;
     }
+
+    public static List<Individual> parentSelectionMono(List<Individual> population) {
+        List<Individual> selectedParents = new ArrayList<>();
+        Set<Integer> previousWinners = new HashSet<>();
+
+        Individual parent1 = tournamentSelectionMono(population, App.tournamentSize, previousWinners);
+        selectedParents.add(parent1);
+        previousWinners.add(parent1.getId());
+
+        Individual parent2 = tournamentSelectionMono(population, App.tournamentSize, previousWinners);
+        selectedParents.add(parent2);
+
+        // Debugging output
+        System.out.println("Parent 1: " + parent1.getId() + " - Fitness: " + parent1.getFitness());
+        System.out.println("Parent 2: " + parent2.getId() + " - Fitness: " + parent2.getFitness());
+        System.out.println("Selected parents: " + selectedParents.size());
+
+        return selectedParents;
+    }
+
 }

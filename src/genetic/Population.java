@@ -21,7 +21,7 @@ public class Population {
 
     public void initializePopulation(List<Client> clients) {
 
-        boolean debugMode = true;
+        // boolean debugMode = true;
 
         // Condition to see if the list of clients isn't null
         if (clients == null || clients.isEmpty()) {
@@ -60,20 +60,20 @@ public class Population {
             clientsCopy.sort(Comparator.comparingDouble(Client::getDistanceFromDepot));
 
             // if (debugMode && cont == 0) {
-            //     System.out.println("\n=== DEBUG: CLIENTES DA LISTA CLIENTSCOPY ===");
-            //     System.out.println("ID\tX\tY\tDemanda\tReadyTime\tDueTime\tServiceTime");
-            //     for (Client client : clientsCopy) {
-            //         System.out.printf("%d\t%.2f\t%.2f\t%d\t%d\t\t%d\t\t%d\n",
-            //                 client.getId(),
-            //                 client.getX(),
-            //                 client.getY(),
-            //                 client.getDemand(),
-            //                 client.getReadyTime(),
-            //                 client.getDueTime(),
-            //                 client.getServiceTime());
-            //     }
+            // System.out.println("\n=== DEBUG: CLIENTES DA LISTA CLIENTSCOPY ===");
+            // System.out.println("ID\tX\tY\tDemanda\tReadyTime\tDueTime\tServiceTime");
+            // for (Client client : clientsCopy) {
+            // System.out.printf("%d\t%.2f\t%.2f\t%d\t%d\t\t%d\t\t%d\n",
+            // client.getId(),
+            // client.getX(),
+            // client.getY(),
+            // client.getDemand(),
+            // client.getReadyTime(),
+            // client.getDueTime(),
+            // client.getServiceTime());
+            // }
 
-            //     cont++;
+            // cont++;
             // }
 
             int clientIndex = 1;
@@ -113,14 +113,15 @@ public class Population {
 
                     // // DEBUG PRINT: Informações do cliente atual e próximo cliente
                     // if (debugMode) {
-                    //     System.out.printf(
-                    //             "Cliente atual: %d | Próximo cliente: %d (X=%.2f, Y=%.2f, ReadyTime=%d, DueTime=%d)\n",
-                    //             currentClient,
-                    //             nextClient,
-                    //             client.getX(),
-                    //             client.getY(),
-                    //             client.getReadyTime(),
-                    //             client.getDueTime());
+                    // System.out.printf(
+                    // "Cliente atual: %d | Próximo cliente: %d (X=%.2f, Y=%.2f, ReadyTime=%d,
+                    // DueTime=%d)\n",
+                    // currentClient,
+                    // nextClient,
+                    // client.getX(),
+                    // client.getY(),
+                    // client.getReadyTime(),
+                    // client.getDueTime());
                     // }
 
                     int demand = client.getDemand();
@@ -139,15 +140,15 @@ public class Population {
 
                 // // DEBUG PRINT: Mostrar a rota completa do veículo após finalizar
                 // if (debugMode) {
-                //     System.out.println("\n=== Rota do veículo " + v + " ===");
-                //     System.out.print("Rota: ");
-                //     for (int i = 0; i <= pos; i++) {
-                //         int clientId = individual.getRoute()[v][i];
-                //         if (clientId != -1) {
-                //             System.out.print(clientId + " ");
-                //         }
-                //     }
-                //     System.out.println("\n");
+                // System.out.println("\n=== Rota do veículo " + v + " ===");
+                // System.out.print("Rota: ");
+                // for (int i = 0; i <= pos; i++) {
+                // int clientId = individual.getRoute()[v][i];
+                // if (clientId != -1) {
+                // System.out.print(clientId + " ");
+                // }
+                // }
+                // System.out.println("\n");
                 // }
             }
 
@@ -559,5 +560,9 @@ public class Population {
 
     public List<Individual> getSubPopPonderation() {
         return subPopPonderation;
+    }
+
+    public List<Individual> getIndividuals() {
+        return this.individuals;
     }
 }
