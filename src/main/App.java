@@ -401,23 +401,55 @@ public class App {
     // }
 
     private static void runDebugAlgorithm(ProblemInstance instance) {
-        System.out.println("\n=== EXECUTANDO ALGORITMO DE DEBUG ===");
+        System.out.println("\n=== EXECUTANDO ALGORITMO DE DEBUG (MONO-OBJETIVO) ===");
 
         // Lista original de clientes da instância
         List<Client> clients = instance.getClients();
 
-        // Criando uma população de debug com apenas 1 indivíduo para facilitar a visualização
+        // Criando uma população de debug
         List<Individual> individuals = new ArrayList<>();
         Population population = new Population(individuals);
 
-        // Chamando método de inicialização com debug
+        // Inicialização da população
         population.initializePopulation(clients);
 
-        // Realizando a seleção por torneio
-        System.out.println("\n=== INICIANDO SELEÇÃO POR TORNEIO ===");
-        List<Individual> parents = SelectionUtils.parentSelectionMono(population.getIndividuals());
+        // Calculando o fitness de cada indivíduo (DefaultFitnessCalculator)
+        System.out.println("\n=== CALCULANDO FITNESS ===");
+        for (Individual ind : individuals) {
+            double fitness = new DefaultFitnessCalculator().calculateFitness(ind, clients);
+            ind.setFitness(fitness);
+            System.out.println("Indivíduo " + ind.getId() + " - Fitness: " + fitness);
+        }
 
-        
+        // Seleção por torneio (dois pais)
+        System.out.println("\n=== INICIANDO SELEÇÃO POR TORNEIO ===");
+        List<Individual> parents = SelectionUtils.parentSelectionMono(individuals);
+
+        System.out.println("Pais selecionados:");
+        for (int i = 0; i < parents.size(); i++) {
+            Individual p = parents.get(i);
+            System.out.println("Pai " + (i + 1) + ": ID=" + p.getId() + ", Fitness=" + p.getFitness());
+        }
+
+        // Cruzamento (one-point crossover)
+        System.out.println("\n=== INICIANDO CROSSOVER ===");
+        Individual filho = Crossover.onePointCrossing(parents.get(0), parents.get(1));
+        System.out.println("Filho gerado pelo crossover.");
+
+        // Mutação
+        Mutation.mutate(filho, App.mutationRate);
+        System.out.println("Filho após mutação.");
+
+        // Calcular fitness do filho
+        double filhoFitness = new DefaultFitnessCalculator().calculateFitness(filho, clients);
+        filho.setFitness(filhoFitness);
+        System.out.println("Filho - Fitness: " + filhoFitness);
+
+        // Mostrar rota do filho
+        System.out.println("\nID do filho: " + filho.getId());
+        System.out.println("\nRota do filho:");
+        filho.printRoutes();
+
         System.out.println("\n=== DEBUG CONCLUÍDO ===");
     }
 

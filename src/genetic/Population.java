@@ -247,6 +247,26 @@ public class Population {
 
     }
 
+    // Function to update the current population to the next population
+    public void updatePopMono(List<Individual> population, List<Individual> nextPopulation) {
+        int size = Math.min(population.size(), nextPopulation.size());
+
+        for (int i = 0; i < size; i++) {
+            Individual src = nextPopulation.get(i);
+            Individual dest = population.get(i);
+
+            dest.setId(src.getId());
+            dest.setFitness(src.getFitness());
+
+            int[][] srcRoute = src.getRoute();
+            for (int j = 0; j < App.numVehicles; j++) {
+                for (int k = 0; k < App.numClients; k++) {
+                    dest.setClientInRoute(j, k, srcRoute[j][k]);
+                }
+            }
+        }
+    }
+
     // Function to compare the son with the subpopulation and replace only the worst
     // individual
     public static void compareSonSubPop(
@@ -352,6 +372,49 @@ public class Population {
         }
     }
 
+    // Function to compare the son with the population and replace only the worst
+    // individual
+    public static void compareSonPopMono(
+            Individual newSon,
+            List<Individual> population,
+            List<Individual> nextPopulation,
+            int startIndex) {
+
+        // Encontra o pior indivíduo na população (excluindo os elites)
+        int worstIndex = 0;
+        double worstFitness = population.get(worstIndex).getFitness();
+
+        for (int i = startIndex; i < population.size(); i++) {
+            double fitness = population.get(i).getFitness();
+            if (fitness > worstFitness) {
+                worstFitness = fitness;
+                worstIndex = i;
+            }
+        }
+
+        // Verifica se o novo filho é melhor que o pior indivíduo
+        boolean isBetter = newSon.getFitness() < worstFitness;
+
+        // Se o filho é melhor, substitui o pior indivíduo
+        if (isBetter) {
+            Individual next = nextPopulation.get(worstIndex);
+
+            // Copia o ID
+            next.setId(newSon.getId());
+
+            // Copia a rota
+            int[][] sonRoute = newSon.getRoute();
+            for (int j = 0; j < App.numVehicles; j++) {
+                for (int k = 0; k < App.numClients; k++) {
+                    next.setClientInRoute(j, k, sonRoute[j][k]);
+                }
+            }
+
+            // Copia o fitness
+            next.setFitness(newSon.getFitness());
+        }
+    }
+
     // Function to Evolve the population
     public void evolvePopMulti(
             int generation,
@@ -449,54 +512,6 @@ public class Population {
                 compareSonSubPop(newSon, subPopPonderation, nextSubPopPonderation, 3, i);
             }
         }
-
-        // //System.out.println("ROTA COMPLETA nextSubPopDistance[0]:");
-        // Individual ind0 = nextSubPopDistance.get(0);
-        // for (int v = 0; v < App.numVehicles; v++) {
-        // //System.out.print("Veículo " + v + ": ");
-        // for (int c = 0; c < App.numClients; c++) {
-        // if (ind0.getRoute()[v][c] != -1) {
-        // //System.out.print(ind0.getRoute()[v][c] + " ");
-        // }
-        // }
-        // //System.out.println();
-        // }
-
-        // //System.out.println("ROTA COMPLETA nextSubPopTime[0]:");
-        // ind0 = nextSubPopTime.get(0);
-        // for (int v = 0; v < App.numVehicles; v++) {
-        // //System.out.print("Veículo " + v + ": ");
-        // for (int c = 0; c < App.numClients; c++) {
-        // if (ind0.getRoute()[v][c] != -1) {
-        // //System.out.print(ind0.getRoute()[v][c] + " ");
-        // }
-        // }
-        // //System.out.println();
-        // }
-
-        // //System.out.println("ROTA COMPLETA nextSubPopFuel[0]:");
-        // ind0 = nextSubPopFuel.get(0);
-        // for (int v = 0; v < App.numVehicles; v++) {
-        // //System.out.print("Veículo " + v + ": ");
-        // for (int c = 0; c < App.numClients; c++) {
-        // if (ind0.getRoute()[v][c] != -1) {
-        // //System.out.print(ind0.getRoute()[v][c] + " ");
-        // }
-        // }
-        // //System.out.println();
-        // }
-
-        // //System.out.println("ROTA COMPLETA nextSubPopPonderation[0]:");
-        // ind0 = nextSubPopPonderation.get(0);
-        // for (int v = 0; v < App.numVehicles; v++) {
-        // //System.out.print("Veículo " + v + ": ");
-        // for (int c = 0; c < App.numClients; c++) {
-        // if (ind0.getRoute()[v][c] != -1) {
-        // //System.out.print(ind0.getRoute()[v][c] + " ");
-        // }
-        // }
-        // //System.out.println();
-        // }
 
         // Updates subpopulations with individuals from the next generation
         updateSubPop(subPopDistance, nextSubPopDistance);
