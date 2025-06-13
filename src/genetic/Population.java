@@ -3,7 +3,9 @@ package genetic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import main.App;
 import vrp.Client;
@@ -518,6 +520,79 @@ public class Population {
         updateSubPop(subPopTime, nextSubPopTime);
         updateSubPop(subPopFuel, nextSubPopFuel);
         updateSubPop(subPopPonderation, nextSubPopPonderation);
+    }
+
+    // Function to Evolve the population in mono-objective mode
+    public void evolvePopMono(
+            int generation,
+            List<Individual> population,
+            List<Individual> nextPopulation,
+            List<Client> clients,
+            int elitismSize,
+            int generationsBeforeComparison) {
+
+        // Aplicando elitismo - copiando os melhores indivíduos para a próxima geração
+        SelectionUtils.elitism(population, nextPopulation, elitismSize);
+
+        // Evolução da população
+        if (generation < generationsBeforeComparison) {
+            // Nas primeiras gerações, garantimos diversidade: inserimos filhos diretamente
+            // na próxima geração
+
+            for (int i = elitismSize; i < population.size(); i++) {
+                // Seleção de pais por torneio
+                Set<Integer> previousWinners = new HashSet<>();
+                Individual parent1 = SelectionUtils.tournamentSelectionMono(population, App.tournamentSize,
+                        previousWinners);
+                previousWinners.add(parent1.getId());
+                Individual parent2 = SelectionUtils.tournamentSelectionMono(population, App.tournamentSize,
+                        previousWinners);
+
+                // Cruzamento para gerar um novo filho
+                Individual newSon = Crossover.onePointCrossing(parent1, parent2);
+
+                // Mutação
+                Mutation.mutate(newSon, App.mutationRate);
+
+                // Cálculo do fitness usando apenas o DefaultFitnessCalculator
+                double fitness = new DefaultFitnessCalculator().calculateFitness(newSon, clients);
+                newSon.setFitness(fitness);
+
+                // Adicionando o filho diretamente à próxima geração
+                nextPopulation.set(i, newSon);
+            }
+        } else {
+            // Após as primeiras gerações, comparamos e só substituímos se o filho for
+            // melhor
+
+            for (int i = elitismSize; i < population.size(); i++) {
+
+                // Seleção de pais por torneio
+                Set<Integer> previousWinners = new HashSet<>();
+                Individual parent1 = SelectionUtils.tournamentSelectionMono(population, App.tournamentSize,
+                        previousWinners);
+                previousWinners.add(parent1.getId());
+                Individual parent2 = SelectionUtils.tournamentSelectionMono(population, App.tournamentSize,
+                        previousWinners);
+
+                // Cruzamento para gerar um novo filho
+                Individual newSon = Crossover.onePointCrossing(parent1, parent2);
+
+                // Mutação
+                Mutation.mutate(newSon, App.mutationRate);
+
+                // Cálculo do fitness usando apenas o DefaultFitnessCalculator
+                double fitness = new DefaultFitnessCalculator().calculateFitness(newSon, clients);
+                newSon.setFitness(fitness);
+
+                // Comparando o filho com a população atual e substituindo o pior se for melhor
+                compareSonPopMono(newSon, population, nextPopulation, elitismSize);
+            }
+        }
+
+        // Atualiza a população com os indivíduos da próxima geração
+        updatePopMono(population, nextPopulation);
+
     }
 
     // Function to locate the closest client from the current client

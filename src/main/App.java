@@ -41,13 +41,13 @@ public class App {
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
-    public static int pop_size = 5;
+    public static int pop_size = 300;
     public static int sub_pop_size = (int) Math.floor((double) pop_size / 3);
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
-    public static int numGenerations = 1; // 3000 gerações que era o número utilizado na versão em C
+    public static int numGenerations = 3000; // 3000 gerações que era o número utilizado na versão em C
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     public static void main(String[] args) throws Exception {
@@ -135,7 +135,7 @@ public class App {
                 runMultiObjectiveAlgorithm(instance);
             } else if (algorithmChoice == 2) {
                 // Executar algoritmo Mono-Objetivo
-                // runMonoObjectiveAlgorithm(instance);
+                runMonoObjectiveAlgorithm(instance);
             } else if (algorithmChoice == 3) {
                 // Executar versão que roda o algoritmo passo a passo, para deputação
                 runDebugAlgorithm(instance);
@@ -296,100 +296,126 @@ public class App {
                     "(Fitness Pond: " + ind.getFitness() + ") ");
         }
         System.out.println();
-
-        // System.out.println("\n--- IDs dos indivíduos nas próximas subpopulações
-        // ---");
-
-        // System.out.print("NextSubPopDistance IDs: ");
-        // for (Individual ind : nextSubPopDistance) {
-        // System.out.print(ind.getId() + " ");
-        // }
-        // System.out.println();
-
-        // System.out.print("NextSubPopTime IDs: ");
-        // for (Individual ind : nextSubPopTime) {
-        // System.out.print(ind.getId() + " ");
-        // }
-        // System.out.println();
-
-        // System.out.print("NextSubPopFuel IDs: ");
-        // for (Individual ind : nextSubPopFuel) {
-        // System.out.print(ind.getId() + " ");
-        // }
-        // System.out.println();
-
-        // System.out.print("NextSubPopPonderation IDs: ");
-        // for (Individual ind : nextSubPopPonderation) {
-        // System.out.print(ind.getId() + " ");
-        // }
-        // System.out.println();
     }
 
-    // private static void runMonoObjectiveAlgorithm(ProblemInstance instance) {
+    private static void runMonoObjectiveAlgorithm(ProblemInstance instance) {
+        System.out.println("=== INICIANDO ALGORITMO MONO-OBJETIVO ===");
 
-    // List<Individual> individuals = new ArrayList<>();
+        // Criando lista vazia de indivíduos
+        List<Individual> individuals = new ArrayList<>();
 
-    // // Initializing population
-    // Population population = new Population(individuals);
-    // population.initializePopulation(instance.getClients());
-    // // We will not distribute subpopulations in mono-objective algorithm
+        // Inicializando população
+        Population population = new Population(individuals);
+        population.initializePopulation(instance.getClients());
 
-    // // Calculating fitness for the initial population
-    // System.out.println("Calculating fitness for the initial population...");
-    // List<Client> clients = instance.getClients();
-    // for (Individual ind : population) {
-    // double fitness = new DefaultFitnessCalculator().calculateFitness(ind,
-    // clients);
-    // ind.setFitness(fitness);
-    // }
+        // Calculando fitness para todos os indivíduos usando DefaultFitnessCalculator
+        System.out.println("Calculando fitness para população...");
+        List<Client> clients = instance.getClients();
 
-    // // Initializing auxiliary subpopulations for the next generation
-    // List<Individual> nextPopulation = new ArrayList<>();
-    // for (int i = 0; i < pop_size; i++) {
-    // nextPopulation.add(new Individual(-1, 0, 0, 0, 0));
-    // }
+        for (Individual ind : individuals) {
+            double fitness = new DefaultFitnessCalculator().calculateFitness(ind, clients);
+            ind.setFitness(fitness);
+        }
 
-    // int elitismSize = Math.max(1, (int) (sub_pop_size * elitismRate));
+        // Inicializando a população auxiliar para a próxima geração
+        List<Individual> nextPopulation = new ArrayList<>();
+        for (int i = 0; i < App.pop_size; i++) {
+            nextPopulation.add(new Individual(-1, 0, 0, 0, 0));
+        }
 
-    // // List to store the best fitness every 100 generations
-    // List<Double> bestFitnessList = new ArrayList<>();
-    // List<Integer> generationsList = new ArrayList<>();
+        // Parâmetros para evolução
+        int elitismSize = Math.max(1, (int) (App.pop_size * App.elitismRate));
+        int generationsBeforeComparison = 5;
 
-    // for (int generation = 0; generation < numGenerations; generation++) {
-    // System.out.println("\nGeração: " + generation);
+        // Lista para armazenar os melhores fitness a cada 100 gerações
+        List<Double> bestFitnessList = new ArrayList<>();
+        List<Integer> generationsList = new ArrayList<>();
 
-    // try {
-    // System.out.println("Iniciando evolução...");
+        for (int generation = 0; generation < numGenerations; generation++) {
+            System.out.println("\nGeração: " + generation);
 
-    // evolvePopMono(
-    // generation,
-    // population,
-    // nextPopulation,
-    // instance.getClients(),
-    // elitismSize);
+            try {
+                System.out.println("Iniciando evolução...");
 
-    // System.out.println("Evolução concluída!");
+                population.evolvePopMono(
+                        generation,
+                        individuals,
+                        nextPopulation,
+                        instance.getClients(),
+                        elitismSize,
+                        generationsBeforeComparison);
 
-    // // A cada 100 gerações ou na última geração, salvamos os melhores fitness
-    // if (generation % 100 == 0 || generation == numGenerations - 1) {
-    // System.out.println("--- Estatísticas da geração " + generation + " ---");
+                System.out.println("Evolução concluída!");
 
-    // // Encontrar o melhor fitness da população
-    // double bestFitness = findBestFitness(population, individual ->
-    // individual.getFitness());
+                // A cada 100 gerações ou na última geração, salvamos o melhor fitness
+                if (generation % 100 == 0 || generation == numGenerations - 1) {
+                    System.out.println("--- Estatísticas da geração " + generation + " ---");
 
-    // // Adicionando às listas
-    // bestFitnessList.add(bestFitness);
-    // generationsList.add(generation);
+                    // Encontrar o melhor fitness (menor valor)
+                    double bestFitness = findBestFitness(individuals, Individual::getFitness);
 
-    // System.out.println("Melhor Fitness: " + bestFitness);
-    // }
-    // } catch (Exception e) {
-    // System.out.println("ERRO NA GERAÇÃO " + generation + ": " + e.getMessage());
-    // e.printStackTrace();
-    // break;
-    // }
-    // }
+                    // Adicionando às listas
+                    bestFitnessList.add(bestFitness);
+                    generationsList.add(generation);
+
+                    System.out.println("Melhor Fitness: " + bestFitness);
+                }
+            } catch (Exception e) {
+                System.out.println("ERRO NA GERAÇÃO " + generation + ": " + e.getMessage());
+                e.printStackTrace();
+                break;
+            }
+        }
+
+        // Salvar os resultados em um arquivo
+        saveMonoResults(generationsList, bestFitnessList);
+
+        // Encontrar e imprimir o melhor indivíduo final
+        Individual bestIndividual = individuals.stream()
+                .min(Comparator.comparingDouble(Individual::getFitness))
+                .orElse(null);
+
+        if (bestIndividual != null) {
+            System.out.println("\n=== MELHOR INDIVÍDUO ENCONTRADO ===");
+            System.out.println("ID: " + bestIndividual.getId());
+            System.out.println("Fitness: " + bestIndividual.getFitness());
+            System.out.println("Rotas:");
+            bestIndividual.printRoutes();
+        }
+
+        System.out.println("\n=== ALGORITMO MONO-OBJETIVO CONCLUÍDO ===");
+    }
+
+    private static void saveMonoResults(List<Integer> generations, List<Double> fitness) {
+        try {
+            // Criar diretório de resultados se não existir
+            File resultsDir = new File("results");
+            if (!resultsDir.exists()) {
+                resultsDir.mkdir();
+            }
+
+            // Obter timestamp atual para nome do arquivo
+            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+            String fileName = "results/mono_results_" + timestamp + ".txt";
+
+            java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
+
+            // Escrever cabeçalho com números das gerações
+            writer.print("Geração\tFitness\n");
+
+            // Escrever resultados
+            for (int i = 0; i < generations.size(); i++) {
+                writer.printf("%d\t%.2f\n", generations.get(i), fitness.get(i));
+            }
+
+            writer.close();
+            System.out.println("\nResultados salvos em: " + fileName);
+
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar resultados: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     // saveResultsToFile(generationsList, bestFitnessList);
 

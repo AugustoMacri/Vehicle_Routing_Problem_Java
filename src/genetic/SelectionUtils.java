@@ -16,16 +16,17 @@ public class SelectionUtils {
 
     // Elitism fuction to monoObjetctive version
     public static void elitism(List<Individual> population, List<Individual> nextPopulation, double elitismRate) {
-        int numElites = (int) Math.ceil(population.size() * App.elitismRate);
+    int numElites = (int) Math.ceil(population.size() * App.elitismRate);
 
-        // Sorts the population by fitness (lower fitness = better)
-        List<Individual> sortedPopulation = new ArrayList<>(population);
-        sortedPopulation.sort(Comparator.comparingDouble(Individual::getFitness));
+    // Sorts the population by fitness (lower fitness = better)
+    List<Individual> sortedPopulation = new ArrayList<>(population);
+    sortedPopulation.sort(Comparator.comparingDouble(Individual::getFitness));
 
-        for (int i = 0; i < numElites; i++) {
-            nextPopulation.add(sortedPopulation.get(i).deepCopy());
-        }
+    // Substitui os indivíduos nas primeiras posições da próxima população
+    for (int i = 0; i < numElites && i < sortedPopulation.size(); i++) {
+        nextPopulation.set(i, sortedPopulation.get(i).deepCopy());
     }
+}
 
     // Elitism function to multiObjetctive version
     public static void selectElite(List<Individual> subPop, List<Individual> nextPop, int fitnessType,
