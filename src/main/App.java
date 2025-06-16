@@ -389,24 +389,32 @@ public class App {
     private static void saveMonoResults(List<Integer> generations, List<Double> fitness) {
         try {
             // Criar diretório de resultados se não existir
-            File resultsDir = new File("results");
+            File resultsDir = new File("resultsMono");
             if (!resultsDir.exists()) {
                 resultsDir.mkdir();
             }
 
             // Obter timestamp atual para nome do arquivo
             String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
-            String fileName = "results/mono_results_" + timestamp + ".txt";
+            String fileName = "resultsMono/mono_results_" + timestamp + ".txt";
 
             java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
 
             // Escrever cabeçalho com números das gerações
-            writer.print("Geração\tFitness\n");
-
-            // Escrever resultados
-            for (int i = 0; i < generations.size(); i++) {
-                writer.printf("%d\t%.2f\n", generations.get(i), fitness.get(i));
+            writer.print("Subpopulação\\Geração\t");
+            for (Integer gen : generations) {
+                writer.print("g" + gen + "\t");
             }
+            writer.println();
+
+            // Escrever resultados do fitness mono-objetivo
+            writer.print("Mono-Objetivo\t");
+            for (Double fit : fitness) {
+                // Substituir ponto por vírgula para formato brasileiro
+                String formattedFitness = String.format("%.2f", fit).replace('.', ',');
+                writer.print(formattedFitness + "\t");
+            }
+            writer.println();
 
             writer.close();
             System.out.println("\nResultados salvos em: " + fileName);
@@ -416,15 +424,6 @@ public class App {
             e.printStackTrace();
         }
     }
-
-    // saveResultsToFile(generationsList, bestFitnessList);
-
-    // Individual bestIndividual = findBestIndividual(population);
-    // System.out.println("\n--- Melhor indivíduo ---");
-    // System.out.println("ID: " + bestIndividual.getId());
-    // System.out.println("Fitness: " + bestIndividual.getFitness());
-    // bestIndividual.printRoutes();
-    // }
 
     private static void runDebugAlgorithm(ProblemInstance instance) {
         System.out.println("\n=== EXECUTANDO ALGORITMO DE DEBUG (MONO-OBJETIVO) ===");
@@ -502,14 +501,14 @@ public class App {
 
         try {
             // Criar diretório de resultados se não existir
-            File resultsDir = new File("results");
+            File resultsDir = new File("resultsMulti");
             if (!resultsDir.exists()) {
                 resultsDir.mkdir();
             }
 
             // Obter timestamp atual para nome do arquivo
             String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
-            String fileName = "results/evolution_results_" + timestamp + ".txt";
+            String fileName = "resultsMulti/evolution_results_" + timestamp + ".txt";
 
             java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
 
