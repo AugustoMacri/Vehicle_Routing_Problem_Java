@@ -153,6 +153,8 @@ public class App {
         // Criando lista vazia de indivíduos
         List<Individual> individuals = new ArrayList<>();
 
+        int get_the_first = 0; // Just to get the first fitness before evolution
+
         // Inicializando população
         Population population = new Population(individuals);
         population.initializePopulation(instance.getClients());
@@ -181,6 +183,17 @@ public class App {
             double fitnessPond = new DefaultFitnessCalculator().calculateFitness(ind, clients);
             ind.setFitness(fitnessPond);
         }
+
+        // //
+        // -----------------------------------------------------------------------------------------------------
+        double first_fitness_before_evolution = population.getSubPopPonderation().stream()
+                .mapToDouble(Individual::getFitness)
+                .min()
+                .orElse(Double.MAX_VALUE);
+
+        // System.exit(0);
+        // //
+        // -----------------------------------------------------------------------------------------------------
 
         // Inicializando as subpopulações auxiliares para a próxima geração
         List<Individual> nextSubPopDistance = new ArrayList<>();
@@ -243,6 +256,12 @@ public class App {
                     double bestPonderationFitness = findBestFitness(population.getSubPopPonderation(),
                             individual -> individual.getFitness());
 
+                    // Condition just to get the first best fitness
+                    if (get_the_first == 0) {
+                        bestPonderationFitness = first_fitness_before_evolution;
+                        get_the_first = 1;
+                    }
+
                     // Adicionando às listas
                     bestDistanceFitnessList.add(bestDistanceFitness);
                     bestTimeFitnessList.add(bestTimeFitness);
@@ -301,6 +320,9 @@ public class App {
     private static void runMonoObjectiveAlgorithm(ProblemInstance instance) {
         System.out.println("=== INICIANDO ALGORITMO MONO-OBJETIVO ===");
 
+        // Variable to store the first fitness before comparison
+        int get_the_first = 0;
+
         // Criando lista vazia de indivíduos
         List<Individual> individuals = new ArrayList<>();
 
@@ -316,6 +338,17 @@ public class App {
             double fitness = new DefaultFitnessCalculator().calculateFitness(ind, clients);
             ind.setFitness(fitness);
         }
+
+        // //
+        // -----------------------------------------------------------------------------------------------------
+        double first_fitness_before_evolution = individuals.stream()
+                .mapToDouble(Individual::getFitness)
+                .min()
+                .orElse(Double.MAX_VALUE);
+
+        // System.exit(0);
+        // //
+        // -----------------------------------------------------------------------------------------------------
 
         // Inicializando a população auxiliar para a próxima geração
         List<Individual> nextPopulation = new ArrayList<>();
@@ -353,6 +386,12 @@ public class App {
 
                     // Encontrar o melhor fitness (menor valor)
                     double bestFitness = findBestFitness(individuals, Individual::getFitness);
+
+                    // Condition just to get the first best fitness
+                    if (get_the_first == 0) {
+                        bestFitness = first_fitness_before_evolution;
+                        get_the_first = 1;
+                    }
 
                     // Adicionando às listas
                     bestFitnessList.add(bestFitness);
