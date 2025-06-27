@@ -63,8 +63,10 @@ public class App {
         int algorithmChoice = 0;
         while (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
             try {
-                algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
-                if (algorithmChoice != 1 && algorithmChoice != 2) {
+                // algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
+                algorithmChoice = 2;
+
+                if (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
                     System.out.print("Opção inválida. Digite 1, 2 ou 3: ");
                 }
             } catch (NumberFormatException e) {
@@ -102,7 +104,9 @@ public class App {
         int instanceChoice = 0;
         while (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
             try {
-                instanceChoice = Integer.parseInt(scanner.nextLine().trim());
+                // instanceChoice = Integer.parseInt(scanner.nextLine().trim());
+                instanceChoice = 41;
+
                 if (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
                     System.out.print("Opção inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");
                 }
@@ -285,35 +289,55 @@ public class App {
         saveResultsToFile(generationsList, bestDistanceFitnessList, bestTimeFitnessList,
                 bestFuelFitnessList, bestPonderationFitnessList);
 
-        // Printar IDs de todos os indivíduos em cada subpopulação
-        System.out.println("\n--- IDs dos indivíduos em cada subpopulação ---");
+        // Calcular estatísticas da última geração para a subpopulação de ponderação
+        double bestPonderationFitness = findBestFitness(population.getSubPopPonderation(),
+                Individual::getFitness);
 
-        System.out.print("SubPopDistance IDs: ");
-        for (Individual ind : population.getSubPopDistance()) {
-            System.out.print(ind.getId() + " " +
-                    "(Fitness Distance: " + ind.getFitnessDistance() + ") ");
-        }
-        System.out.println();
+        // Calcular média do fitness
+        double avgPonderationFitness = population.getSubPopPonderation().stream()
+                .mapToDouble(Individual::getFitness)
+                .average()
+                .orElse(0.0);
 
-        System.out.print("SubPopTime IDs: ");
-        for (Individual ind : population.getSubPopTime()) {
-            System.out.print(ind.getId() + " " +
-                    "(Fitness Time: " + ind.getFitnessTime() + ") ");
-        }
-        System.out.println();
+        // Calcular desvio padrão
+        double meanPonderationFitness = avgPonderationFitness;
+        double variancePonderation = population.getSubPopPonderation().stream()
+                .mapToDouble(ind -> Math.pow(ind.getFitness() - meanPonderationFitness, 2))
+                .sum() / population.getSubPopPonderation().size();
+        double stdDeviationPonderation = Math.sqrt(variancePonderation);
 
-        System.out.print("SubPopFuel IDs: ");
-        for (Individual ind : population.getSubPopFuel()) {
-            System.out.print(ind.getId() + " " +
-                    "(Fitness Fuel: " + ind.getFitnessFuel() + ") ");
-        }
-        System.out.println();
+        // Salvar estatísticas em um arquivo separado
+        saveMultiStatistics(bestPonderationFitness, avgPonderationFitness, stdDeviationPonderation);
 
-        System.out.print("SubPopPonderation IDs: ");
-        for (Individual ind : population.getSubPopPonderation()) {
-            System.out.print(ind.getId() + " " +
-                    "(Fitness Pond: " + ind.getFitness() + ") ");
-        }
+        // // Printar IDs de todos os indivíduos em cada subpopulação
+        // System.out.println("\n--- IDs dos indivíduos em cada subpopulação ---");
+
+        // System.out.print("SubPopDistance IDs: ");
+        // for (Individual ind : population.getSubPopDistance()) {
+        // System.out.print(ind.getId() + " " +
+        // "(Fitness Distance: " + ind.getFitnessDistance() + ") ");
+        // }
+        // System.out.println();
+
+        // System.out.print("SubPopTime IDs: ");
+        // for (Individual ind : population.getSubPopTime()) {
+        // System.out.print(ind.getId() + " " +
+        // "(Fitness Time: " + ind.getFitnessTime() + ") ");
+        // }
+        // System.out.println();
+
+        // System.out.print("SubPopFuel IDs: ");
+        // for (Individual ind : population.getSubPopFuel()) {
+        // System.out.print(ind.getId() + " " +
+        // "(Fitness Fuel: " + ind.getFitnessFuel() + ") ");
+        // }
+        // System.out.println();
+
+        // System.out.print("SubPopPonderation IDs: ");
+        // for (Individual ind : population.getSubPopPonderation()) {
+        // System.out.print(ind.getId() + " " +
+        // "(Fitness Pond: " + ind.getFitness() + ") ");
+        // }
         System.out.println();
     }
 
@@ -410,17 +434,36 @@ public class App {
         saveMonoResults(generationsList, bestFitnessList);
 
         // Encontrar e imprimir o melhor indivíduo final
-        Individual bestIndividual = individuals.stream()
-                .min(Comparator.comparingDouble(Individual::getFitness))
-                .orElse(null);
+        // Individual bestIndividual = individuals.stream()
+        // .min(Comparator.comparingDouble(Individual::getFitness))
+        // .orElse(null);
 
-        if (bestIndividual != null) {
-            System.out.println("\n=== MELHOR INDIVÍDUO ENCONTRADO ===");
-            System.out.println("ID: " + bestIndividual.getId());
-            System.out.println("Fitness: " + bestIndividual.getFitness());
-            System.out.println("Rotas:");
-            bestIndividual.printRoutes();
-        }
+        // Calcular estatísticas da última geração
+        double bestFinalFitness = findBestFitness(individuals, Individual::getFitness);
+
+        // Calcular média do fitness
+        double avgFitness = individuals.stream()
+                .mapToDouble(Individual::getFitness)
+                .average()
+                .orElse(0.0);
+
+        // Calcular desvio padrão
+        double meanFitness = avgFitness;
+        double variance = individuals.stream()
+                .mapToDouble(ind -> Math.pow(ind.getFitness() - meanFitness, 2))
+                .sum() / individuals.size();
+        double stdDeviation = Math.sqrt(variance);
+
+        // Salvar estatísticas em um arquivo separado
+        saveMonoStatistics(bestFinalFitness, avgFitness, stdDeviation);
+
+        // if (bestIndividual != null) {
+        // System.out.println("\n=== MELHOR INDIVÍDUO ENCONTRADO ===");
+        // System.out.println("ID: " + bestIndividual.getId());
+        // System.out.println("Fitness: " + bestIndividual.getFitness());
+        // System.out.println("Rotas:");
+        // bestIndividual.printRoutes();
+        // }
 
         System.out.println("\n=== ALGORITMO MONO-OBJETIVO CONCLUÍDO ===");
     }
@@ -591,4 +634,66 @@ public class App {
             e.printStackTrace();
         }
     }
+
+    private static void saveMultiStatistics(double bestPonderationFitness, double avgPonderationFitness,
+            double stdDeviationPonderation) {
+        try {
+            // Criar diretório de resultados se não existir
+            File resultsDir = new File("resultsMulti/stats");
+            if (!resultsDir.exists()) {
+                resultsDir.mkdirs();
+            }
+
+            // Obter timestamp atual para nome do arquivo
+            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+            String fileName = "resultsMulti/stats/multi_stats_" + timestamp + ".txt";
+
+            java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
+
+            // Escrever estatísticas apenas da subpopulação de ponderação
+            writer.println("Estatísticas da Execução Multi-Objetivo (Subpopulação de Ponderação)");
+            writer.println("=================================================================");
+            writer.println("Melhor Fitness: " + String.format("%.2f", bestPonderationFitness));
+            writer.println("Fitness Médio: " + String.format("%.2f", avgPonderationFitness));
+            writer.println("Desvio Padrão: " + String.format("%.2f", stdDeviationPonderation));
+
+            writer.close();
+            System.out.println("\nEstatísticas salvas em: " + fileName);
+
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar estatísticas: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static void saveMonoStatistics(double bestFitness, double avgFitness, double stdDeviation) {
+        try {
+            // Criar diretório de resultados se não existir
+            File resultsDir = new File("resultsMono/stats");
+            if (!resultsDir.exists()) {
+                resultsDir.mkdirs();
+            }
+
+            // Obter timestamp atual para nome do arquivo
+            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+            String fileName = "resultsMono/stats/mono_stats_" + timestamp + ".txt";
+
+            java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
+
+            // Escrever estatísticas
+            writer.println("Estatísticas da Execução Mono-Objetivo");
+            writer.println("=====================================");
+            writer.println("Melhor Fitness: " + String.format("%.2f", bestFitness));
+            writer.println("Fitness Médio: " + String.format("%.2f", avgFitness));
+            writer.println("Desvio Padrão: " + String.format("%.2f", stdDeviation));
+
+            writer.close();
+            System.out.println("\nEstatísticas salvas em: " + fileName);
+
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar estatísticas: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }
