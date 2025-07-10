@@ -41,7 +41,7 @@ public class App {
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
-    public static int pop_size = 300;
+    public static int pop_size = 900;
     public static int sub_pop_size = (int) Math.floor((double) pop_size / 3);
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
@@ -64,7 +64,7 @@ public class App {
         while (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
             try {
                 // algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
-                algorithmChoice = 2;
+                algorithmChoice = 1;
 
                 if (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
                     System.out.print("Opção inválida. Digite 1, 2 ou 3: ");
@@ -105,7 +105,9 @@ public class App {
         while (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
             try {
                 // instanceChoice = Integer.parseInt(scanner.nextLine().trim());
-                instanceChoice = 41;
+                instanceChoice = 1; // C101
+                // instanceChoice = 18; //R101
+                // instanceChoice = 41; //RC101
 
                 if (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
                     System.out.print("Opção inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");
@@ -154,6 +156,9 @@ public class App {
     }
 
     private static void runMultiObjectiveAlgorithm(ProblemInstance instance) {
+
+        long startTime = System.currentTimeMillis();
+
         // Criando lista vazia de indivíduos
         List<Individual> individuals = new ArrayList<>();
 
@@ -306,8 +311,14 @@ public class App {
                 .sum() / population.getSubPopPonderation().size();
         double stdDeviationPonderation = Math.sqrt(variancePonderation);
 
+        // Calculando o tempo de execução
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+
         // Salvar estatísticas em um arquivo separado
         saveMultiStatistics(bestPonderationFitness, avgPonderationFitness, stdDeviationPonderation);
+
+        System.out.println("Tempo em milissegundos: " + executionTime + " ms");
 
         // // Printar IDs de todos os indivíduos em cada subpopulação
         // System.out.println("\n--- IDs dos indivíduos em cada subpopulação ---");
@@ -342,6 +353,9 @@ public class App {
     }
 
     private static void runMonoObjectiveAlgorithm(ProblemInstance instance) {
+
+        long startTime = System.currentTimeMillis();
+
         System.out.println("=== INICIANDO ALGORITMO MONO-OBJETIVO ===");
 
         // Variable to store the first fitness before comparison
@@ -454,16 +468,14 @@ public class App {
                 .sum() / individuals.size();
         double stdDeviation = Math.sqrt(variance);
 
-        // Salvar estatísticas em um arquivo separado
-        saveMonoStatistics(bestFinalFitness, avgFitness, stdDeviation);
+        // Calcular tempo de execução
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
 
-        // if (bestIndividual != null) {
-        // System.out.println("\n=== MELHOR INDIVÍDUO ENCONTRADO ===");
-        // System.out.println("ID: " + bestIndividual.getId());
-        // System.out.println("Fitness: " + bestIndividual.getFitness());
-        // System.out.println("Rotas:");
-        // bestIndividual.printRoutes();
-        // }
+        // Salvar estatísticas em um arquivo separado
+        saveMonoStatistics(bestFinalFitness, avgFitness, stdDeviation, executionTime);
+
+        System.out.println("Tempo em milissegundos: " + executionTime + " ms");
 
         System.out.println("\n=== ALGORITMO MONO-OBJETIVO CONCLUÍDO ===");
     }
@@ -666,7 +678,7 @@ public class App {
         }
     }
 
-    private static void saveMonoStatistics(double bestFitness, double avgFitness, double stdDeviation) {
+    private static void saveMonoStatistics(double bestFitness, double avgFitness, double stdDeviation, double time) {
         try {
             // Criar diretório de resultados se não existir
             File resultsDir = new File("resultsMono/stats");
@@ -686,6 +698,7 @@ public class App {
             writer.println("Melhor Fitness: " + String.format("%.2f", bestFitness));
             writer.println("Fitness Médio: " + String.format("%.2f", avgFitness));
             writer.println("Desvio Padrão: " + String.format("%.2f", stdDeviation));
+            writer.println("Tempo de Execução: " + String.format("%.2f", time) + " ms");
 
             writer.close();
             System.out.println("\nEstatísticas salvas em: " + fileName);
