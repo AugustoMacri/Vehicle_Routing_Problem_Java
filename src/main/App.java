@@ -63,8 +63,8 @@ public class App {
         int algorithmChoice = 0;
         while (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
             try {
-                // algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
-                algorithmChoice = 1;
+                algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
+                // algorithmChoice = 1;
 
                 if (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
                     System.out.print("Opção inválida. Digite 1, 2 ou 3: ");
@@ -74,20 +74,47 @@ public class App {
             }
         }
 
+        // Menu para escolher o tipo de instância
+        System.out.println("\n=== MENU DE SELEÇÃO DE TIPO DE INSTÂNCIA ===");
+        System.out.println("1 - Instâncias Solomon");
+        System.out.println("2 - Instâncias Gehring-Homberg");
+        System.out.print("Escolha o tipo de instância (1 ou 2): ");
+
+        int instanceTypeChoice = 0;
+        while (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
+            try {
+                instanceTypeChoice = Integer.parseInt(scanner.nextLine().trim());
+                if (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
+                    System.out.print("Opção inválida. Digite 1 ou 2: ");
+                }
+            } catch (NumberFormatException e) {
+                System.out.print("Entrada inválida. Digite 1 ou 2: ");
+            }
+        }
+
+        // Seleciona o diretório de instâncias com base na escolha
+        String instancePath;
+        if (instanceTypeChoice == 1) {
+            instancePath = "src/instances/solomon/";
+            System.out.println("\nTipo selecionado: Instâncias Solomon");
+        } else {
+            instancePath = "src/instances/gehring_homberg/";
+            System.out.println("\nTipo selecionado: Instâncias Gehring-Homberg");
+        }
+
         // Menu para escolher a instância
         System.out.println("\n=== MENU DE SELEÇÃO DE INSTÂNCIA ===");
-        String instancePath = "src/instances/solomon/";
         File folder = new File(instancePath);
 
         if (!folder.exists() || !folder.isDirectory()) {
-            System.out.println("Erro: Diretório de instâncias não encontrado.");
+            System.out.println("Erro: Diretório de instâncias não encontrado: " + instancePath);
             scanner.close();
             return;
         }
 
         File[] instanceFiles = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(".txt"));
         if (instanceFiles == null || instanceFiles.length == 0) {
-            System.out.println("Erro: Nenhuma instância encontrada.");
+            System.out.println("Erro: Nenhuma instância encontrada no diretório: " + instancePath);
             scanner.close();
             return;
         }
@@ -104,8 +131,9 @@ public class App {
         int instanceChoice = 0;
         while (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
             try {
-                // instanceChoice = Integer.parseInt(scanner.nextLine().trim());
-                instanceChoice = 1; // C101
+                
+                instanceChoice = Integer.parseInt(scanner.nextLine().trim());
+
                 // instanceChoice = 18; //R101
                 // instanceChoice = 41; //RC101
 

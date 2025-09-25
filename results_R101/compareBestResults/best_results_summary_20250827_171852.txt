@@ -1,0 +1,15 @@
+=== COMPARAÇÃO DOS MELHORES RESULTADOS ===
+
+Data da análise: 2025-08-27 17:18:52
+
+MELHOR RESULTADO MONO-OBJETIVO
+Arquivo: mono_results_20250627_005337.txt
+Fitness final: 6105.86
+
+MELHOR RESULTADO MULTI-OBJETIVO (PONDERAÇÃO)
+Arquivo: evolution_results_20250627_001930.txt
+Fitness final: 5515.32
+
+COMPARAÇÃO
+Melhor desempenho: Multi-Objetivo
+Melhoria percentual: 9.67%
