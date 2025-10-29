@@ -1,0 +1,413 @@
+ALGORITMO: AEMMT - Algoritmo Evolutivo Multi-objetivo Multi-population
+
+PARÂMETROS:
+    pop_size = 900                  // Tamanho da população total
+    sub_pop_size = 300              // Tamanho de cada subpopulação (pop_size / 3)
+    elitismRate = 0.1               // Taxa de elitismo (10%)
+    mutationRate = 0.1              // Taxa de mutação (10%)
+    tournamentSize = 2              // Tamanho do torneio para seleção
+    numGenerations = 3000           // Número de gerações
+    generationsBeforeComparison = 5 // Gerações iniciais sem comparação
+
+ESTRUTURAS DE DADOS:
+    Individual {
+        id: inteiro
+        route: matriz[numVehicles][numClients]
+        fitnessDistance: real
+        fitnessTime: real
+        fitnessFuel: real
+        fitnessPonderation: real
+    }
+
+═══════════════════════════════════════════════════════════════════════════════
+INÍCIO DO ALGORITMO
+═══════════════════════════════════════════════════════════════════════════════
+
+1. INICIALIZAÇÃO DA POPULAÇÃO (Heurística de Vizinho Mais Próximo)
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO initializePopulation(clients):
+       population ← lista vazia com pop_size posições
+       
+       PARA h ← 0 ATÉ pop_size - 1 FAÇA:
+           individual ← novo Individual(id = h)
+           visited ← vetor booleano[numClients] inicializado com false
+           
+           // Calcular distâncias do centro de distribuição para todos os clientes
+           distributionCenter ← clients[0]
+           PARA CADA client EM clients FAÇA:
+               SE client.id ≠ 0 ENTÃO:
+                   distance ← calcularDistanciaEuclidiana(client, distributionCenter)
+                   client.distanceFromDepot ← distance
+           
+           // Ordenar clientes por distância do depósito
+           clients.ordenarPor(distanceFromDepot)
+           
+           clientIndex ← 1
+           visited[0] ← true  // Depósito já visitado
+           
+           // Construir rotas para cada veículo
+           PARA v ← 0 ATÉ numVehicles - 1 FAÇA:
+               capacity ← 0
+               pos ← 0
+               currentClient ← 0
+               
+               // Adicionar depósito como início da rota
+               individual.route[v][pos] ← 0
+               pos ← pos + 1
+               
+               // Adicionar clientes à rota usando vizinho mais próximo
+               ENQUANTO clientIndex < numClients FAÇA:
+                   nextClient ← encontrarClienteMaisProximo(currentClient, clients, visited)
+                   
+                   SE nextClient = -1 ENTÃO:
+                       SAIR DO LOOP  // Não há mais clientes disponíveis
+                   
+                   client ← obterClientePorId(nextClient, clients)
+                   demand ← client.demand
+                   
+                   // Verificar restrição de capacidade
+                   SE capacity + demand > vehicleCapacity ENTÃO:
+                       SAIR DO LOOP  // Veículo cheio
+                   
+                   // Adicionar cliente à rota
+                   individual.route[v][pos] ← nextClient
+                   visited[nextClient] ← true
+                   capacity ← capacity + demand
+                   currentClient ← nextClient
+                   pos ← pos + 1
+                   clientIndex ← clientIndex + 1
+               
+               // Retornar ao depósito
+               individual.route[v][pos] ← 0
+           
+           population[h] ← individual
+       
+       RETORNAR population
+
+2. DISTRIBUIÇÃO EM SUBPOPULAÇÕES
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO distributeSubpopulations(population):
+       // Criar 4 subpopulações vazias
+       subPopDistance ← lista vazia[sub_pop_size]
+       subPopTime ← lista vazia[sub_pop_size]
+       subPopFuel ← lista vazia[sub_pop_size]
+       subPopPonderation ← lista vazia[sub_pop_size]
+       
+       // Inicializar com indivíduos vazios
+       PARA i ← 0 ATÉ sub_pop_size - 1 FAÇA:
+           subPopDistance[i] ← novo Individual(id = -1)
+           subPopTime[i] ← novo Individual(id = -1)
+           subPopFuel[i] ← novo Individual(id = -1)
+           subPopPonderation[i] ← novo Individual(id = -1)
+       
+       // Distribuir população inicial nas subpopulações
+       // Estratégia: dividir em 3 grupos iguais
+       PARA i ← 0 ATÉ pop_size - 1 FAÇA:
+           index ← i / sub_pop_size        // Determina qual subpopulação (0, 1 ou 2)
+           index2 ← i % sub_pop_size       // Posição dentro da subpopulação
+           source ← population[i]
+           
+           // Copiar para a subpopulação correspondente
+           ESCOLHA index:
+               CASO 0:  // Primeiros 300 indivíduos
+                   copiarRota(source, subPopDistance[index2])
+               CASO 1:  // Próximos 300 indivíduos
+                   copiarRota(source, subPopTime[index2])
+               CASO 2:  // Últimos 300 indivíduos
+                   copiarRota(source, subPopFuel[index2])
+           
+           // Subpopulação de ponderação recebe apenas os primeiros sub_pop_size
+           SE i < sub_pop_size ENTÃO:
+               copiarRota(source, subPopPonderation[index2])
+       
+       RETORNAR (subPopDistance, subPopTime, subPopFuel, subPopPonderation)
+
+3. CÁLCULO DE FITNESS INICIAL
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO calculateInitialFitness(subpopulations, clients):
+       // Calcular fitness específico para cada subpopulação
+       
+       PARA CADA individual EM subPopDistance FAÇA:
+           individual.fitnessDistance ← calcularDistanciaTotal(individual, clients)
+       
+       PARA CADA individual EM subPopTime FAÇA:
+           individual.fitnessTime ← calcularTempoTotal(individual, clients)
+       
+       PARA CADA individual EM subPopFuel FAÇA:
+           individual.fitnessFuel ← calcularCombustivelTotal(individual, clients)
+       
+       PARA CADA individual EM subPopPonderation FAÇA:
+           individual.fitnessPonderation ← calcularFitnessPonderado(individual, clients)
+           // fitnessPonderado = WEIGHT_NUM_VEHICLES * numVehicles +
+           //                    WEIGHT_NUM_VIOLATIONS * numViolations +
+           //                    WEIGHT_TOTAL_COST * totalCost
+
+4. LOOP EVOLUTIVO PRINCIPAL
+   ────────────────────────────────────────────────────────────────════════
+   PARA generation ← 0 ATÉ numGenerations - 1 FAÇA:
+       
+       // Criar subpopulações auxiliares para próxima geração
+       nextSubPopDistance ← copiarEstrutura(subPopDistance)
+       nextSubPopTime ← copiarEstrutura(subPopTime)
+       nextSubPopFuel ← copiarEstrutura(subPopFuel)
+       nextSubPopPonderation ← copiarEstrutura(subPopPonderation)
+       
+       // Aplicar elitismo em cada subpopulação
+       elitismSize ← sub_pop_size × elitismRate
+       
+       selectElite(subPopDistance, nextSubPopDistance, DISTANCE, elitismSize)
+       selectElite(subPopTime, nextSubPopTime, TIME, elitismSize)
+       selectElite(subPopFuel, nextSubPopFuel, FUEL, elitismSize)
+       selectElite(subPopPonderation, nextSubPopPonderation, PONDERATION, elitismSize)
+       
+       // Evolução das subpopulações
+       SE generation < generationsBeforeComparison ENTÃO:
+           // Fase inicial: inserir filhos diretamente (garantir diversidade)
+           evoluirComInsercaoDireta(generation)
+       SENÃO:
+           // Fase de refinamento: comparar e substituir apenas se melhor
+           evoluirComComparacao(generation)
+       
+       // Atualizar subpopulações com a próxima geração
+       subPopDistance ← nextSubPopDistance
+       subPopTime ← nextSubPopTime
+       subPopFuel ← nextSubPopFuel
+       subPopPonderation ← nextSubPopPonderation
+
+5. SELEÇÃO DE ELITE
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO selectElite(subPop, nextSubPop, fitnessType, elitismSize):
+       // Ordenar subpopulação por fitness (crescente = melhor)
+       ESCOLHA fitnessType:
+           CASO DISTANCE:
+               subPop.ordenarPor(fitnessDistance)
+           CASO TIME:
+               subPop.ordenarPor(fitnessTime)
+           CASO FUEL:
+               subPop.ordenarPor(fitnessFuel)
+           CASO PONDERATION:
+               subPop.ordenarPor(fitnessPonderation)
+       
+       // Copiar os melhores indivíduos para próxima geração
+       PARA i ← 0 ATÉ elitismSize - 1 FAÇA:
+           copiarIndividuoCompleto(subPop[i], nextSubPop[i])
+
+6. EVOLUÇÃO COM INSERÇÃO DIRETA (Gerações Iniciais)
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO evoluirComInsercaoDireta(generation):
+       PARA i ← elitismSize ATÉ sub_pop_size - 1 FAÇA:
+           
+           // *** GERAR FILHO DIFERENTE PARA CADA SUBPOPULAÇÃO ***
+           
+           // Filho 1 para subPopDistance
+           parents1 ← selecaoTorneioSubpopulacao()
+           newSon1 ← onePointCrossover(parents1[0], parents1[1])
+           mutate(newSon1, mutationRate)
+           calcularTodosFitness(newSon1, clients)
+           nextSubPopDistance[i] ← newSon1
+           
+           // Filho 2 para subPopTime
+           parents2 ← selecaoTorneioSubpopulacao()
+           newSon2 ← onePointCrossover(parents2[0], parents2[1])
+           mutate(newSon2, mutationRate)
+           calcularTodosFitness(newSon2, clients)
+           nextSubPopTime[i] ← newSon2
+           
+           // Filho 3 para subPopFuel
+           parents3 ← selecaoTorneioSubpopulacao()
+           newSon3 ← onePointCrossover(parents3[0], parents3[1])
+           mutate(newSon3, mutationRate)
+           calcularTodosFitness(newSon3, clients)
+           nextSubPopFuel[i] ← newSon3
+           
+           // Filho 4 para subPopPonderation
+           parents4 ← selecaoTorneioSubpopulacao()
+           newSon4 ← onePointCrossover(parents4[0], parents4[1])
+           mutate(newSon4, mutationRate)
+           calcularTodosFitness(newSon4, clients)
+           nextSubPopPonderation[i] ← newSon4
+
+7. EVOLUÇÃO COM COMPARAÇÃO (Gerações Posteriores)
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO evoluirComComparacao(generation):
+       PARA i ← elitismSize ATÉ sub_pop_size - 1 FAÇA:
+           
+           // *** GERAR E COMPARAR FILHO DIFERENTE PARA CADA SUBPOPULAÇÃO ***
+           
+           // Filho 1 para subPopDistance
+           parents1 ← selecaoTorneioSubpopulacao()
+           newSon1 ← onePointCrossover(parents1[0], parents1[1])
+           mutate(newSon1, mutationRate)
+           calcularTodosFitness(newSon1, clients)
+           compareSonSubPop(newSon1, subPopDistance, nextSubPopDistance, DISTANCE, i)
+           
+           // Filho 2 para subPopTime
+           parents2 ← selecaoTorneioSubpopulacao()
+           newSon2 ← onePointCrossover(parents2[0], parents2[1])
+           mutate(newSon2, mutationRate)
+           calcularTodosFitness(newSon2, clients)
+           compareSonSubPop(newSon2, subPopTime, nextSubPopTime, TIME, i)
+           
+           // Filho 3 para subPopFuel
+           parents3 ← selecaoTorneioSubpopulacao()
+           newSon3 ← onePointCrossover(parents3[0], parents3[1])
+           mutate(newSon3, mutationRate)
+           calcularTodosFitness(newSon3, clients)
+           compareSonSubPop(newSon3, subPopFuel, nextSubPopFuel, FUEL, i)
+           
+           // Filho 4 para subPopPonderation
+           parents4 ← selecaoTorneioSubpopulacao()
+           newSon4 ← onePointCrossover(parents4[0], parents4[1])
+           mutate(newSon4, mutationRate)
+           calcularTodosFitness(newSon4, clients)
+           compareSonSubPop(newSon4, subPopPonderation, nextSubPopPonderation, PONDERATION, i)
+
+8. SELEÇÃO POR TORNEIO ENTRE SUBPOPULAÇÕES
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO selecaoTorneioSubpopulacao():
+       parents ← lista vazia[2]
+       previousWinners ← conjunto vazio
+       
+       // Selecionar primeiro pai
+       PARA tentativa ← 1 ATÉ 2 FAÇA:
+           competitors ← lista vazia[tournamentSize]
+           
+           // Escolher competidores aleatórios
+           PARA j ← 0 ATÉ tournamentSize - 1 FAÇA:
+               REPITA:
+                   subPopIndex ← número aleatório entre 0 e 3
+                   individualIndex ← número aleatório entre 0 e sub_pop_size - 1
+                   
+                   ESCOLHA subPopIndex:
+                       CASO 0: competitor ← subPopDistance[individualIndex]
+                       CASO 1: competitor ← subPopTime[individualIndex]
+                       CASO 2: competitor ← subPopFuel[individualIndex]
+                       CASO 3: competitor ← subPopPonderation[individualIndex]
+                   
+               ATÉ competitor.id NÃO ESTÁ EM previousWinners
+               
+               competitors[j] ← competitor
+           
+           // Selecionar o melhor competidor (menor fitness ponderado)
+           winner ← competitors[0]
+           PARA CADA competitor EM competitors FAÇA:
+               SE competitor.fitnessPonderation < winner.fitnessPonderation ENTÃO:
+                   winner ← competitor
+           
+           parents[tentativa - 1] ← winner
+           previousWinners.adicionar(winner.id)
+       
+       RETORNAR parents
+
+9. COMPARAÇÃO E SUBSTITUIÇÃO DO PIOR INDIVÍDUO
+   ────────────────────────────────────────────────────────────────────────
+   FUNÇÃO compareSonSubPop(newSon, subPop, nextPop, fitnessType, startIndex):
+       // Encontrar o pior indivíduo (excluindo elites)
+       worstIndex ← startIndex
+       
+       ESCOLHA fitnessType:
+           CASO DISTANCE:
+               worstFitness ← subPop[startIndex].fitnessDistance
+               PARA i ← startIndex ATÉ sub_pop_size - 1 FAÇA:
+                   SE subPop[i].fitnessDistance > worstFitness ENTÃO:
+                       worstFitness ← subPop[i].fitnessDistance
+                       worstIndex ← i
+           
+           CASO TIME:
+               worstFitness ← subPop[startIndex].fitnessTime
+               PARA i ← startIndex ATÉ sub_pop_size - 1 FAÇA:
+                   SE subPop[i].fitnessTime > worstFitness ENTÃO:
+                       worstFitness ← subPop[i].fitnessTime
+                       worstIndex ← i
+           
+           CASO FUEL:
+               worstFitness ← subPop[startIndex].fitnessFuel
+               PARA i ← startIndex ATÉ sub_pop_size - 1 FAÇA:
+                   SE subPop[i].fitnessFuel > worstFitness ENTÃO:
+                       worstFitness ← subPop[i].fitnessFuel
+                       worstIndex ← i
+           
+           CASO PONDERATION:
+               worstFitness ← subPop[startIndex].fitnessPonderation
+               PARA i ← startIndex ATÉ sub_pop_size - 1 FAÇA:
+                   SE subPop[i].fitnessPonderation > worstFitness ENTÃO:
+                       worstFitness ← subPop[i].fitnessPonderation
+                       worstIndex ← i
+       
+       // Verificar se filho é melhor que o pior
+       isBetter ← FALSE
+       ESCOLHA fitnessType:
+           CASO DISTANCE:
+               isBetter ← (newSon.fitnessDistance < worstFitness)
+           CASO TIME:
+               isBetter ← (newSon.fitnessTime < worstFitness)
+           CASO FUEL:
+               isBetter ← (newSon.fitnessFuel < worstFitness)
+           CASO PONDERATION:
+               isBetter ← (newSon.fitnessPonderation < worstFitness)
+       
+       // Substituir se for melhor
+       SE isBetter ENTÃO:
+           copiarIndividuoCompleto(newSon, nextPop[worstIndex])
+
+10. CRUZAMENTO DE UM PONTO (One-Point Crossover)
+    ───────────────────────────────────────────────────────────────────────
+    FUNÇÃO onePointCrossover(parent1, parent2):
+        // Normalizar rotas para mesmo tamanho
+        normalizedP1 ← normalizeRoute(parent1.route)
+        normalizedP2 ← normalizeRoute(parent2.route)
+        
+        childRoute ← matriz[numVehicles][numClients] inicializada com -1
+        
+        // Gerar ponto de corte aleatório
+        cut ← número aleatório entre 1 e numVehicles - 1
+        
+        // Copiar primeira parte do pai 1
+        PARA v ← 0 ATÉ cut - 1 FAÇA:
+            PARA c ← 0 ATÉ numClients - 1 FAÇA:
+                childRoute[v][c] ← normalizedP1[v][c]
+        
+        // Copiar segunda parte do pai 2
+        PARA v ← cut ATÉ numVehicles - 1 FAÇA:
+            PARA c ← 0 ATÉ numClients - 1 FAÇA:
+                childRoute[v][c] ← normalizedP2[v][c]
+        
+        // Corrigir duplicações e garantir factibilidade
+        childRoute ← repairRoute(childRoute, clients)
+        
+        // Criar novo indivíduo com ID único
+        newSon ← novo Individual(id = nextIndividualId++)
+        newSon.route ← childRoute
+        
+        RETORNAR newSon
+
+11. MUTAÇÃO
+    ───────────────────────────────────────────────────────────────────────
+    FUNÇÃO mutate(individual, mutationRate):
+        // Decidir se aplica mutação
+        SE número aleatório < mutationRate ENTÃO:
+            // Escolher dois clientes aleatórios (não depósito)
+            client1 ← número aleatório entre 1 e numClients - 1
+            client2 ← número aleatório entre 1 e numClients - 1
+            
+            // Encontrar posições dos clientes nas rotas
+            pos1 ← encontrarPosicaoNaRota(individual.route, client1)
+            pos2 ← encontrarPosicaoNaRota(individual.route, client2)
+            
+            // Trocar os clientes de posição
+            SE pos1 ≠ NULL E pos2 ≠ NULL ENTÃO:
+                TROCAR(individual.route[pos1.vehicle][pos1.position],
+                       individual.route[pos2.vehicle][pos2.position])
+            
+            // Verificar e reparar se necessário
+            SE NÃO éFactível(individual.route) ENTÃO:
+                individual.route ← repairRoute(individual.route, clients)
+
+═══════════════════════════════════════════════════════════════════════════════
+FIM DO ALGORITMO
+═══════════════════════════════════════════════════════════════════════════════
+
+SAÍDA:
+    - Melhor indivíduo de cada subpopulação a cada 100 gerações
+    - Fitness: Distance, Time, Fuel, Ponderado
+    - Estatísticas finais: melhor fitness, média, desvio padrão

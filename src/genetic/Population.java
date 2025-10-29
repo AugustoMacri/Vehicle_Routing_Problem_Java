@@ -61,7 +61,6 @@ public class Population {
             // Sorting the clients list
             clientsCopy.sort(Comparator.comparingDouble(Client::getDistanceFromDepot));
 
-
             int clientIndex = 1;
 
             for (int v = 0; v < App.numVehicles; v++) {
@@ -95,7 +94,6 @@ public class Population {
                         throw new RuntimeException("Cliente com ID " + nextClient + " não encontrado na lista");
                     }
 
-            
                     int demand = client.getDemand();
 
                     if (capacity + demand > App.vehicleCapacity)
@@ -109,7 +107,6 @@ public class Population {
                 }
 
                 individual.setClientInRoute(v, pos, 0); // Return to depot
-
 
             }
 
@@ -238,8 +235,9 @@ public class Population {
             int startIndex) {
 
         // Primeiro, encontra o pior indivíduo na subpopulação (excluindo os elites)
-        int worstIndex = 0;
-        double worstFitness = 0;
+        // Inicializa a busca a partir de startIndex (não da posição 0)
+        int worstIndex = startIndex;
+        double worstFitness;
 
         // Define o fitness do primeiro indivíduo não-elite como pior inicialmente
         switch (fitnessType) {
@@ -285,6 +283,8 @@ public class Population {
                 }
                 break;
             default:
+                // Valor de fallback, não deve acontecer com fitnessType válido
+                worstFitness = Double.NEGATIVE_INFINITY;
                 break;
         }
 
@@ -310,7 +310,6 @@ public class Population {
 
         // Se o filho é melhor, substitui o pior indivíduo
         if (isBetter) {
-            Individual worst = subPop.get(worstIndex);
             Individual next = nextPop.get(worstIndex);
 
             // Copia o ID (já é único conforme Crossover.java)
@@ -405,38 +404,90 @@ public class Population {
 
         // System.out.println("Elites selecionados com sucesso!");
 
+        // Pré-preenche a próxima geração com cópias da geração atual para a faixa
+        // não-elite
+        for (int idx = elitismSize; idx < App.sub_pop_size; idx++) {
+            nextSubPopDistance.set(idx, subPopDistance.get(idx).deepCopy());
+            nextSubPopTime.set(idx, subPopTime.get(idx).deepCopy());
+            nextSubPopFuel.set(idx, subPopFuel.get(idx).deepCopy());
+            nextSubPopPonderation.set(idx, subPopPonderation.get(idx).deepCopy());
+        }
+
         // Evolving the population
         if (generation < generationsBeforeComparison) {
 
             // Ensures diversity: inserts children directly into the next generation
             for (int i = elitismSize; i < App.sub_pop_size; i++) {
-                List<Individual> parents = SelectionUtils.subPopSelection(this);
-                Individual newSon = null;
-
+                // Gera filhos distintos para cada subpopulação (reduz correlação)
+                // Distance
+                List<Individual> parentsD = SelectionUtils.subPopSelection(this);
+                Individual newSonD = null;
                 switch (crossingType) {
                     case 1:
-                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1));
+                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1));
                         break;
-
-                    // case 2: // Two-point (implementar depois)
-                    // newSon = Crossover.twoPointCrossing(parents.get(0), parents.get(1), i);
-                    // break;
-
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
+                Mutation.mutate(newSonD, App.mutationRate);
+                newSonD.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonD, clients));
+                newSonD.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonD, clients));
+                newSonD.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonD, clients));
+                newSonD.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonD, clients));
 
-                Mutation.mutate(newSon, App.mutationRate);
+                // Time
+                List<Individual> parentsT = SelectionUtils.subPopSelection(this);
+                Individual newSonT = null;
+                switch (crossingType) {
+                    case 1:
+                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+                Mutation.mutate(newSonT, App.mutationRate);
+                newSonT.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonT, clients));
+                newSonT.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonT, clients));
+                newSonT.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonT, clients));
+                newSonT.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonT, clients));
 
-                newSon.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSon, clients));
-                newSon.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSon, clients));
-                newSon.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSon, clients));
-                newSon.setFitness(new DefaultFitnessCalculator().calculateFitness(newSon, clients));
+                // Fuel
+                List<Individual> parentsF = SelectionUtils.subPopSelection(this);
+                Individual newSonF = null;
+                switch (crossingType) {
+                    case 1:
+                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+                Mutation.mutate(newSonF, App.mutationRate);
+                newSonF.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonF, clients));
+                newSonF.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonF, clients));
+                newSonF.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonF, clients));
+                newSonF.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonF, clients));
 
-                nextSubPopDistance.set(i, newSon.deepCopy());
-                nextSubPopTime.set(i, newSon.deepCopy());
-                nextSubPopFuel.set(i, newSon.deepCopy());
-                nextSubPopPonderation.set(i, newSon.deepCopy());
+                // Ponderation
+                List<Individual> parentsP = SelectionUtils.subPopSelection(this);
+                Individual newSonP = null;
+                switch (crossingType) {
+                    case 1:
+                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+                Mutation.mutate(newSonP, App.mutationRate);
+                newSonP.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonP, clients));
+                newSonP.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonP, clients));
+                newSonP.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonP, clients));
+                newSonP.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonP, clients));
+
+                // Inserção direta (diversidade inicial)
+                nextSubPopDistance.set(i, newSonD.deepCopy());
+                nextSubPopTime.set(i, newSonT.deepCopy());
+                nextSubPopFuel.set(i, newSonF.deepCopy());
+                nextSubPopPonderation.set(i, newSonP.deepCopy());
             }
         } else {
 
@@ -444,33 +495,76 @@ public class Population {
 
             // After the first generations, compare and only replace if the child is better
             for (int i = elitismSize; i < App.sub_pop_size; i++) {
-                List<Individual> parents = SelectionUtils.subPopSelection(this);
-                Individual newSon = null;
-
+                // Gera filhos distintos para cada subpopulação
+                // Distance
+                List<Individual> parentsD = SelectionUtils.subPopSelection(this);
+                Individual newSonD = null;
                 switch (crossingType) {
                     case 1:
-                        newSon = Crossover.onePointCrossing(parents.get(0), parents.get(1));
+                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1));
                         break;
-
-                    // case 2: // Two-point (implementar depois)
-                    // newSon = Crossover.twoPointCrossing(parents.get(0), parents.get(1), i);
-                    // break;
-
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
+                Mutation.mutate(newSonD, App.mutationRate);
+                newSonD.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonD, clients));
+                newSonD.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonD, clients));
+                newSonD.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonD, clients));
+                newSonD.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonD, clients));
 
-                Mutation.mutate(newSon, App.mutationRate);
+                // Time
+                List<Individual> parentsT = SelectionUtils.subPopSelection(this);
+                Individual newSonT = null;
+                switch (crossingType) {
+                    case 1:
+                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+                Mutation.mutate(newSonT, App.mutationRate);
+                newSonT.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonT, clients));
+                newSonT.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonT, clients));
+                newSonT.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonT, clients));
+                newSonT.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonT, clients));
 
-                newSon.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSon, clients));
-                newSon.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSon, clients));
-                newSon.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSon, clients));
-                newSon.setFitness(new DefaultFitnessCalculator().calculateFitness(newSon, clients));
+                // Fuel
+                List<Individual> parentsF = SelectionUtils.subPopSelection(this);
+                Individual newSonF = null;
+                switch (crossingType) {
+                    case 1:
+                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+                Mutation.mutate(newSonF, App.mutationRate);
+                newSonF.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonF, clients));
+                newSonF.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonF, clients));
+                newSonF.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonF, clients));
+                newSonF.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonF, clients));
 
-                compareSonSubPop(newSon, subPopDistance, nextSubPopDistance, 0, i);
-                compareSonSubPop(newSon, subPopTime, nextSubPopTime, 1, i);
-                compareSonSubPop(newSon, subPopFuel, nextSubPopFuel, 2, i);
-                compareSonSubPop(newSon, subPopPonderation, nextSubPopPonderation, 3, i);
+                // Ponderation
+                List<Individual> parentsP = SelectionUtils.subPopSelection(this);
+                Individual newSonP = null;
+                switch (crossingType) {
+                    case 1:
+                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Tipo de cruzamento não implementado");
+                }
+                Mutation.mutate(newSonP, App.mutationRate);
+                newSonP.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonP, clients));
+                newSonP.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonP, clients));
+                newSonP.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonP, clients));
+                newSonP.setFitness(new DefaultFitnessCalculator().calculateFitness(newSonP, clients));
+
+                // Compara contra o pior na faixa não-elite inteira (a partir de elitismSize)
+                compareSonSubPop(newSonD, subPopDistance, nextSubPopDistance, 0, elitismSize);
+                compareSonSubPop(newSonT, subPopTime, nextSubPopTime, 1, elitismSize);
+                compareSonSubPop(newSonF, subPopFuel, nextSubPopFuel, 2, elitismSize);
+                compareSonSubPop(newSonP, subPopPonderation, nextSubPopPonderation, 3, elitismSize);
             }
         }
 

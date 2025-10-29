@@ -1,0 +1,131 @@
+───────────────────────────────────────────────────────────────────────────────
+FASE 2: GERAÇÕES POSTERIORES (geração ≥ generationsBeforeComparison)
+───────────────────────────────────────────────────────────────────────────────
+
+OBJETIVO: Substituir apenas se o filho for melhor que o pior indivíduo
+
+PARA i = elitismSize ATÉ tamanhoDaSubpopulação FAÇA:
+    1. Selecionar 2 pais por torneio em TODAS as 4 subpopulações
+    2. Gerar 1 filho por cruzamento (one-point crossover)
+    3. Aplicar mutação no filho
+    4. Calcular os 4 tipos de fitness do filho:
+       - fitnessDistance
+       - fitnessTime
+       - fitnessFuel
+       - fitness (ponderado)
+    
+    5. Comparar e substituir em CADA uma das 4 subpopulações:
+       compareSonSubPop(filho, subPopDistance, nextSubPopDistance, tipoFitness=0, i)
+       compareSonSubPop(filho, subPopTime, nextSubPopTime, tipoFitness=1, i)
+       compareSonSubPop(filho, subPopFuel, nextSubPopFuel, tipoFitness=2, i)
+       compareSonSubPop(filho, subPopPonderation, nextSubPopPonderation, tipoFitness=3, i)
+FIM_PARA
+
+═══════════════════════════════════════════════════════════════════════════════
+  MÉTODO: compareSonSubPop(filho, subPop, nextSubPop, tipoFitness, startIndex)
+═══════════════════════════════════════════════════════════════════════════════
+
+ENTRADA:
+  - filho: Novo indivíduo gerado por cruzamento e mutação
+  - subPop: Subpopulação atual (Distance, Time, Fuel ou Ponderation)
+  - nextSubPop: Próxima geração da subpopulação
+  - tipoFitness: Qual fitness usar (0=Distance, 1=Time, 2=Fuel, 3=Ponderation)
+  - startIndex: Posição inicial (= elitismSize, para proteger a elite)
+
+───────────────────────────────────────────────────────────────────────────────
+PASSO 1: ENCONTRAR O PIOR INDIVÍDUO DA SUBPOPULAÇÃO
+───────────────────────────────────────────────────────────────────────────────
+
+worstIndex ← 0
+worstFitness ← 0
+
+ESCOLHER tipoFitness:
+    CASO 0 (Distance):
+        worstFitness ← subPop[worstIndex].getFitnessDistance()
+        
+        PARA i = startIndex ATÉ tamanho(subPop) FAÇA:
+            fitness ← subPop[i].getFitnessDistance()
+            SE fitness > worstFitness ENTÃO:
+                worstFitness ← fitness
+                worstIndex ← i
+            FIM_SE
+        FIM_PARA
+    
+    CASO 1 (Time):
+        ..
+    
+    CASO 2 (Fuel):
+        ..
+    
+    CASO 3 (Ponderation):
+        ..
+
+FIM_ESCOLHER
+
+EXPLICAÇÃO: 
+  - Percorre a subpopulação a partir de startIndex (pula a elite)
+  - Busca o indivíduo com MAIOR fitness (pior, pois queremos minimizar)
+  - Guarda a posição (worstIndex) e o valor (worstFitness)
+
+───────────────────────────────────────────────────────────────────────────────
+PASSO 2: COMPARAR O FILHO COM O PIOR INDIVÍDUO
+───────────────────────────────────────────────────────────────────────────────
+
+isBetter ← FALSO
+
+ESCOLHER tipoFitness:
+    CASO 0 (Distance):
+        isBetter ← filho.getFitnessDistance() < worstFitness
+    
+    CASO 1 (Time):
+        ..
+    
+    CASO 2 (Fuel):
+        ..
+    
+    CASO 3 (Ponderation):
+        ..
+FIM_ESCOLHER
+
+EXPLICAÇÃO:
+  - Compara o fitness do filho com o fitness do pior indivíduo
+  - Se filho < pior → filho é MELHOR (problema de minimização)
+  - Cada subpopulação usa seu próprio critério de fitness
+
+───────────────────────────────────────────────────────────────────────────────
+PASSO 3: SUBSTITUIR APENAS SE O FILHO FOR MELHOR
+───────────────────────────────────────────────────────────────────────────────
+
+SE isBetter = VERDADEIRO ENTÃO:
+    
+    // Pega o indivíduo na posição do pior na próxima geração
+    next ← nextSubPop[worstIndex]
+    
+    // Copia o ID do filho
+    next.setId(filho.getId())
+    
+    // Copia toda a rota do filho
+    sonRoute ← filho.getRoute()
+    PARA j = 0 ATÉ numVehicles FAÇA:
+        PARA k = 0 ATÉ numClients FAÇA:
+            next.setClientInRoute(j, k, sonRoute[j][k])
+        FIM_PARA
+    FIM_PARA
+    
+    // Copia TODOS os 4 tipos de fitness do filho
+    next.setFitnessDistance(filho.getFitnessDistance())
+    next.setFitnessTime(filho.getFitnessTime())
+    next.setFitnessFuel(filho.getFitnessFuel())
+    next.setFitness(filho.getFitness())
+
+SENÃO:
+    // Filho NÃO é melhor que o pior → DESCARTA o filho
+    // A população permanece inalterada
+    NÃO FAÇA NADA
+
+FIM_SE
+
+EXPLICAÇÃO:
+  - Se o filho for melhor: substitui o pior indivíduo na posição worstIndex
+  - Se o filho for pior: descarta o filho (steady-state replacement)
+  - Garante que a população NUNCA piora

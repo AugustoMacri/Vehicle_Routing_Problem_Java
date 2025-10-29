@@ -2,7 +2,7 @@
 # filepath: run_multiple.sh
 
 # Número de execuções desejadas
-RUNS=5
+RUNS=10
 
 # Diretório onde o projeto está localizado
 PROJECT_DIR="/home/augusto/Desktop/VRPs/Vehicle_Routing_Problem_Java"

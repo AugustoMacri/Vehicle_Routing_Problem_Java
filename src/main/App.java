@@ -63,8 +63,8 @@ public class App {
         int algorithmChoice = 0;
         while (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
             try {
-                algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
-                // algorithmChoice = 1;
+                // algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
+                algorithmChoice = 1;
 
                 if (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
                     System.out.print("Opção inválida. Digite 1, 2 ou 3: ");
@@ -83,7 +83,9 @@ public class App {
         int instanceTypeChoice = 0;
         while (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
             try {
-                instanceTypeChoice = Integer.parseInt(scanner.nextLine().trim());
+                //instanceTypeChoice = Integer.parseInt(scanner.nextLine().trim());
+                instanceTypeChoice = 1;
+
                 if (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
                     System.out.print("Opção inválida. Digite 1 ou 2: ");
                 }
@@ -132,8 +134,9 @@ public class App {
         while (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
             try {
                 
-                instanceChoice = Integer.parseInt(scanner.nextLine().trim());
+                //instanceChoice = Integer.parseInt(scanner.nextLine().trim());
 
+                instanceChoice = 1; // C101
                 // instanceChoice = 18; //R101
                 // instanceChoice = 41; //RC101
 
