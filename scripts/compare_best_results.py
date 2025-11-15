@@ -71,13 +71,19 @@ def find_best_result(files, read_function):
 
 def compare_best_results():
     """Compara apenas os melhores resultados mono e multi-objetivo"""
-    # Criar diretório para os gráficos comparativos
-    output_dir = 'compareBestResults'
+    # Determinar diretório base (projeto) a partir da localização do script
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    base_dir = os.path.abspath(os.path.join(script_dir, '..'))
+
+    # Criar diretório para os gráficos comparativos (no diretório do projeto)
+    output_dir = os.path.join(base_dir, 'compareBestResults')
     os.makedirs(output_dir, exist_ok=True)
 
-    # Obter listas de arquivos de resultados
-    mono_files = sorted(glob.glob('../resultsMono/mono_results_*.txt'))
-    multi_files = sorted(glob.glob('../resultsMulti/evolution_results_*.txt'))
+    # Obter listas de arquivos de resultados (caminhos absolutos, a partir do projeto)
+    mono_files = sorted(glob.glob(os.path.join(
+        base_dir, 'resultsMono', 'mono_results_*.txt')))
+    multi_files = sorted(glob.glob(os.path.join(
+        base_dir, 'resultsMulti', 'evolution_results_*.txt')))
 
     if not mono_files:
         print("Nenhum arquivo encontrado em resultsMono/")

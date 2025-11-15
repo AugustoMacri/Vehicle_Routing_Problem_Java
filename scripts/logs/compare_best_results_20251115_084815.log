@@ -1,0 +1,16 @@
+Analisando 10 arquivos mono e 10 arquivos multi...
+
+=== MELHORES RESULTADOS IDENTIFICADOS ===
+Melhor Mono-Objetivo: mono_results_20250627_014622.txt
+Fitness final: 7759.37
+
+Melhor Multi-Objetivo (Ponderação): evolution_results_20251115_002722.txt
+Fitness final: 7417.57
+
+Melhor desempenho: Multi-Objetivo
+Melhoria: 4.40%
+
+Gráfico comparativo dos melhores resultados salvo em: /home/augusto/Desktop/VRPs/Vehicle_Routing_Problem_Java/compareBestResults/best_results_comparison_20251115_084816.png
+Resumo detalhado salvo em: /home/augusto/Desktop/VRPs/Vehicle_Routing_Problem_Java/compareBestResults/best_results_summary_20251115_084816.txt
+
+Processamento concluído! Verifique a pasta 'compareBestResults' para ver os resultados.

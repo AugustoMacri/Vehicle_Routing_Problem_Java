@@ -83,7 +83,7 @@ public class App {
         int instanceTypeChoice = 0;
         while (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
             try {
-                //instanceTypeChoice = Integer.parseInt(scanner.nextLine().trim());
+                // instanceTypeChoice = Integer.parseInt(scanner.nextLine().trim());
                 instanceTypeChoice = 1;
 
                 if (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
@@ -133,12 +133,12 @@ public class App {
         int instanceChoice = 0;
         while (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
             try {
-                
-                //instanceChoice = Integer.parseInt(scanner.nextLine().trim());
 
-                instanceChoice = 1; // C101
+                // instanceChoice = Integer.parseInt(scanner.nextLine().trim());
+
+                // instanceChoice = 1; // C101
                 // instanceChoice = 18; //R101
-                // instanceChoice = 41; //RC101
+                instanceChoice = 41; // RC101
 
                 if (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
                     System.out.print("Opção inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");

@@ -1,0 +1,13 @@
+=== Compilando Estatísticas de Execuções ===
+
+Processando arquivos mono-objetivo...
+Encontrados 10 arquivos de estatísticas mono-objetivo.
+Tabela de estatísticas mono-objetivo salva em: resultsMono/final_stats/mono_stats_table_20251115_084810.csv
+Relatório de estatísticas mono-objetivo salvo em: resultsMono/final_stats/mono_stats_table_20251115_084810.txt
+
+Processando arquivos multi-objetivo...
+Encontrados 10 arquivos de estatísticas multi-objetivo.
+Tabela de estatísticas multi-objetivo salva em: resultsMulti/final_stats/multi_stats_table_20251115_084810.csv
+Relatório de estatísticas multi-objetivo salvo em: resultsMulti/final_stats/multi_stats_table_20251115_084810.txt
+
+Processamento concluído!
