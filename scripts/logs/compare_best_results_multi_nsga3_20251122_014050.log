@@ -1,0 +1,16 @@
+Analisando 10 arquivos multi e 10 arquivos NSGA3...
+
+=== MELHORES RESULTADOS IDENTIFICADOS ===
+Melhor Multi-Objetivo: evolution_results_20251113_202745.txt
+Fitness final: 5875.71
+
+Melhor NSGA3: evolution_results_20251122_013322.txt
+Fitness final: 7128.04
+
+Melhor desempenho: Multi-Objetivo
+Melhoria: 17.57%
+
+Gráfico comparativo salvo em: /home/augusto/Desktop/VRPs/Vehicle_Routing_Problem_Java/compareBestResults/best_multi_vs_nsga3_20251122_014051.png
+Resumo salvo em: /home/augusto/Desktop/VRPs/Vehicle_Routing_Problem_Java/compareBestResults/best_multi_vs_nsga3_summary_20251122_014051.txt
+
+Processamento concluído! Verifique a pasta 'compareBestResults' para ver os resultados.
