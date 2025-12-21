@@ -47,7 +47,7 @@ public class App {
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
-    public static int numGenerations = 3000; // 3000 gerações que era o número utilizado na versão em C
+    public static int numGenerations = 100; // 3000 gerações que era o número utilizado na versão em C
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     public static void main(String[] args) throws Exception {
@@ -184,6 +184,99 @@ public class App {
             System.out.println("Error reading the file");
             e.printStackTrace();
         }
+    }
+
+    private static void debugVehicleUsage(Individual individual, List<Client> clients) {
+        int vehiclesUsed = 0;
+
+        System.out.println("\n=== DEBUG: USO DE VEÍCULOS ===");
+
+        for (int v = 0; v < App.numVehicles; v++) {
+            boolean hasClients = false;
+            int clientCount = 0;
+            int totalDemand = 0;
+
+            for (int c = 0; c < App.numClients - 1; c++) {
+                int clientId = individual.getRoute()[v][c];
+                if (clientId != -1 && clientId != 0) {
+                    hasClients = true;
+                    clientCount++;
+                    // Encontrar o cliente na lista para pegar a demanda
+                    for (Client client : clients) {
+                        if (client.getId() == clientId) {
+                            totalDemand += client.getDemand();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (hasClients) {
+                vehiclesUsed++;
+                System.out.println("Veículo " + v + ": " + clientCount + " clientes, demanda total: " + totalDemand
+                        + "/" + App.vehicleCapacity);
+            }
+        }
+
+        System.out.println("\nTotal de veículos usados: " + vehiclesUsed);
+        System.out.println("Total de veículos disponíveis: " + App.numVehicles);
+        System.out.println("================================\n");
+    }
+
+    private static void debugVehicleRoute(Individual individual, int vehicleIndex, List<Client> clients) {
+        System.out.println("\n=== ROTA DO VEÍCULO " + vehicleIndex + " ===");
+
+        Client depot = clients.get(0); // Depósito
+        System.out.println("Depósito (0) [X: " + depot.getX() + ", Y: " + depot.getY() + "]");
+
+        double totalDistance = 0;
+        Client prevClient = depot;
+        int clientCount = 0;
+        Client lastClient = null;
+
+        // Processar todos os clientes da rota
+        for (int c = 0; c < App.numClients - 1; c++) {
+            int clientId = individual.getRoute()[vehicleIndex][c];
+
+            // Parar se encontrar -1 (fim da rota)
+            if (clientId == -1) {
+                break;
+            }
+
+            // Pular o depósito se aparecer na rota (não deveria, mas por garantia)
+            if (clientId == 0) {
+                continue;
+            }
+
+            Client currentClient = clients.get(clientId);
+
+            // Calcular distância do ponto anterior (depósito ou cliente anterior)
+            double dist = Math.sqrt(Math.pow(currentClient.getX() - prevClient.getX(), 2) +
+                    Math.pow(currentClient.getY() - prevClient.getY(), 2));
+
+            System.out.println("  ↓ distância: " + String.format("%.2f", dist));
+            System.out.println("Cliente " + clientId + " [X: " + currentClient.getX() +
+                    ", Y: " + currentClient.getY() + "]");
+
+            totalDistance += dist;
+            prevClient = currentClient;
+            lastClient = currentClient;
+            clientCount++;
+        }
+
+        // Distância do último cliente de volta ao depósito
+        if (lastClient != null) {
+            double distLastToDepot = Math.sqrt(Math.pow(depot.getX() - lastClient.getX(), 2) +
+                    Math.pow(depot.getY() - lastClient.getY(), 2));
+            totalDistance += distLastToDepot;
+            System.out.println("  ↓ distância: " + String.format("%.2f", distLastToDepot));
+            System.out.println("Depósito (0) [X: " + depot.getX() + ", Y: " + depot.getY() + "]");
+        }
+
+        System.out.println("\n📊 RESUMO DA ROTA:");
+        System.out.println("Número de clientes atendidos: " + clientCount);
+        System.out.println("Distância total desta rota: " + String.format("%.2f", totalDistance));
+        System.out.println("================================\n");
     }
 
     private static void runMultiObjectiveAlgorithm(ProblemInstance instance) {
@@ -350,6 +443,34 @@ public class App {
         saveMultiStatistics(bestPonderationFitness, avgPonderationFitness, stdDeviationPonderation);
 
         System.out.println("Tempo em milissegundos: " + executionTime + " ms");
+
+        // Debug: Analisar uso de veículos do melhor indivíduo da subpopulação de
+        // ponderação
+        Individual bestPonderation = population.getSubPopPonderation().stream()
+                .min(Comparator.comparingDouble(Individual::getFitness))
+                .orElse(null);
+
+        if (bestPonderation != null) {
+            debugVehicleUsage(bestPonderation, instance.getClients());
+
+            // Mostrar detalhes das rotas de cada veículo usado
+            System.out.println("\n=== DETALHAMENTO DAS ROTAS ===");
+            for (int v = 0; v < App.numVehicles; v++) {
+                // Verificar se o veículo tem clientes
+                boolean hasClients = false;
+                for (int c = 0; c < App.numClients - 1; c++) {
+                    int clientId = bestPonderation.getRoute()[v][c];
+                    if (clientId != -1 && clientId != 0) {
+                        hasClients = true;
+                        break;
+                    }
+                }
+
+                if (hasClients) {
+                    debugVehicleRoute(bestPonderation, v, instance.getClients());
+                }
+            }
+        }
 
         // // Printar IDs de todos os indivíduos em cada subpopulação
         // System.out.println("\n--- IDs dos indivíduos em cada subpopulação ---");
