@@ -47,7 +47,7 @@ public class App {
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
-    public static int numGenerations = 100; // 3000 gerações que era o número utilizado na versão em C
+    public static int numGenerations = 3000; // 3000 gerações que era o número utilizado na versão em C
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     public static void main(String[] args) throws Exception {

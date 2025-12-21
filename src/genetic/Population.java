@@ -35,9 +35,25 @@ public class Population {
         // Copying the clients array
         List<Client> clientsCopy = new ArrayList<>(clients);
 
-        int cont = 0;
+        // Usar K-means clustering para 70% da população inicial
+        int clusteringPopSize = (int) (App.pop_size * 0.7);
+        
+        System.out.println("Inicializando população com K-means clustering...");
+        System.out.println("Indivíduos com clustering: " + clusteringPopSize);
+        System.out.println("Indivíduos com Gillet-Miller: " + (App.pop_size - clusteringPopSize));
+        
+        KMeansClusteringInitializer kmeansInitializer = new KMeansClusteringInitializer();
+        
+        // Inicializar com K-means clustering
+        for (int h = 0; h < clusteringPopSize; h++) {
+            // Variar o número de clusters para diversidade (entre 8 e 15 clusters)
+            int numClusters = 8 + (h % 8);
+            Individual individual = kmeansInitializer.initializeWithClustering(h, clientsCopy, numClusters);
+            individuals.add(individual);
+        }
 
-        for (int h = 0; h < App.pop_size; h++) {
+        // Inicializar o resto com Gillet-Miller (método original)
+        for (int h = clusteringPopSize; h < App.pop_size; h++) {
             Individual individual = new Individual(h, 0, 0, 0, 0);
             boolean[] visited = new boolean[App.numClients];
 
@@ -112,6 +128,8 @@ public class Population {
 
             individuals.add(individual);
         }
+        
+        System.out.println("População inicializada com sucesso!");
 
     }
 
