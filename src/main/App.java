@@ -50,47 +50,61 @@ public class App {
     public static int numGenerations = 3000; // 3000 gerações que era o número utilizado na versão em C
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
+    // Variável estática para armazenar o nome da instância (sem extensão)
+    public static String instanceName = "";
+
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
 
-        // Menu para escolher o algoritmo
-        System.out.println("=== MENU DE SELEÇÃO DE ALGORITMO ===");
-        System.out.println("1 - Algoritmo Multi-Objetivo");
-        System.out.println("2 - Algoritmo Mono-Objetivo");
-        System.out.println("3 - Algoritmo Passo a Passo (para depuração)");
-        System.out.print("Digite sua escolha (1, 2 ou 3): ");
+        int algorithmChoice = 1; // Default: Multi-Objetivo
+        int instanceTypeChoice = 1; // Default: Solomon
+        int instanceChoice = 0;
 
-        int algorithmChoice = 0;
-        while (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
+        // Se argumentos foram passados via linha de comando
+        if (args.length > 0) {
             try {
-                // algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
-                algorithmChoice = 1;
-
-                if (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
-                    System.out.print("Opção inválida. Digite 1, 2 ou 3: ");
-                }
+                instanceChoice = Integer.parseInt(args[0]);
+                System.out.println("Executando em modo automático com instância: " + instanceChoice);
             } catch (NumberFormatException e) {
-                System.out.print("Entrada inválida. Digite 1, 2 ou 3: ");
+                System.out.println("Erro: Argumento inválido. Use um número de instância.");
+                return;
             }
-        }
+        } else {
+            // Menu interativo (modo original)
+            System.out.println("=== MENU DE SELEÇÃO DE ALGORITMO ===");
+            System.out.println("1 - Algoritmo Multi-Objetivo");
+            System.out.println("2 - Algoritmo Mono-Objetivo");
+            System.out.println("3 - Algoritmo Passo a Passo (para depuração)");
+            System.out.print("Digite sua escolha (1, 2 ou 3): ");
 
-        // Menu para escolher o tipo de instância
-        System.out.println("\n=== MENU DE SELEÇÃO DE TIPO DE INSTÂNCIA ===");
-        System.out.println("1 - Instâncias Solomon");
-        System.out.println("2 - Instâncias Gehring-Homberg");
-        System.out.print("Escolha o tipo de instância (1 ou 2): ");
+            while (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
+                try {
+                    algorithmChoice = Integer.parseInt(scanner.nextLine().trim());
 
-        int instanceTypeChoice = 0;
-        while (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
-            try {
-                // instanceTypeChoice = Integer.parseInt(scanner.nextLine().trim());
-                instanceTypeChoice = 1;
-
-                if (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
-                    System.out.print("Opção inválida. Digite 1 ou 2: ");
+                    if (algorithmChoice != 1 && algorithmChoice != 2 && algorithmChoice != 3) {
+                        System.out.print("Opção inválida. Digite 1, 2 ou 3: ");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.print("Entrada inválida. Digite 1, 2 ou 3: ");
                 }
-            } catch (NumberFormatException e) {
-                System.out.print("Entrada inválida. Digite 1 ou 2: ");
+            }
+
+            // Menu para escolher o tipo de instância
+            System.out.println("\n=== MENU DE SELEÇÃO DE TIPO DE INSTÂNCIA ===");
+            System.out.println("1 - Instâncias Solomon");
+            System.out.println("2 - Instâncias Gehring-Homberg");
+            System.out.print("Escolha o tipo de instância (1 ou 2): ");
+
+            while (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
+                try {
+                    instanceTypeChoice = Integer.parseInt(scanner.nextLine().trim());
+
+                    if (instanceTypeChoice != 1 && instanceTypeChoice != 2) {
+                        System.out.print("Opção inválida. Digite 1 ou 2: ");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.print("Entrada inválida. Digite 1 ou 2: ");
+                }
             }
         }
 
@@ -124,32 +138,41 @@ public class App {
         // Ordenar arquivos alfabeticamente
         Arrays.sort(instanceFiles, Comparator.comparing(File::getName));
 
-        // Mostrar as instâncias disponíveis
-        for (int i = 0; i < instanceFiles.length; i++) {
-            System.out.println((i + 1) + " - " + instanceFiles[i].getName());
-        }
+        // Se não foi passado argumento, mostrar menu
+        if (args.length == 0) {
+            // Mostrar as instâncias disponíveis
+            for (int i = 0; i < instanceFiles.length; i++) {
+                System.out.println((i + 1) + " - " + instanceFiles[i].getName());
+            }
 
-        System.out.print("Escolha uma instância (1-" + instanceFiles.length + "): ");
-        int instanceChoice = 0;
-        while (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
-            try {
+            System.out.print("Escolha uma instância (1-" + instanceFiles.length + "): ");
+            while (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
+                try {
+                    instanceChoice = Integer.parseInt(scanner.nextLine().trim());
 
-                // instanceChoice = Integer.parseInt(scanner.nextLine().trim());
-
-                instanceChoice = 1; // C101
-                // instanceChoice = 18; //R101
-                // instanceChoice = 41; // RC101
-
-                if (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
-                    System.out.print("Opção inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");
+                    if (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
+                        System.out.print("Opção inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.print("Entrada inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");
                 }
-            } catch (NumberFormatException e) {
-                System.out.print("Entrada inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");
+            }
+        } else {
+            // Validar instanceChoice passado via argumento
+            if (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
+                System.out.println("Erro: Número de instância inválido. Deve estar entre 1 e " + instanceFiles.length);
+                scanner.close();
+                return;
             }
         }
 
         String selectedInstancePath = instanceFiles[instanceChoice - 1].getPath();
-        System.out.println("\nInstância selecionada: " + instanceFiles[instanceChoice - 1].getName());
+        String selectedFileName = instanceFiles[instanceChoice - 1].getName();
+
+        // Extrair nome da instância sem extensão (ex: "C101" de "C101.txt")
+        instanceName = selectedFileName.toLowerCase().replaceAll("\\.txt$", "");
+
+        System.out.println("\nInstância selecionada: " + selectedFileName);
 
         // Fechar o scanner depois de usar
         scanner.close();
@@ -752,9 +775,14 @@ public class App {
                 resultsDir.mkdir();
             }
 
-            // Obter timestamp atual para nome do arquivo
-            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
-            String fileName = "resultsMulti/evolution_results_" + timestamp + ".txt";
+            // Usar nome da instância se disponível, senão usar timestamp
+            String fileName;
+            if (!instanceName.isEmpty()) {
+                fileName = "resultsMulti/evo_" + instanceName + ".txt";
+            } else {
+                String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+                fileName = "resultsMulti/evolution_results_" + timestamp + ".txt";
+            }
 
             java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
 
@@ -808,9 +836,14 @@ public class App {
                 resultsDir.mkdirs();
             }
 
-            // Obter timestamp atual para nome do arquivo
-            String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
-            String fileName = "resultsMulti/stats/multi_stats_" + timestamp + ".txt";
+            // Usar nome da instância se disponível, senão usar timestamp
+            String fileName;
+            if (!instanceName.isEmpty()) {
+                fileName = "resultsMulti/stats/stats_" + instanceName + ".txt";
+            } else {
+                String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+                fileName = "resultsMulti/stats/multi_stats_" + timestamp + ".txt";
+            }
 
             java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
 

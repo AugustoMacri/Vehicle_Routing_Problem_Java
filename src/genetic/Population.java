@@ -37,13 +37,13 @@ public class Population {
 
         // Usar K-means clustering para 70% da população inicial
         int clusteringPopSize = (int) (App.pop_size * 0.7);
-        
+
         System.out.println("Inicializando população com K-means clustering...");
         System.out.println("Indivíduos com clustering: " + clusteringPopSize);
         System.out.println("Indivíduos com Gillet-Miller: " + (App.pop_size - clusteringPopSize));
-        
+
         KMeansClusteringInitializer kmeansInitializer = new KMeansClusteringInitializer();
-        
+
         // Inicializar com K-means clustering
         for (int h = 0; h < clusteringPopSize; h++) {
             // Variar o número de clusters para diversidade (entre 8 e 15 clusters)
@@ -128,7 +128,7 @@ public class Population {
 
             individuals.add(individual);
         }
-        
+
         System.out.println("População inicializada com sucesso!");
 
     }
