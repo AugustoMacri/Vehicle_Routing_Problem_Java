@@ -13,11 +13,23 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
         double totalTime = 0;
         double totalFuel = 0;
         int numViolations = 0;
+        Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double currentTime = 0;
             double vehicleDistance = 0;
             int numViolationsVehicle = 0;
+            Client firstClient = null;
+            Client lastClient = null;
+
+            // Distância do depósito ao primeiro cliente
+            int firstClientId = individual.getRoute()[v][0];
+            if (firstClientId != -1) {
+                firstClient = clients.get(firstClientId);
+                double depotToFirstDistance = calculateDistance(depot, firstClient);
+                vehicleDistance += depotToFirstDistance;
+                currentTime += (depotToFirstDistance / App.VEHICLE_SPEED) * 60;
+            }
 
             for (int c = 0; c < App.numClients - 1; c++) {
                 int currentClientId = individual.getRoute()[v][c];
@@ -29,6 +41,8 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 // Get the current client and next client
                 Client currentClient = clients.get(currentClientId);
                 Client nextClient = clients.get(nextClientId);
+
+                lastClient = nextClient; // Rastreia último cliente
 
                 // Calculating the distance between the current client and the next client
                 double distance = calculateDistance(currentClient, nextClient);
@@ -52,6 +66,13 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 }
 
                 currentTime += currentClient.getServiceTime(); // Add service time
+            }
+
+            // Distância do último cliente de volta ao depósito
+            if (lastClient != null) {
+                double lastToDepotDistance = calculateDistance(lastClient, depot);
+                vehicleDistance += lastToDepotDistance;
+                currentTime += (lastToDepotDistance / App.VEHICLE_SPEED) * 60;
             }
 
             // Calculating the fuel cost

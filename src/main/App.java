@@ -136,9 +136,9 @@ public class App {
 
                 // instanceChoice = Integer.parseInt(scanner.nextLine().trim());
 
-                // instanceChoice = 1; // C101
+                instanceChoice = 1; // C101
                 // instanceChoice = 18; //R101
-                instanceChoice = 41; // RC101
+                // instanceChoice = 41; // RC101
 
                 if (instanceChoice < 1 || instanceChoice > instanceFiles.length) {
                     System.out.print("Opção inválida. Digite um número entre 1 e " + instanceFiles.length + ": ");

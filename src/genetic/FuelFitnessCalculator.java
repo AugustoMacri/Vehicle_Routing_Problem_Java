@@ -5,14 +5,17 @@ import java.util.List;
 import main.App;
 import vrp.Client;
 
-public class FuelFitnessCalculator implements FitnessCalculator{
+public class FuelFitnessCalculator implements FitnessCalculator {
 
     @Override
     public double calculateFitness(Individual individual, List<Client> clients) {
         double totalFuel = 0;
+        Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double vehicleDistance = 0;
+            Client firstClient = null;
+            Client lastClient = null;
 
             for (int c = 0; c < App.numClients - 1; c++) {
                 int currentClientId = individual.getRoute()[v][c];
@@ -25,10 +28,23 @@ public class FuelFitnessCalculator implements FitnessCalculator{
                 Client currentClient = clients.get(currentClientId);
                 Client nextClient = clients.get(nextClientId);
 
+                // Armazena primeiro e último cliente
+                if (firstClient == null) {
+                    firstClient = currentClient;
+                }
+                lastClient = nextClient;
+
                 // Calculating the distance between the current client and the next client
                 double distance = calculateDistance(currentClient, nextClient);
                 vehicleDistance += distance;
 
+            }
+
+            // Adiciona distâncias do depósito: depósito → primeiro cliente e último cliente
+            // → depósito
+            if (firstClient != null) {
+                vehicleDistance += calculateDistance(depot, firstClient);
+                vehicleDistance += calculateDistance(lastClient, depot);
             }
 
             // Calculating the fuel cost
@@ -38,7 +54,8 @@ public class FuelFitnessCalculator implements FitnessCalculator{
             totalFuel += fuelCost;
 
             // Debugging
-            //System.out.printf("Vehicle %d | Distance: %.2f | Fuel: %.2f%n",v, vehicleDistance, fuelCost(vehicleDistance));
+            // System.out.printf("Vehicle %d | Distance: %.2f | Fuel: %.2f%n",v,
+            // vehicleDistance, fuelCost(vehicleDistance));
 
         }
 
@@ -61,6 +78,5 @@ public class FuelFitnessCalculator implements FitnessCalculator{
 
         return Math.min(gasolineCost, Math.min(ethanolCost, dieselCost));
     }
-    
-    
+
 }

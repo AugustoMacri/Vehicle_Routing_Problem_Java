@@ -11,11 +11,23 @@ public class TimeFitnessCalculator implements FitnessCalculator {
     public double calculateFitness(Individual individual, List<Client> clients) {
         double totalTime = 0;
         int numViolations = 0;
+        Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double currentTime = 0;
             double vehicleDistance = 0;
             int numViolationsVehicle = 0;
+            Client firstClient = null;
+            Client lastClient = null;
+
+            // Distância do depósito ao primeiro cliente
+            int firstClientId = individual.getRoute()[v][0];
+            if (firstClientId != -1) {
+                firstClient = clients.get(firstClientId);
+                double depotToFirstDistance = calculateDistance(depot, firstClient);
+                vehicleDistance += depotToFirstDistance;
+                currentTime += (depotToFirstDistance / App.VEHICLE_SPEED) * 60;
+            }
 
             for (int c = 0; c < App.numClients - 1; c++) {
                 int currentClientId = individual.getRoute()[v][c];
@@ -28,6 +40,8 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                 Client currentClient = clients.get(currentClientId);
                 Client nextClient = clients.get(nextClientId);
 
+                lastClient = nextClient; // Rastreia último cliente
+
                 // Calculating the distance between the current client and the next client
                 double distance = calculateDistance(currentClient, nextClient);
                 vehicleDistance += distance;
@@ -38,12 +52,12 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                 // Check if the vehicle arrives between the ready time and due time and if the
                 // service time plus current time is less than the due time (respect the due
                 // time)
-                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()){
+                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()) {
 
-                    // System.out.println("Vehicle " + v + " | Client Id " + currentClientId + " | Current time: " + currentTime
-                    //         + " | Ready time: " + currentClient.getReadyTime() + " | Due time: "
-                    //         + currentClient.getDueTime());
-                    
+                    // System.out.println("Vehicle " + v + " | Client Id " + currentClientId + " |
+                    // Current time: " + currentTime
+                    // + " | Ready time: " + currentClient.getReadyTime() + " | Due time: "
+                    // + currentClient.getDueTime());
 
                     numViolations++;
                     numViolationsVehicle++;
@@ -52,16 +66,30 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                 currentTime += currentClient.getServiceTime(); // Add service time
             }
 
+            // Distância do último cliente de volta ao depósito
+            if (lastClient != null) {
+                double lastToDepotDistance = calculateDistance(lastClient, depot);
+                vehicleDistance += lastToDepotDistance;
+                currentTime += (lastToDepotDistance / App.VEHICLE_SPEED) * 60;
+            }
+
             // Adding the time
             totalTime += currentTime;
 
             // Debugging
-            //System.out.printf("Vehicle %d | Time: %.2f | TotalTime (vai no fitness): %.2f | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",v, currentTime, totalTime, numViolationsVehicle, numViolations, App.VEHICLE_SPEED, vehicleDistance);
+            // System.out.printf("Vehicle %d | Time: %.2f | TotalTime (vai no fitness): %.2f
+            // | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",v,
+            // currentTime, totalTime, numViolationsVehicle, numViolations,
+            // App.VEHICLE_SPEED, vehicleDistance);
 
         }
 
         // Calculating the total cost of the Individual
-        double fitnessTime = (numViolations * App.WEIGHT_NUM_VIOLATIONS) + (totalTime * 0.5); //Tava dando 50 pq total time era 0, e já que dava 100 violações com peso de 0,50, então dava 50 po
+        double fitnessTime = (numViolations * App.WEIGHT_NUM_VIOLATIONS) + (totalTime * 0.5); // Tava dando 50 pq total
+                                                                                              // time era 0, e já que
+                                                                                              // dava 100 violações com
+                                                                                              // peso de 0,50, então
+                                                                                              // dava 50 po
 
         return fitnessTime;
 
