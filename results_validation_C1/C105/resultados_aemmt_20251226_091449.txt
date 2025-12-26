@@ -1,0 +1,24 @@
+Resultados AEMMT - C105
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   883.55
+       2 |   890.27
+       3 |   915.17
+       4 |   869.19
+       5 |   839.72
+       6 |   876.27
+       7 |   882.61
+       8 |   890.26
+       9 |   904.48
+      10 |   919.91
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 839.72
+Pior distância encontrada: 919.91
+Distância média geral: 887.14
+Desvio padrão das distâncias: 22.14

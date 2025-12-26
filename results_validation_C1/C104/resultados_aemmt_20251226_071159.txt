@@ -1,0 +1,24 @@
+Resultados AEMMT - C104
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   829.80
+       2 |   907.26
+       3 |   886.11
+       4 |   873.95
+       5 |   917.18
+       6 |   895.79
+       7 |   830.22
+       8 |   827.39
+       9 |   897.46
+      10 |   919.27
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 827.39
+Pior distância encontrada: 919.27
+Distância média geral: 878.44
+Desvio padrão das distâncias: 34.69
