@@ -447,9 +447,9 @@ public class App {
             }
         }
 
-        // Armazenar o melhor indivíduo final
-        finalBestIndividual = population.getSubPopPonderation().stream()
-                .min(Comparator.comparingDouble(Individual::getFitness))
+        // Armazenar o melhor indivíduo final (melhor em distância)
+        finalBestIndividual = population.getSubPopDistance().stream()
+                .min(Comparator.comparingDouble(Individual::getFitnessDistance))
                 .map(ind -> copyIndividual(ind))
                 .orElse(null);
 
@@ -783,10 +783,10 @@ public class App {
      */
     private static Individual copyIndividual(Individual source) {
         Individual copy = new Individual(source.getId(),
+                source.getFitness(),
                 source.getFitnessDistance(),
                 source.getFitnessTime(),
-                source.getFitnessFuel(),
-                source.getFitness());
+                source.getFitnessFuel());
 
         // Copiar rotas
         int[][] sourceRoute = source.getRoute();

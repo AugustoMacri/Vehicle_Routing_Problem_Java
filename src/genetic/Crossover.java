@@ -55,7 +55,7 @@ public class Crossover {
 
         // Denormalize the child route
         int[][] denormalizedChildRoute = denormalizeRoute(childRoute);
-        
+
         // Final validation: ensure all clients are present after denormalization
         if (!validateRoute(denormalizedChildRoute, App.numClients - 1)) {
             System.err.println("ERRO CRÍTICO: Crossover gerou rota inválida após desnormalização!");
@@ -98,7 +98,7 @@ public class Crossover {
 
         for (int v = 0; v < App.numVehicles; v++) {
             int pos = 0;
-            
+
             // Copy ALL clients (skip zeros and -1), regardless of position
             for (int c = 0; c < App.numClients; c++) {
                 if (route[v][c] != 0 && route[v][c] != -1) {
