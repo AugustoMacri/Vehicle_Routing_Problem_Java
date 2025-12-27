@@ -393,6 +393,42 @@ public class Population {
         }
     }
 
+    /**
+     * Validates and repairs an individual if necessary.
+     * Ensures all clients 1 to (numClients-1) are present exactly once.
+     */
+    private static void validateAndRepairIndividual(Individual individual, int generation, String context) {
+        if (!Crossover.validateRoute(individual.getRoute(), App.numClients - 1)) {
+            System.err.println("ERRO CRÍTICO: Indivíduo inválido detectado!");
+            System.err.println("Contexto: " + context + " na geração " + generation);
+            System.err.println("Tentando reparar...");
+
+            // Count how many clients are missing
+            Set<Integer> foundClients = new HashSet<>();
+            for (int v = 0; v < App.numVehicles; v++) {
+                for (int c = 0; c < App.numClients; c++) {
+                    int clientId = individual.getRoute()[v][c];
+                    if (clientId > 0) {
+                        foundClients.add(clientId);
+                    }
+                }
+            }
+
+            System.err.println("Clientes encontrados: " + foundClients.size() + " de " + (App.numClients - 1));
+
+            // Find missing clients
+            List<Integer> missingClients = new ArrayList<>();
+            for (int i = 1; i < App.numClients; i++) { // Real clients are 1 to App.numClients-1
+                if (!foundClients.contains(i)) {
+                    missingClients.add(i);
+                }
+            }
+
+            System.err.println("Clientes faltando: " + missingClients);
+            System.err.println("AVISO: Indivíduo será descartado - não pode ser reparado aqui!");
+        }
+    }
+
     // Function to Evolve the population
     public void evolvePopMulti(
             int generation,

@@ -47,11 +47,15 @@ public class App {
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
-    public static int numGenerations = 3000; // 3000 gerações que era o número utilizado na versão em C
+    public static int numGenerations = 3000;
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     // Variável estática para armazenar o nome da instância (sem extensão)
     public static String instanceName = "";
+
+    // Variáveis para armazenar rotas inicial e final
+    public static Individual initialBestIndividual = null;
+    public static Individual finalBestIndividual = null;
 
     public static void main(String[] args) throws Exception {
         Scanner scanner = new Scanner(System.in);
@@ -184,11 +188,11 @@ public class App {
 
             numVehicles = instance.getNumVehicles();
             vehicleCapacity = instance.getVehicleCapacity();
-            numClients = instance.getClients().size();
+            numClients = instance.getClients().size(); // Total size including depot (array size)
 
             System.out.println("Number of vehicles: " + numVehicles);
             System.out.println("Vehicle capacity: " + vehicleCapacity);
-            System.out.println("Number of clients: " + numClients);
+            System.out.println("Number of clients (total including depot): " + numClients);
 
             if (algorithmChoice == 1) {
                 // Executar algoritmo Multi-Objetivo (código existente)
@@ -347,6 +351,12 @@ public class App {
                 .min()
                 .orElse(Double.MAX_VALUE);
 
+        // Armazenar o melhor indivíduo inicial
+        initialBestIndividual = population.getSubPopPonderation().stream()
+                .min(Comparator.comparingDouble(Individual::getFitness))
+                .map(ind -> copyIndividual(ind))
+                .orElse(null);
+
         // System.exit(0);
         // //
         // -----------------------------------------------------------------------------------------------------
@@ -437,9 +447,15 @@ public class App {
             }
         }
 
+        // Armazenar o melhor indivíduo final
+        finalBestIndividual = population.getSubPopPonderation().stream()
+                .min(Comparator.comparingDouble(Individual::getFitness))
+                .map(ind -> copyIndividual(ind))
+                .orElse(null);
+
         // Salvar os resultados em um arquivo
         saveResultsToFile(generationsList, bestDistanceFitnessList, bestTimeFitnessList,
-                bestFuelFitnessList, bestPonderationFitnessList);
+                bestFuelFitnessList, bestPonderationFitnessList, instance.getClients());
 
         // Calcular estatísticas da última geração para a subpopulação de ponderação
         double bestPonderationFitness = findBestFitness(population.getSubPopPonderation(),
@@ -762,11 +778,99 @@ public class App {
                 .orElse(Double.MAX_VALUE);
     }
 
+    /**
+     * Cria uma cópia profunda de um indivíduo
+     */
+    private static Individual copyIndividual(Individual source) {
+        Individual copy = new Individual(source.getId(),
+                source.getFitnessDistance(),
+                source.getFitnessTime(),
+                source.getFitnessFuel(),
+                source.getFitness());
+
+        // Copiar rotas
+        int[][] sourceRoute = source.getRoute();
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 0; c < App.numClients; c++) {
+                copy.setClientInRoute(v, c, sourceRoute[v][c]);
+            }
+        }
+
+        return copy;
+    }
+
+    /**
+     * Formata as rotas de um indivíduo para salvar em arquivo
+     */
+    private static String formatRoutesForFile(Individual individual, List<Client> clients, String label) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n").append(label).append("\n");
+        sb.append("=".repeat(80)).append("\n\n");
+
+        int vehiclesUsed = 0;
+        double totalDistance = 0;
+
+        for (int v = 0; v < App.numVehicles; v++) {
+            boolean hasClients = false;
+            List<Integer> routeClients = new ArrayList<>();
+
+            // Coletar clientes da rota
+            for (int c = 0; c < App.numClients - 1; c++) {
+                int clientId = individual.getRoute()[v][c];
+                if (clientId == -1)
+                    break;
+                if (clientId != 0) {
+                    hasClients = true;
+                    routeClients.add(clientId);
+                }
+            }
+
+            if (hasClients) {
+                vehiclesUsed++;
+                Client depot = clients.get(0);
+                double routeDistance = 0;
+                int capacity = 0;
+
+                sb.append(String.format("Veículo %d: ", v));
+                sb.append("Depósito(0)");
+
+                Client prevClient = depot;
+                for (int clientId : routeClients) {
+                    Client currentClient = clients.get(clientId);
+                    double dist = Math.sqrt(Math.pow(currentClient.getX() - prevClient.getX(), 2) +
+                            Math.pow(currentClient.getY() - prevClient.getY(), 2));
+                    routeDistance += dist;
+                    capacity += currentClient.getDemand();
+
+                    sb.append(String.format(" -> Cliente(%d)", clientId));
+                    prevClient = currentClient;
+                }
+
+                // Volta ao depósito
+                double distLastToDepot = Math.sqrt(Math.pow(depot.getX() - prevClient.getX(), 2) +
+                        Math.pow(depot.getY() - prevClient.getY(), 2));
+                routeDistance += distLastToDepot;
+                totalDistance += routeDistance;
+
+                sb.append(" -> Depósito(0)\n");
+                sb.append(String.format("    Clientes: %d | Demanda: %d/%d | Distância: %.2f\n\n",
+                        routeClients.size(), capacity, App.vehicleCapacity, routeDistance));
+            }
+        }
+
+        sb.append(String.format("Total de veículos usados: %d\n", vehiclesUsed));
+        sb.append(String.format("Distância total: %.2f\n", totalDistance));
+        sb.append("=".repeat(80)).append("\n");
+
+        return sb.toString();
+    }
+
     private static void saveResultsToFile(List<Integer> generations,
             List<Double> distanceFitness,
             List<Double> timeFitness,
             List<Double> fuelFitness,
-            List<Double> ponderationFitness) {
+            List<Double> ponderationFitness,
+            List<Client> clients) {
 
         try {
             // Criar diretório de resultados se não existir
@@ -817,6 +921,15 @@ public class App {
                 writer.print(String.format("%.2f\t", fitness));
             }
             writer.println();
+
+            // Adicionar rotas inicial e final
+            if (initialBestIndividual != null && finalBestIndividual != null) {
+                writer.println("\n");
+                writer.println(
+                        formatRoutesForFile(initialBestIndividual, clients, "ROTAS INICIAIS (Antes da Evolução)"));
+                writer.println("\n");
+                writer.println(formatRoutesForFile(finalBestIndividual, clients, "ROTAS FINAIS (Após 3000 Gerações)"));
+            }
 
             writer.close();
             System.out.println("\nResultados salvos em: " + fileName);

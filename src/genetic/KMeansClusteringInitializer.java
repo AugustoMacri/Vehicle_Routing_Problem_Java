@@ -246,7 +246,7 @@ public class KMeansClusteringInitializer {
                 Client lastClient = depot;
 
                 // Adicionar clientes à rota respeitando capacidade
-                while (clusterClientIndex < cluster.size() && pos < App.numClients - 1) {
+                while (clusterClientIndex < cluster.size() && pos < App.numClients) {
                     Client client = cluster.get(clusterClientIndex);
 
                     // Verificar se já foi visitado
@@ -310,7 +310,7 @@ public class KMeansClusteringInitializer {
                 lastClient = client;
                 pos++;
 
-                if (pos >= App.numClients - 1)
+                if (pos > App.numClients) // Array has size numClients + 1, so max valid index is numClients
                     break;
             }
 

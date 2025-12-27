@@ -11,13 +11,13 @@ public class Mutation {
         // Decide if the individual will be mutated
         int mutateIndividual = random.nextInt((int) (1.0 / mutationRate));
 
-        //int mutateIndividual = 0;
+        // int mutateIndividual = 0;
 
         if (mutateIndividual != 0) {
             return;
         }
 
-        //System.out.println("Mutating individual: " + individual.getId());
+        // System.out.println("Mutating individual: " + individual.getId());
 
         int[][] route = individual.getRoute();
 
@@ -36,7 +36,7 @@ public class Mutation {
 
             int point1, point2;
 
-            //System.err.println("Real clients: " + validClients.size());
+            // System.err.println("Real clients: " + validClients.size());
 
             do {
                 point1 = validClients.get(random.nextInt(validClients.size()));
@@ -44,7 +44,8 @@ public class Mutation {
             } while (point1 == point2);
 
             // Swap the two points in the route
-            //System.out.println("Mutating vehicle " + v + ": swapping " + route[v][point1] + " and " + route[v][point2]);
+            // System.out.println("Mutating vehicle " + v + ": swapping " + route[v][point1]
+            // + " and " + route[v][point2]);
 
             int temp = route[v][point1];
             route[v][point1] = route[v][point2];
