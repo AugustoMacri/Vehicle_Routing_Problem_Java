@@ -221,6 +221,8 @@ def main():
     parser.add_argument('--results-dir', type=str,
                         default='results_validation_C1_previous',
                         help='Diretório com os resultados')
+    parser.add_argument('--results-file', type=str,
+                        help='Arquivo de resultado específico (ex: evo_c101_exec01.txt)')
     parser.add_argument('--instances-dir', type=str,
                         default='src/instances/solomon',
                         help='Diretório com os arquivos das instâncias')
@@ -228,6 +230,54 @@ def main():
                         help='Diretório para salvar os mapas')
 
     args = parser.parse_args()
+
+    if args.results_file:
+        # Processar um único arquivo de resultado
+        if not args.instance:
+            print("Erro: --instance é obrigatório quando usar --results-file")
+            return
+
+        instance_name = args.instance.upper()
+        results_file_path = Path(args.results_file)
+
+        if not results_file_path.exists():
+            print(f"Erro: Arquivo não encontrado: {results_file_path}")
+            return
+
+        # Buscar arquivo da instância
+        instance_file = Path(args.instances_dir) / f"{instance_name}.txt"
+        if not instance_file.exists():
+            print(
+                f"Erro: Arquivo da instância não encontrado: {instance_file}")
+            return
+
+        # Ler coordenadas
+        clients = read_instance_file(instance_file)
+
+        # Extrair rotas
+        initial_routes, final_routes = parse_routes_from_evo_file(
+            results_file_path)
+
+        # Criar diretório de saída
+        output_dir = Path(args.output_dir or results_file_path.parent)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Nome base do arquivo
+        file_basename = results_file_path.stem  # ex: evo_c101_exec01
+
+        # Gerar mapas
+        initial_output = output_dir / f"route_map_{file_basename}_initial.png"
+        final_output = output_dir / f"route_map_{file_basename}_final.png"
+
+        if initial_routes:
+            plot_routes(clients, initial_routes,
+                        f"{instance_name} - Rotas Iniciais", initial_output)
+
+        if final_routes:
+            plot_routes(clients, final_routes,
+                        f"{instance_name} - Rotas Finais", final_output)
+
+        return
 
     if args.instance:
         # Processar uma única instância

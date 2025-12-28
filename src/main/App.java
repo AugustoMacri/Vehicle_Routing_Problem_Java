@@ -450,7 +450,17 @@ public class App {
         // Armazenar o melhor indivíduo final (melhor em distância)
         finalBestIndividual = population.getSubPopDistance().stream()
                 .min(Comparator.comparingDouble(Individual::getFitnessDistance))
-                .map(ind -> copyIndividual(ind))
+                .map(ind -> {
+                    System.out.println("\n=== DEBUG: Selecionando melhor indivíduo ===");
+                    System.out.println("ID: " + ind.getId());
+                    System.out.println("getFitnessDistance(): " + ind.getFitnessDistance());
+                    System.out.println("getFitness(): " + ind.getFitness());
+                    Individual copy = copyIndividual(ind);
+                    System.out.println("\nApós cópia:");
+                    System.out.println("getFitnessDistance(): " + copy.getFitnessDistance());
+                    System.out.println("getFitness(): " + copy.getFitness());
+                    return copy;
+                })
                 .orElse(null);
 
         // Salvar os resultados em um arquivo
@@ -806,6 +816,9 @@ public class App {
         StringBuilder sb = new StringBuilder();
         sb.append("\n").append(label).append("\n");
         sb.append("=".repeat(80)).append("\n\n");
+
+        // DEBUG: Mostrar fitness do indivíduo
+        sb.append(String.format("Fitness Distance do indivíduo: %.2f\n\n", individual.getFitnessDistance()));
 
         int vehiclesUsed = 0;
         double totalDistance = 0;

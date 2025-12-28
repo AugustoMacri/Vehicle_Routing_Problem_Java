@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
 import os
+import sys
 import glob
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
 
 
 def list_instances():
@@ -89,11 +92,11 @@ def read_instance_coordinates(file_path):
     return coordinates
 
 
-def plot_coordinates(coordinates, instance_name):
-    """Plota as coordenadas em um plano cartesiano e salva na pasta results_mapping"""
+def plot_coordinates(coordinates, instance_name, output_dir="mapping_results"):
+    """Plota as coordenadas em um plano cartesiano e salva na pasta especificada"""
     if not coordinates:
-        print("Nenhuma coordenada encontrada para plotar.")
-        return
+        print(f"⚠️  Nenhuma coordenada encontrada para {instance_name}")
+        return False
 
     # Extrair coordenadas para plotagem
     cust_nos = [c[0] for c in coordinates]
@@ -107,7 +110,8 @@ def plot_coordinates(coordinates, instance_name):
     plt.figure(figsize=(10, 8))
 
     # Plotar todos os clientes
-    plt.scatter(x_coords, y_coords, c='blue', marker='o', s=50, alpha=0.7)
+    plt.scatter(x_coords, y_coords, c='blue', marker='o',
+                s=50, alpha=0.7, label='Clientes')
 
     # Destacar o depósito
     if depot_index is not None:
@@ -115,64 +119,182 @@ def plot_coordinates(coordinates, instance_name):
                     c='red', marker='s', s=100, label='Depósito')
 
     # Configurações do gráfico
-    plt.title(f'Mapa de Clientes - Instância {instance_name}', fontsize=16)
+    plt.title(
+        f'Mapa de Clientes - Instância {instance_name}', fontsize=16, fontweight='bold')
     plt.xlabel('Coordenada X', fontsize=12)
     plt.ylabel('Coordenada Y', fontsize=12)
     plt.grid(True, linestyle='--', alpha=0.7)
-
-    # Adicionar legenda se houver depósito
-    if depot_index is not None:
-        plt.legend()
+    plt.legend(fontsize=10)
 
     # Ajustar limites para visualização adequada (margem de 10%)
     x_min, x_max = min(x_coords), max(x_coords)
     y_min, y_max = min(y_coords), max(y_coords)
-    x_margin = (x_max - x_min) * 0.1
-    y_margin = (y_max - y_min) * 0.1
+    x_margin = (x_max - x_min) * 0.1 if x_max != x_min else 10
+    y_margin = (y_max - y_min) * 0.1 if y_max != y_min else 10
 
     plt.xlim(x_min - x_margin, x_max + x_margin)
     plt.ylim(y_min - y_margin, y_max + y_margin)
 
     # Criar diretório para salvar o mapa se não existir
-    save_dir = "mapping_results"
-    os.makedirs(save_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
 
-    # Gerar nome de arquivo com timestamp
-    timestamp = plt.matplotlib.dates.date2num(
-        plt.matplotlib.dates.datetime.datetime.now())
-    timestamp_str = plt.matplotlib.dates.num2date(
-        timestamp).strftime("%Y%m%d_%H%M%S")
-    save_path = os.path.join(
-        save_dir, f"map_{instance_name}_{timestamp_str}.png")
+    # Gerar nome de arquivo
+    save_path = os.path.join(output_dir, f"map_{instance_name}.png")
 
     # Salvar a figura
     plt.tight_layout()
     plt.savefig(save_path, dpi=300, bbox_inches='tight')
-    print(f"Mapa salvo em: {save_path}")
+    plt.close()
+
+    print(f"  ✓ Mapa salvo: {save_path}")
+    return True
 
 
+def process_instance(instance_path, output_dir="mapping_results"):
+    """Processa uma única instância e gera o mapa"""
+    instance_name = os.path.basename(instance_path).replace('.txt', '').upper()
 
-def main():
-    print("=== Visualizador de Instâncias VRP ===")
-
-    # Listar e escolher instância
-    instance_path = list_instances()
-
-    if not instance_path:
-        return
-
-    # Extrair nome da instância do caminho do arquivo
-    instance_name = os.path.basename(instance_path).replace('.txt', '')
-
-    print(f"\nLendo coordenadas da instância {instance_name}...")
     coordinates = read_instance_coordinates(instance_path)
 
     if coordinates:
-        print(f"Encontrados {len(coordinates)} pontos.")
-        plot_coordinates(coordinates, instance_name)
+        return plot_coordinates(coordinates, instance_name, output_dir)
     else:
-        print("Não foi possível extrair coordenadas da instância.")
+        print(f"  ✗ Não foi possível extrair coordenadas de {instance_name}")
+        return False
+
+
+def process_multiple_instances(pattern, instances_dir, output_dir):
+    """Processa múltiplas instâncias baseado em um padrão"""
+    instance_files = sorted(
+        glob.glob(os.path.join(instances_dir, f"{pattern}.txt")))
+
+    if not instance_files:
+        print(f"✗ Nenhuma instância encontrada com padrão: {pattern}")
+        return 0
+
+    print(f"\n{'='*60}")
+    print(f"Processando {len(instance_files)} instâncias ({pattern})")
+    print(f"{'='*60}\n")
+
+    success_count = 0
+    for instance_path in instance_files:
+        instance_name = os.path.basename(
+            instance_path).replace('.txt', '').upper()
+        print(f"[{success_count+1}/{len(instance_files)}] {instance_name}...")
+
+        if process_instance(instance_path, output_dir):
+            success_count += 1
+
+    print(f"\n{'='*60}")
+    print(f"Resumo: ✓ {success_count}/{len(instance_files)} mapas gerados")
+    print(f"Diretório de saída: {output_dir}")
+    print(f"{'='*60}\n")
+
+    return success_count
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='Gera mapas de coordenadas de instâncias VRP',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Exemplos de uso:
+  %(prog)s --instance C101                    # Gera mapa para C101
+  %(prog)s --all-c1                           # Gera mapas para todas C1 (C101-C109)
+  %(prog)s --all-r1                           # Gera mapas para todas R1 (R101-R112)
+  %(prog)s --all-rc1                          # Gera mapas para todas RC1 (RC101-RC108)
+  %(prog)s --all                              # Gera mapas para TODAS as instâncias
+  %(prog)s --instance C101 --output-dir maps  # Especifica diretório de saída
+        """
+    )
+
+    parser.add_argument('--instance', type=str,
+                        help='Nome da instância específica (ex: C101, R101, RC101)')
+    parser.add_argument('--all-c1', action='store_true',
+                        help='Processar todas as instâncias C1 (C101-C109)')
+    parser.add_argument('--all-r1', action='store_true',
+                        help='Processar todas as instâncias R1 (R101-R112)')
+    parser.add_argument('--all-rc1', action='store_true',
+                        help='Processar todas as instâncias RC1 (RC101-RC108)')
+    parser.add_argument('--all', action='store_true',
+                        help='Processar TODAS as instâncias (C1, R1, RC1)')
+    parser.add_argument('--instances-dir', type=str,
+                        default='src/instances/solomon',
+                        help='Diretório com os arquivos das instâncias')
+    parser.add_argument('--output-dir', type=str,
+                        default='mapping_results',
+                        help='Diretório para salvar os mapas gerados')
+
+    args = parser.parse_args()
+
+    # Verificar se o diretório de instâncias existe
+    if not os.path.exists(args.instances_dir):
+        alt_dir = "bin/instances/solomon"
+        if os.path.exists(alt_dir):
+            args.instances_dir = alt_dir
+            print(f"ℹ️  Usando diretório alternativo: {alt_dir}\n")
+        else:
+            print(
+                f"✗ Diretório de instâncias não encontrado: {args.instances_dir}")
+            return 1
+
+    # Processar baseado nos argumentos
+    if args.all:
+        print("\n" + "="*60)
+        print("Gerando mapas para TODAS as instâncias")
+        print("="*60)
+        total = 0
+        total += process_multiple_instances("C1*",
+                                            args.instances_dir, args.output_dir)
+        total += process_multiple_instances("R1*",
+                                            args.instances_dir, args.output_dir)
+        total += process_multiple_instances("RC1*",
+                                            args.instances_dir, args.output_dir)
+        print(f"\n✓ Total de {total} mapas gerados com sucesso!")
+
+    elif args.all_c1:
+        process_multiple_instances("C1*", args.instances_dir, args.output_dir)
+
+    elif args.all_r1:
+        process_multiple_instances("R1*", args.instances_dir, args.output_dir)
+
+    elif args.all_rc1:
+        process_multiple_instances("RC1*", args.instances_dir, args.output_dir)
+
+    elif args.instance:
+        instance_path = os.path.join(
+            args.instances_dir, f"{args.instance.upper()}.txt")
+
+        if not os.path.exists(instance_path):
+            print(f"✗ Instância não encontrada: {instance_path}")
+            return 1
+
+        print(f"\nProcessando instância: {args.instance.upper()}")
+        if process_instance(instance_path, args.output_dir):
+            print("✓ Mapa gerado com sucesso!")
+        else:
+            print("✗ Falha ao gerar mapa")
+            return 1
+
+    else:
+        # Modo interativo (comportamento original)
+        print("=== Visualizador de Instâncias VRP ===")
+        instance_path = list_instances()
+
+        if not instance_path:
+            return 1
+
+        instance_name = os.path.basename(instance_path).replace('.txt', '')
+        print(f"\nLendo coordenadas da instância {instance_name}...")
+
+        if process_instance(instance_path, args.output_dir):
+            print("✓ Mapa gerado com sucesso!")
+        else:
+            print("✗ Falha ao gerar mapa")
+            return 1
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

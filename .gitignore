@@ -1,0 +1,20 @@
+# Arquivos grandes e de debug
+debug_fitness.txt
+*.log
+
+# Resultados e arquivos temporários
+results_validation_C1/**/*.txt
+resultsMulti/**/*.txt
+
+# Compiled class files
+*.class
+bin/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db

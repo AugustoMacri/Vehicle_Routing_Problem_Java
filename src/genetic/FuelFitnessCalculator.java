@@ -1,5 +1,6 @@
 package genetic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import main.App;
@@ -14,38 +15,35 @@ public class FuelFitnessCalculator implements FitnessCalculator {
 
         for (int v = 0; v < App.numVehicles; v++) {
             double vehicleDistance = 0;
-            Client firstClient = null;
-            Client lastClient = null;
 
+            // Collect all clients in this vehicle's route
+            List<Integer> routeClients = new ArrayList<>();
             for (int c = 0; c < App.numClients - 1; c++) {
-                int currentClientId = individual.getRoute()[v][c];
-                int nextClientId = individual.getRoute()[v][c + 1];
-
-                if (currentClientId == -1 || nextClientId == -1)
+                int clientId = individual.getRoute()[v][c];
+                if (clientId == -1)
                     break;
-
-                // Get the current client and next client
-                Client currentClient = clients.get(currentClientId);
-                Client nextClient = clients.get(nextClientId);
-
-                // Armazena primeiro e último cliente
-                if (firstClient == null) {
-                    firstClient = currentClient;
-                }
-                lastClient = nextClient;
-
-                // Calculating the distance between the current client and the next client
-                double distance = calculateDistance(currentClient, nextClient);
-                vehicleDistance += distance;
-
+                routeClients.add(clientId);
             }
 
-            // Adiciona distâncias do depósito: depósito → primeiro cliente e último cliente
-            // → depósito
-            if (firstClient != null) {
-                vehicleDistance += calculateDistance(depot, firstClient);
-                vehicleDistance += calculateDistance(lastClient, depot);
+            // If vehicle has no clients, skip
+            if (routeClients.isEmpty()) {
+                continue;
             }
+
+            // Calculate distance: depot -> first client
+            Client firstClient = clients.get(routeClients.get(0));
+            vehicleDistance += calculateDistance(depot, firstClient);
+
+            // Calculate distances between consecutive clients
+            for (int i = 0; i < routeClients.size() - 1; i++) {
+                Client currentClient = clients.get(routeClients.get(i));
+                Client nextClient = clients.get(routeClients.get(i + 1));
+                vehicleDistance += calculateDistance(currentClient, nextClient);
+            }
+
+            // Calculate distance: last client -> depot
+            Client lastClient = clients.get(routeClients.get(routeClients.size() - 1));
+            vehicleDistance += calculateDistance(lastClient, depot);
 
             // Calculating the fuel cost
             double fuelCost = fuelCost(vehicleDistance);
