@@ -1,14 +1,20 @@
 package genetic;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import main.App;
+import vrp.Client;
 
 public class Crossover {
 
     public static Individual onePointCrossing(Individual parent1, Individual parent2) {
+        return onePointCrossing(parent1, parent2, null);
+    }
+
+    public static Individual onePointCrossing(Individual parent1, Individual parent2, List<Client> clients) {
 
         // System.out.println("Entrou no onePointCrossing");
 
@@ -51,7 +57,7 @@ public class Crossover {
 
         // Repair child route: ensure all clients (1 to numClients-1) appear exactly
         // once
-        childRoute = repairRoute(childRoute, parent1, parent2);
+        childRoute = repairRoute(childRoute, parent1, parent2, clients);
 
         // Denormalize the child route
         int[][] denormalizedChildRoute = denormalizeRoute(childRoute);
@@ -120,7 +126,8 @@ public class Crossover {
      * Repairs the child route to ensure all clients appear exactly once.
      * Removes duplicates and adds missing clients.
      */
-    private static int[][] repairRoute(int[][] childRoute, Individual parent1, Individual parent2) {
+    private static int[][] repairRoute(int[][] childRoute, Individual parent1, Individual parent2,
+            List<Client> clients) {
         Random random = new Random();
 
         // Step 1: Find all clients present in the child route
@@ -181,7 +188,7 @@ public class Crossover {
                     for (int c = 0; c < App.numClients && !inserted; c++) {
                         if (parentRoute[v][c] == missingClient) {
                             // Try to insert at the same position in child
-                            if (insertClientAtPosition(childRoute, missingClient, v, c)) {
+                            if (insertClientAtPosition(childRoute, missingClient, v, c, clients)) {
                                 inserted = true;
                             }
                             break;
@@ -192,7 +199,7 @@ public class Crossover {
 
             // If still not inserted, insert at first available position
             if (!inserted) {
-                insertClientAnywhere(childRoute, missingClient);
+                insertClientAnywhere(childRoute, missingClient, clients);
             }
         }
 
@@ -200,10 +207,40 @@ public class Crossover {
     }
 
     /**
+     * Calcula a demanda total de um veículo na rota.
+     */
+    private static int calculateVehicleDemand(int[][] route, int vehicle, List<Client> clients) {
+        if (clients == null) {
+            return 0; // Sem validação se não temos acesso aos clientes
+        }
+
+        int totalDemand = 0;
+        for (int c = 0; c < App.numClients; c++) {
+            int clientId = route[vehicle][c];
+            if (clientId > 0 && clientId < App.numClients) {
+                totalDemand += clients.get(clientId).getDemand();
+            }
+        }
+        return totalDemand;
+    }
+
+    /**
      * Tries to insert a client at a specific position in the route.
      * Returns true if successful, false otherwise.
+     * Verifica a capacidade do veículo antes de QUALQUER inserção.
      */
-    private static boolean insertClientAtPosition(int[][] route, int client, int vehicle, int position) {
+    private static boolean insertClientAtPosition(int[][] route, int client, int vehicle, int position,
+            List<Client> clients) {
+        // Verificar capacidade ANTES de tentar qualquer inserção
+        if (clients != null) {
+            int currentDemand = calculateVehicleDemand(route, vehicle, clients);
+            int clientDemand = clients.get(client).getDemand();
+
+            if (currentDemand + clientDemand > App.vehicleCapacity) {
+                return false; // Não inserir se ultrapassar capacidade
+            }
+        }
+
         // Check if position is available (contains 0 or -1)
         if (route[vehicle][position] == 0 || route[vehicle][position] == -1) {
             route[vehicle][position] = client;
@@ -211,6 +248,8 @@ public class Crossover {
         }
 
         // Try positions around the target position
+        // A capacidade já foi verificada acima, então é seguro inserir em qualquer
+        // posição
         for (int offset = 1; offset < App.numClients; offset++) {
             int pos1 = position + offset;
             int pos2 = position - offset;
@@ -231,12 +270,38 @@ public class Crossover {
 
     /**
      * Inserts a client at the first available position in any vehicle.
+     * Verifica a capacidade do veículo antes de inserir.
      */
-    private static void insertClientAnywhere(int[][] route, int client) {
+    private static void insertClientAnywhere(int[][] route, int client, List<Client> clients) {
+        // Tentar inserir em veículos com capacidade disponível
         for (int v = 0; v < App.numVehicles; v++) {
+            // Verificar capacidade do veículo
+            if (clients != null) {
+                int currentDemand = calculateVehicleDemand(route, v, clients);
+                int clientDemand = clients.get(client).getDemand();
+
+                if (currentDemand + clientDemand > App.vehicleCapacity) {
+                    continue; // Pular este veículo se não tiver capacidade
+                }
+            }
+
+            // Tentar inserir neste veículo
             for (int c = 1; c < App.numClients; c++) { // Start from 1 to preserve depot at position 0
                 if (route[v][c] == 0 || route[v][c] == -1) {
                     route[v][c] = client;
+                    return;
+                }
+            }
+        }
+
+        // Se não encontrou espaço com capacidade, tentar inserir forçadamente
+        // (isso pode violar capacidade, mas é melhor que perder o cliente)
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 1; c < App.numClients; c++) {
+                if (route[v][c] == 0 || route[v][c] == -1) {
+                    route[v][c] = client;
+                    System.err.println(
+                            "AVISO: Cliente " + client + " inserido no veículo " + v + " pode violar capacidade!");
                     return;
                 }
             }
@@ -246,6 +311,7 @@ public class Crossover {
         // last vehicle
         for (int c = App.numClients - 1; c >= 1; c--) {
             if (route[App.numVehicles - 1][c] != 0 && route[App.numVehicles - 1][c] != -1) {
+                System.err.println("AVISO CRÍTICO: Substituindo cliente na última posição! Cliente " + client);
                 route[App.numVehicles - 1][c] = client;
                 return;
             }

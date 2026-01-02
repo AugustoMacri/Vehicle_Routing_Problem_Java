@@ -478,7 +478,7 @@ public class Population {
                 Individual newSonD = null;
                 switch (crossingType) {
                     case 1:
-                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1));
+                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -494,7 +494,7 @@ public class Population {
                 Individual newSonT = null;
                 switch (crossingType) {
                     case 1:
-                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1));
+                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -510,7 +510,7 @@ public class Population {
                 Individual newSonF = null;
                 switch (crossingType) {
                     case 1:
-                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1));
+                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -526,7 +526,7 @@ public class Population {
                 Individual newSonP = null;
                 switch (crossingType) {
                     case 1:
-                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1));
+                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -555,7 +555,7 @@ public class Population {
                 Individual newSonD = null;
                 switch (crossingType) {
                     case 1:
-                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1));
+                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -571,7 +571,7 @@ public class Population {
                 Individual newSonT = null;
                 switch (crossingType) {
                     case 1:
-                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1));
+                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -587,7 +587,7 @@ public class Population {
                 Individual newSonF = null;
                 switch (crossingType) {
                     case 1:
-                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1));
+                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -603,7 +603,7 @@ public class Population {
                 Individual newSonP = null;
                 switch (crossingType) {
                     case 1:
-                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1));
+                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -656,7 +656,7 @@ public class Population {
                         previousWinners);
 
                 // Cruzamento para gerar um novo filho
-                Individual newSon = Crossover.onePointCrossing(parent1, parent2);
+                Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
                 Mutation.mutate(newSon, App.mutationRate);
@@ -683,7 +683,7 @@ public class Population {
                         previousWinners);
 
                 // Cruzamento para gerar um novo filho
-                Individual newSon = Crossover.onePointCrossing(parent1, parent2);
+                Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
                 Mutation.mutate(newSon, App.mutationRate);
