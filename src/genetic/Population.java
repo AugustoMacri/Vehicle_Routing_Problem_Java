@@ -35,9 +35,25 @@ public class Population {
         // Copying the clients array
         List<Client> clientsCopy = new ArrayList<>(clients);
 
-        int cont = 0;
+        // Usar K-means clustering para 70% da população inicial
+        int clusteringPopSize = (int) (App.pop_size * 0.7);
 
-        for (int h = 0; h < App.pop_size; h++) {
+        System.out.println("Inicializando população com K-means clustering...");
+        System.out.println("Indivíduos com clustering: " + clusteringPopSize);
+        System.out.println("Indivíduos com Gillet-Miller: " + (App.pop_size - clusteringPopSize));
+
+        KMeansClusteringInitializer kmeansInitializer = new KMeansClusteringInitializer();
+
+        // Inicializar com K-means clustering
+        for (int h = 0; h < clusteringPopSize; h++) {
+            // Variar o número de clusters para diversidade (entre 8 e 15 clusters)
+            int numClusters = 8 + (h % 8);
+            Individual individual = kmeansInitializer.initializeWithClustering(h, clientsCopy, numClusters);
+            individuals.add(individual);
+        }
+
+        // Inicializar o resto com Gillet-Miller (método original)
+        for (int h = clusteringPopSize; h < App.pop_size; h++) {
             Individual individual = new Individual(h, 0, 0, 0, 0);
             boolean[] visited = new boolean[App.numClients];
 
@@ -112,6 +128,8 @@ public class Population {
 
             individuals.add(individual);
         }
+
+        System.out.println("População inicializada com sucesso!");
 
     }
 
@@ -375,6 +393,42 @@ public class Population {
         }
     }
 
+    /**
+     * Validates and repairs an individual if necessary.
+     * Ensures all clients 1 to (numClients-1) are present exactly once.
+     */
+    private static void validateAndRepairIndividual(Individual individual, int generation, String context) {
+        if (!Crossover.validateRoute(individual.getRoute(), App.numClients - 1)) {
+            System.err.println("ERRO CRÍTICO: Indivíduo inválido detectado!");
+            System.err.println("Contexto: " + context + " na geração " + generation);
+            System.err.println("Tentando reparar...");
+
+            // Count how many clients are missing
+            Set<Integer> foundClients = new HashSet<>();
+            for (int v = 0; v < App.numVehicles; v++) {
+                for (int c = 0; c < App.numClients; c++) {
+                    int clientId = individual.getRoute()[v][c];
+                    if (clientId > 0) {
+                        foundClients.add(clientId);
+                    }
+                }
+            }
+
+            System.err.println("Clientes encontrados: " + foundClients.size() + " de " + (App.numClients - 1));
+
+            // Find missing clients
+            List<Integer> missingClients = new ArrayList<>();
+            for (int i = 1; i < App.numClients; i++) { // Real clients are 1 to App.numClients-1
+                if (!foundClients.contains(i)) {
+                    missingClients.add(i);
+                }
+            }
+
+            System.err.println("Clientes faltando: " + missingClients);
+            System.err.println("AVISO: Indivíduo será descartado - não pode ser reparado aqui!");
+        }
+    }
+
     // Function to Evolve the population
     public void evolvePopMulti(
             int generation,
@@ -424,7 +478,7 @@ public class Population {
                 Individual newSonD = null;
                 switch (crossingType) {
                     case 1:
-                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1));
+                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -440,7 +494,7 @@ public class Population {
                 Individual newSonT = null;
                 switch (crossingType) {
                     case 1:
-                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1));
+                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -456,7 +510,7 @@ public class Population {
                 Individual newSonF = null;
                 switch (crossingType) {
                     case 1:
-                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1));
+                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -472,7 +526,7 @@ public class Population {
                 Individual newSonP = null;
                 switch (crossingType) {
                     case 1:
-                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1));
+                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -501,7 +555,7 @@ public class Population {
                 Individual newSonD = null;
                 switch (crossingType) {
                     case 1:
-                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1));
+                        newSonD = Crossover.onePointCrossing(parentsD.get(0), parentsD.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -517,7 +571,7 @@ public class Population {
                 Individual newSonT = null;
                 switch (crossingType) {
                     case 1:
-                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1));
+                        newSonT = Crossover.onePointCrossing(parentsT.get(0), parentsT.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -533,7 +587,7 @@ public class Population {
                 Individual newSonF = null;
                 switch (crossingType) {
                     case 1:
-                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1));
+                        newSonF = Crossover.onePointCrossing(parentsF.get(0), parentsF.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -549,7 +603,7 @@ public class Population {
                 Individual newSonP = null;
                 switch (crossingType) {
                     case 1:
-                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1));
+                        newSonP = Crossover.onePointCrossing(parentsP.get(0), parentsP.get(1), clients);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
@@ -602,7 +656,7 @@ public class Population {
                         previousWinners);
 
                 // Cruzamento para gerar um novo filho
-                Individual newSon = Crossover.onePointCrossing(parent1, parent2);
+                Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
                 Mutation.mutate(newSon, App.mutationRate);
@@ -629,7 +683,7 @@ public class Population {
                         previousWinners);
 
                 // Cruzamento para gerar um novo filho
-                Individual newSon = Crossover.onePointCrossing(parent1, parent2);
+                Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
                 Mutation.mutate(newSon, App.mutationRate);

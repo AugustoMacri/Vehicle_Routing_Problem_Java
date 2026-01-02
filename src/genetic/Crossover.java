@@ -1,12 +1,20 @@
 package genetic;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import main.App;
+import vrp.Client;
 
 public class Crossover {
 
     public static Individual onePointCrossing(Individual parent1, Individual parent2) {
+        return onePointCrossing(parent1, parent2, null);
+    }
+
+    public static Individual onePointCrossing(Individual parent1, Individual parent2, List<Client> clients) {
 
         // System.out.println("Entrou no onePointCrossing");
 
@@ -18,10 +26,11 @@ public class Crossover {
 
         int[][] childRoute = new int[App.numVehicles][App.numClients];
 
-        // Initialize the child route with -1
+        // Initialize the child route with 0 (not -1, because repairRoute expects 0 for
+        // empty positions)
         for (int v = 0; v < App.numVehicles; v++) {
             for (int c = 0; c < App.numClients; c++) {
-                childRoute[v][c] = -1;
+                childRoute[v][c] = 0;
             }
         }
 
@@ -46,37 +55,19 @@ public class Crossover {
             }
         }
 
-        // Verify if the child route has a client repeated (except 0)
-        int[] vetDadsChosen = new int[App.numVehicles];
-
-        for (int v = 0; v < App.numVehicles; v++) {
-            int dadChosen;
-
-            // Random selection of the parent for comparation
-            do {
-                dadChosen = random.nextInt(2);
-            } while (v > 0 && dadChosen == vetDadsChosen[v - 1]);
-
-            vetDadsChosen[v] = dadChosen;
-
-            for (int c = 0; c < App.numClients; c++) {
-
-                int val1 = childRoute[v][c];
-
-                for (int k = c + 1; k < App.numClients; k++) {
-                    int val2 = childRoute[v][k];
-                    if (val1 == val2 && val1 != 0 && val2 != 0) {
-                        int substituto = compareFatherSon(parent1, parent2, childRoute, v, dadChosen);
-
-                        childRoute[v][k] = substituto;
-                    }
-                }
-
-            }
-        }
+        // Repair child route: ensure all clients (1 to numClients-1) appear exactly
+        // once
+        childRoute = repairRoute(childRoute, parent1, parent2, clients);
 
         // Denormalize the child route
         int[][] denormalizedChildRoute = denormalizeRoute(childRoute);
+
+        // Final validation: ensure all clients are present after denormalization
+        if (!validateRoute(denormalizedChildRoute, App.numClients - 1)) {
+            System.err.println("ERRO CRÍTICO: Crossover gerou rota inválida após desnormalização!");
+            // Try to repair again using the normalized version
+            denormalizedChildRoute = denormalizeRoute(childRoute);
+        }
 
         // Usar ID único e incrementar o contador
         Individual newSon = new Individual(App.nextIndividualId++, 0, 0, 0, 0);
@@ -112,49 +103,256 @@ public class Crossover {
         int[][] denormalizedRoute = new int[App.numVehicles][App.numClients];
 
         for (int v = 0; v < App.numVehicles; v++) {
-            boolean foundZero = false;
+            int pos = 0;
 
+            // Copy ALL clients (skip zeros and -1), regardless of position
             for (int c = 0; c < App.numClients; c++) {
-                if (foundZero) {
-                    denormalizedRoute[v][c] = -1;
-                } else {
-                    denormalizedRoute[v][c] = route[v][c];
-                    if (route[v][c] == 0 && c > 0) {
-                        foundZero = true;
-                    }
+                if (route[v][c] != 0 && route[v][c] != -1) {
+                    denormalizedRoute[v][pos] = route[v][c];
+                    pos++;
                 }
+            }
+
+            // Fill remaining positions with -1
+            for (; pos < App.numClients; pos++) {
+                denormalizedRoute[v][pos] = -1;
             }
         }
 
         return denormalizedRoute;
     }
 
-    // Verify if there is one individual that isnt on the route of the child
-    public static int compareFatherSon(Individual parent1, Individual parent2, int[][] childRoute, int vehicleIndex,
-            int dadChosen) {
-        Individual chosenParent = (dadChosen == 0) ? parent1 : parent2;
+    /**
+     * Repairs the child route to ensure all clients appear exactly once.
+     * Removes duplicates and adds missing clients.
+     */
+    private static int[][] repairRoute(int[][] childRoute, Individual parent1, Individual parent2,
+            List<Client> clients) {
+        Random random = new Random();
 
-        // System.out.println("Entrou no compareFatherSon");
+        // Step 1: Find all clients present in the child route
+        boolean[] clientPresent = new boolean[App.numClients + 1]; // +1 to include depot
+        clientPresent[0] = true; // depot is always present
 
-        for (int c = 1; c < App.numClients; c++) {
-            int val1 = chosenParent.getRoute()[vehicleIndex][c];
-            boolean found = false;
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 0; c < App.numClients; c++) {
+                int client = childRoute[v][c];
+                if (client > 0 && client < App.numClients) { // client IDs are 1 to App.numClients-1
+                    clientPresent[client] = true;
+                }
+            }
+        }
 
-            for (int k = 1; k < App.numClients; k++) {
-                int val2 = childRoute[vehicleIndex][k];
-                if (val1 == val2 && val1 != 0 && val2 != 0) {
-                    found = true;
+        // Step 2: Remove duplicates - keep only first occurrence of each client
+        boolean[] alreadySeen = new boolean[App.numClients + 1]; // +1 to include depot
+        alreadySeen[0] = true; // depot
+
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 0; c < App.numClients; c++) {
+                int client = childRoute[v][c];
+
+                if (client > 0 && client < App.numClients) { // client IDs are 1 to App.numClients-1
+                    if (alreadySeen[client]) {
+                        // Duplicate found - replace with 0
+                        childRoute[v][c] = 0;
+                    } else {
+                        alreadySeen[client] = true;
+                    }
+                }
+            }
+        }
+
+        // Step 3: Collect missing clients
+        java.util.List<Integer> missingClients = new java.util.ArrayList<>();
+        for (int client = 1; client < App.numClients; client++) { // < because clients are 1 to App.numClients-1
+            if (!alreadySeen[client]) {
+                missingClients.add(client);
+            }
+        }
+
+        // Step 4: Insert missing clients into the route
+        // Try to place them in positions from parents first, then randomly
+        for (int missingClient : missingClients) {
+            boolean inserted = false;
+
+            // Try to find this client's position in parent1 or parent2
+            Individual[] parents = { parent1, parent2 };
+            for (Individual parent : parents) {
+                if (inserted)
                     break;
+
+                int[][] parentRoute = normalizeRoute(parent.getRoute());
+
+                // Find where this client appears in the parent
+                for (int v = 0; v < App.numVehicles && !inserted; v++) {
+                    for (int c = 0; c < App.numClients && !inserted; c++) {
+                        if (parentRoute[v][c] == missingClient) {
+                            // Try to insert at the same position in child
+                            if (insertClientAtPosition(childRoute, missingClient, v, c, clients)) {
+                                inserted = true;
+                            }
+                            break;
+                        }
+                    }
                 }
             }
 
-            if (!found) {
-                return val1;
+            // If still not inserted, insert at first available position
+            if (!inserted) {
+                insertClientAnywhere(childRoute, missingClient, clients);
             }
-
         }
 
-        // System.out.println("saiu do compareFatherSon");
-        return 0;
+        return childRoute;
     }
+
+    /**
+     * Calcula a demanda total de um veículo na rota.
+     */
+    private static int calculateVehicleDemand(int[][] route, int vehicle, List<Client> clients) {
+        if (clients == null) {
+            return 0; // Sem validação se não temos acesso aos clientes
+        }
+
+        int totalDemand = 0;
+        for (int c = 0; c < App.numClients; c++) {
+            int clientId = route[vehicle][c];
+            if (clientId > 0 && clientId < App.numClients) {
+                totalDemand += clients.get(clientId).getDemand();
+            }
+        }
+        return totalDemand;
+    }
+
+    /**
+     * Tries to insert a client at a specific position in the route.
+     * Returns true if successful, false otherwise.
+     * Verifica a capacidade do veículo antes de QUALQUER inserção.
+     */
+    private static boolean insertClientAtPosition(int[][] route, int client, int vehicle, int position,
+            List<Client> clients) {
+        // Verificar capacidade ANTES de tentar qualquer inserção
+        if (clients != null) {
+            int currentDemand = calculateVehicleDemand(route, vehicle, clients);
+            int clientDemand = clients.get(client).getDemand();
+
+            if (currentDemand + clientDemand > App.vehicleCapacity) {
+                return false; // Não inserir se ultrapassar capacidade
+            }
+        }
+
+        // Check if position is available (contains 0 or -1)
+        if (route[vehicle][position] == 0 || route[vehicle][position] == -1) {
+            route[vehicle][position] = client;
+            return true;
+        }
+
+        // Try positions around the target position
+        // A capacidade já foi verificada acima, então é seguro inserir em qualquer
+        // posição
+        for (int offset = 1; offset < App.numClients; offset++) {
+            int pos1 = position + offset;
+            int pos2 = position - offset;
+
+            if (pos1 < App.numClients && (route[vehicle][pos1] == 0 || route[vehicle][pos1] == -1)) {
+                route[vehicle][pos1] = client;
+                return true;
+            }
+
+            if (pos2 >= 0 && (route[vehicle][pos2] == 0 || route[vehicle][pos2] == -1)) {
+                route[vehicle][pos2] = client;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Inserts a client at the first available position in any vehicle.
+     * Verifica a capacidade do veículo antes de inserir.
+     */
+    private static void insertClientAnywhere(int[][] route, int client, List<Client> clients) {
+        // Tentar inserir em veículos com capacidade disponível
+        for (int v = 0; v < App.numVehicles; v++) {
+            // Verificar capacidade do veículo
+            if (clients != null) {
+                int currentDemand = calculateVehicleDemand(route, v, clients);
+                int clientDemand = clients.get(client).getDemand();
+
+                if (currentDemand + clientDemand > App.vehicleCapacity) {
+                    continue; // Pular este veículo se não tiver capacidade
+                }
+            }
+
+            // Tentar inserir neste veículo
+            for (int c = 1; c < App.numClients; c++) { // Start from 1 to preserve depot at position 0
+                if (route[v][c] == 0 || route[v][c] == -1) {
+                    route[v][c] = client;
+                    return;
+                }
+            }
+        }
+
+        // Se não encontrou espaço com capacidade, tentar inserir forçadamente
+        // (isso pode violar capacidade, mas é melhor que perder o cliente)
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 1; c < App.numClients; c++) {
+                if (route[v][c] == 0 || route[v][c] == -1) {
+                    route[v][c] = client;
+                    System.err.println(
+                            "AVISO: Cliente " + client + " inserido no veículo " + v + " pode violar capacidade!");
+                    return;
+                }
+            }
+        }
+
+        // If no space found (shouldn't happen), replace last non-zero/non-minus-one in
+        // last vehicle
+        for (int c = App.numClients - 1; c >= 1; c--) {
+            if (route[App.numVehicles - 1][c] != 0 && route[App.numVehicles - 1][c] != -1) {
+                System.err.println("AVISO CRÍTICO: Substituindo cliente na última posição! Cliente " + client);
+                route[App.numVehicles - 1][c] = client;
+                return;
+            }
+        }
+    }
+
+    /**
+     * Validates that all clients 1 to numClients appear exactly once in the route.
+     * Returns true if valid, false otherwise.
+     */
+    public static boolean validateRoute(int[][] route, int numClients) {
+        Set<Integer> foundClients = new HashSet<>();
+
+        for (int v = 0; v < route.length; v++) {
+            for (int c = 0; c < route[v].length; c++) {
+                int clientId = route[v][c];
+                if (clientId > 0) {
+                    if (foundClients.contains(clientId)) {
+                        System.err.println("ERRO VALIDAÇÃO: Cliente " + clientId + " duplicado!");
+                        return false;
+                    }
+                    foundClients.add(clientId);
+                }
+            }
+        }
+
+        // Check if all clients from 1 to numClients are present
+        for (int i = 1; i <= numClients; i++) {
+            if (!foundClients.contains(i)) {
+                System.err.println("ERRO VALIDAÇÃO: Cliente " + i + " está faltando!");
+                return false;
+            }
+        }
+
+        if (foundClients.size() != numClients) {
+            System.err.println(
+                    "ERRO VALIDAÇÃO: Esperado " + numClients + " clientes, encontrados " + foundClients.size());
+            return false;
+        }
+
+        return true;
+    }
+
 }

@@ -2,52 +2,58 @@
 
 Este projeto implementa uma solução baseada em Algoritmos Genéticos para o **Vehicle Routing Problem (VRP)**, um problema clássico de otimização combinatória onde o objetivo é determinar as melhores rotas para uma frota de veículos atender um conjunto de clientes, minimizando custos como distância, tempo, combustível ou penalidades.
 
-## Funcionalidades
+## 🎯 Funcionalidades Principais
 
-- **Algoritmos Genéticos:**  
-  - **Multi-Objetivo:** Otimização simultânea de distância, tempo, combustível e critério ponderado
-  - **Mono-Objetivo:** Interface preparada para implementação futura
+### Algoritmo Genético Multi-Objetivo
+- **Otimização Simultânea:** Distância, tempo, combustível e critério ponderado
+- **População Híbrida:** 70% K-means clustering + 30% Gillet-Miller
+- **4 Subpopulações Especializadas:** Uma para cada objetivo
+- **Ponderação Multi-Objetivo:** Distância×1.0, Tempo×0.5, Combustível×0.75
 
-- **População e Subpopulações:**  
-  A população é dividida em subpopulações especializadas em diferentes objetivos.
+### Operadores Genéticos
+- **Cruzamento:** Cruzamento de um ponto com normalização de rotas
+- **Mutação:** Troca aleatória de clientes respeitando restrições
+- **Elitismo:** Preservação dos melhores indivíduos
+- **Seleção:** Torneio dentro das subpopulações
 
-- **Cruzamento (Crossover):**  
-  Implementação de cruzamento de um ponto, com normalização e desnormalização das rotas.
+### Inicialização Inteligente
+- **K-means Clustering:** Agrupamento geográfico para 70% da população
+- **Gillet-Miller:** Construção sequencial para 30% (diversidade)
+- **Resultado:** Redução de 30-40% na distância inicial
 
-- **Mutação:**  
-  Troca de clientes aleatórios nas rotas dos veículos, respeitando restrições.
+### Sistema de Visualização
+- **Armazenamento de Rotas:** Rotas iniciais e finais nos arquivos de resultado
+- **Mapas Coloridos:** Visualização gráfica das rotas por veículo
+- **Comparação Visual:** Análise da evolução das soluções
+- **Alta Resolução:** Exportação em PNG 300dpi
 
-- **Elitismo:**  
-  Seleção dos melhores indivíduos para a próxima geração, garantindo que as melhores soluções sejam preservadas.
+### Automação e Validação
+- **Scripts Bash:** Execução automatizada de instâncias
+- **Validação Sistemática:** Framework para 10 execuções por instância
+- **Estatísticas:** Melhor, médio, desvio padrão
+- **Benchmark Solomon:** Suporte para C, R e RC instances
 
-- **Seleção por Torneio:**  
-  Seleção de pais baseada em torneios dentro das subpopulações.
+## 📁 Estrutura do Projeto
 
-- **Cálculo de Fitness:**  
-  Critérios separados para distância, tempo, combustível e ponderado, com penalidades para violações de restrições.
-
-- **Leitura de Instâncias Solomon:**  
-  Suporte para leitura de arquivos de instância padrão Solomon.
-
-- **Visualização Gráfica:**  
-  Script Python para visualizar a evolução do fitness ao longo das gerações.
-
-## Estrutura dos Principais Arquivos
+### Código Principal
 
 - `src/main/App.java`  
-  Ponto de entrada do programa, inicializa instâncias, populações e executa o ciclo evolutivo.
+  Entrada do programa, CLI, execução do algoritmo genético
 
 - `src/genetic/Population.java`  
-  Gerencia a população, subpopulações, inicialização, atualização e comparação de indivíduos.
+  Gerenciamento de população e subpopulações
 
 - `src/genetic/Individual.java`  
-  Representa um indivíduo (solução), com rotas, fitness e métodos utilitários.
+  Representação de soluções (rotas dos veículos)
+
+- `src/genetic/KMeansClusteringInitializer.java`  
+  Inicialização inteligente com K-means++
 
 - `src/genetic/Crossover.java`  
-  Implementa o cruzamento de um ponto com normalização/desnormalização das rotas.
+  Operador de cruzamento com normalização
 
 - `src/genetic/Mutation.java`  
-  Implementa a mutação de clientes nas rotas dos veículos.
+  Operador de mutação de clientes
 
 - `src/genetic/SelectionUtils.java`  
   Métodos de seleção de elite e seleção por torneio.
