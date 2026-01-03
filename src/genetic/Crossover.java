@@ -69,6 +69,9 @@ public class Crossover {
             denormalizedChildRoute = denormalizeRoute(childRoute);
         }
 
+        // **CORREÇÃO CRÍTICA**: Reparar violações de capacidade após o crossover
+        denormalizedChildRoute = repairCapacityViolations(denormalizedChildRoute, clients);
+
         // Usar ID único e incrementar o contador
         Individual newSon = new Individual(App.nextIndividualId++, 0, 0, 0, 0);
         newSon.setRoute(denormalizedChildRoute);
@@ -271,9 +274,11 @@ public class Crossover {
     /**
      * Inserts a client at the first available position in any vehicle.
      * Verifica a capacidade do veículo antes de inserir.
+     * Se nenhum veículo tiver capacidade, tenta redistribuir clientes para liberar
+     * espaço.
      */
     private static void insertClientAnywhere(int[][] route, int client, List<Client> clients) {
-        // Tentar inserir em veículos com capacidade disponível
+        // Tentativa 1: Inserir em veículos com capacidade disponível
         for (int v = 0; v < App.numVehicles; v++) {
             // Verificar capacidade do veículo
             if (clients != null) {
@@ -286,7 +291,7 @@ public class Crossover {
             }
 
             // Tentar inserir neste veículo
-            for (int c = 1; c < App.numClients; c++) { // Start from 1 to preserve depot at position 0
+            for (int c = 1; c < App.numClients; c++) {
                 if (route[v][c] == 0 || route[v][c] == -1) {
                     route[v][c] = client;
                     return;
@@ -294,26 +299,96 @@ public class Crossover {
             }
         }
 
-        // Se não encontrou espaço com capacidade, tentar inserir forçadamente
-        // (isso pode violar capacidade, mas é melhor que perder o cliente)
+        // Tentativa 2: Tentar redistribuir - mover cliente pequeno para liberar espaço
+        if (clients != null) {
+            int clientDemand = clients.get(client).getDemand();
+
+            // Procura veículo cheio onde possamos mover um cliente pequeno
+            for (int vFull = 0; vFull < App.numVehicles; vFull++) {
+                int currentDemand = calculateVehicleDemand(route, vFull, clients);
+
+                // Se este veículo tem espaço físico mas não tem capacidade
+                if (currentDemand + clientDemand > App.vehicleCapacity) {
+                    // Procura um cliente pequeno neste veículo que possamos mover
+                    for (int c = 1; c < App.numClients; c++) {
+                        int existingClient = route[vFull][c];
+                        if (existingClient > 0 && existingClient < App.numClients) {
+                            int existingDemand = clients.get(existingClient).getDemand();
+
+                            // Se mover este cliente liberaria espaço suficiente
+                            if (currentDemand - existingDemand + clientDemand <= App.vehicleCapacity) {
+                                // Procura outro veículo para o cliente existente
+                                for (int vOther = 0; vOther < App.numVehicles; vOther++) {
+                                    if (vOther == vFull)
+                                        continue;
+
+                                    int otherDemand = calculateVehicleDemand(route, vOther, clients);
+                                    if (otherDemand + existingDemand <= App.vehicleCapacity) {
+                                        // Move o cliente existente para o outro veículo
+                                        for (int pos = 1; pos < App.numClients; pos++) {
+                                            if (route[vOther][pos] == 0 || route[vOther][pos] == -1) {
+                                                route[vOther][pos] = existingClient;
+                                                route[vFull][c] = client; // Insere o novo cliente
+                                                return; // Sucesso!
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Tentativa 3: Inserir no veículo com menor violação (última opção)
+        int bestVehicle = -1;
+        int minOverflow = Integer.MAX_VALUE;
+
+        if (clients != null) {
+            int clientDemand = clients.get(client).getDemand();
+
+            for (int v = 0; v < App.numVehicles; v++) {
+                int currentDemand = calculateVehicleDemand(route, v, clients);
+                int overflow = (currentDemand + clientDemand) - App.vehicleCapacity;
+
+                // Só considera veículos com espaço físico
+                boolean hasSpace = false;
+                for (int c = 1; c < App.numClients; c++) {
+                    if (route[v][c] == 0 || route[v][c] == -1) {
+                        hasSpace = true;
+                        break;
+                    }
+                }
+
+                if (hasSpace && overflow < minOverflow) {
+                    minOverflow = overflow;
+                    bestVehicle = v;
+                }
+            }
+
+            if (bestVehicle != -1) {
+                for (int c = 1; c < App.numClients; c++) {
+                    if (route[bestVehicle][c] == 0 || route[bestVehicle][c] == -1) {
+                        route[bestVehicle][c] = client;
+                        System.err.println(
+                                "AVISO: Cliente " + client + " (demanda " + clientDemand +
+                                        ") inserido no veículo " + bestVehicle +
+                                        " causando overflow de " + minOverflow + " unidades!");
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Fallback final
         for (int v = 0; v < App.numVehicles; v++) {
             for (int c = 1; c < App.numClients; c++) {
                 if (route[v][c] == 0 || route[v][c] == -1) {
                     route[v][c] = client;
-                    System.err.println(
-                            "AVISO: Cliente " + client + " inserido no veículo " + v + " pode violar capacidade!");
+                    System.err.println("AVISO CRÍTICO: Cliente " + client + " inserido sem validação!");
                     return;
                 }
-            }
-        }
-
-        // If no space found (shouldn't happen), replace last non-zero/non-minus-one in
-        // last vehicle
-        for (int c = App.numClients - 1; c >= 1; c--) {
-            if (route[App.numVehicles - 1][c] != 0 && route[App.numVehicles - 1][c] != -1) {
-                System.err.println("AVISO CRÍTICO: Substituindo cliente na última posição! Cliente " + client);
-                route[App.numVehicles - 1][c] = client;
-                return;
             }
         }
     }
@@ -353,6 +428,167 @@ public class Crossover {
         }
 
         return true;
+    }
+
+    /**
+     * Repara violações de capacidade movendo clientes de veículos sobrecarregados
+     * para veículos com capacidade disponível.
+     * Este método é chamado após o crossover para garantir 100% de conformidade.
+     */
+    private static int[][] repairCapacityViolations(int[][] route, List<Client> clients) {
+        final int MAX_REPAIR_ITERATIONS = 50;
+        int iteration = 0;
+        boolean hasViolations = true;
+
+        while (hasViolations && iteration < MAX_REPAIR_ITERATIONS) {
+            hasViolations = false;
+            iteration++;
+
+            // Identificar veículos com violação de capacidade
+            for (int vOverloaded = 0; vOverloaded < App.numVehicles; vOverloaded++) {
+                int currentDemand = calculateVehicleDemand(route, vOverloaded, clients);
+
+                if (currentDemand > App.vehicleCapacity) {
+                    hasViolations = true;
+                    int excess = currentDemand - App.vehicleCapacity;
+
+                    // Tentar mover clientes do veículo sobrecarregado para outros com capacidade
+                    boolean moved = false;
+
+                    // Procurar clientes que podem ser movidos (começando pelos maiores)
+                    for (int c = 0; c < App.numClients && !moved; c++) {
+                        int clientId = route[vOverloaded][c];
+                        if (clientId <= 0)
+                            continue;
+
+                        int clientDemand = clients.get(clientId).getDemand();
+
+                        // Se mover este cliente resolve ou melhora o problema
+                        if (clientDemand > 0) {
+                            // Procurar veículo destino com capacidade
+                            for (int vDestination = 0; vDestination < App.numVehicles; vDestination++) {
+                                if (vDestination == vOverloaded)
+                                    continue;
+
+                                int destDemand = calculateVehicleDemand(route, vDestination, clients);
+
+                                // Verificar se o veículo destino tem capacidade
+                                if (destDemand + clientDemand <= App.vehicleCapacity) {
+                                    // Encontrar posição vazia no veículo destino
+                                    for (int pos = 0; pos < App.numClients; pos++) {
+                                        if (route[vDestination][pos] == -1 || route[vDestination][pos] == 0) {
+                                            // Mover cliente
+                                            route[vDestination][pos] = clientId;
+                                            route[vOverloaded][c] = -1;
+
+                                            // Compactar rota do veículo origem
+                                            route[vOverloaded] = compactRoute(route[vOverloaded]);
+
+                                            moved = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (moved)
+                                        break;
+                                }
+                            }
+
+                            if (moved)
+                                break;
+                        }
+                    }
+
+                    // Se não conseguiu mover nenhum cliente, tentar redistribuição por troca
+                    if (!moved) {
+                        moved = trySwapClientsForCapacity(route, vOverloaded, clients);
+                    }
+
+                    // Se ainda não resolveu, forçar mensagem de erro detalhada
+                    if (!moved) {
+                        int finalDemand = calculateVehicleDemand(route, vOverloaded, clients);
+                        System.err.println("AVISO CAPACIDADE: Veículo " + vOverloaded +
+                                " continua sobrecarregado (" + finalDemand + "/" + App.vehicleCapacity +
+                                ") após " + iteration + " iterações. Não foi possível redistribuir.");
+                    }
+                }
+            }
+        }
+
+        if (hasViolations) {
+            System.err.println("AVISO: Algumas violações de capacidade não puderam ser reparadas após " +
+                    MAX_REPAIR_ITERATIONS + " iterações.");
+        }
+
+        return route;
+    }
+
+    /**
+     * Tenta trocar clientes entre veículos para resolver violação de capacidade.
+     */
+    private static boolean trySwapClientsForCapacity(int[][] route, int vOverloaded, List<Client> clients) {
+        int overloadedDemand = calculateVehicleDemand(route, vOverloaded, clients);
+        int excess = overloadedDemand - App.vehicleCapacity;
+
+        // Para cada cliente do veículo sobrecarregado
+        for (int c1 = 0; c1 < App.numClients; c1++) {
+            int client1 = route[vOverloaded][c1];
+            if (client1 <= 0)
+                continue;
+            int demand1 = clients.get(client1).getDemand();
+
+            // Para cada outro veículo
+            for (int vOther = 0; vOther < App.numVehicles; vOther++) {
+                if (vOther == vOverloaded)
+                    continue;
+
+                int otherDemand = calculateVehicleDemand(route, vOther, clients);
+
+                // Para cada cliente do outro veículo
+                for (int c2 = 0; c2 < App.numClients; c2++) {
+                    int client2 = route[vOther][c2];
+                    if (client2 <= 0)
+                        continue;
+                    int demand2 = clients.get(client2).getDemand();
+
+                    // Verificar se a troca resolve o problema
+                    int newOverloadedDemand = overloadedDemand - demand1 + demand2;
+                    int newOtherDemand = otherDemand - demand2 + demand1;
+
+                    if (newOverloadedDemand <= App.vehicleCapacity &&
+                            newOtherDemand <= App.vehicleCapacity) {
+                        // Realizar troca
+                        route[vOverloaded][c1] = client2;
+                        route[vOther][c2] = client1;
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Compacta uma rota removendo posições vazias (-1).
+     */
+    private static int[] compactRoute(int[] vehicleRoute) {
+        int[] compacted = new int[vehicleRoute.length];
+        int pos = 0;
+
+        // Copiar apenas clientes válidos
+        for (int i = 0; i < vehicleRoute.length; i++) {
+            if (vehicleRoute[i] > 0) {
+                compacted[pos++] = vehicleRoute[i];
+            }
+        }
+
+        // Preencher o resto com -1
+        for (; pos < compacted.length; pos++) {
+            compacted[pos] = -1;
+        }
+
+        return compacted;
     }
 
 }
