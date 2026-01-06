@@ -1,0 +1,24 @@
+Resultados AEMMT - R102
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1177.24
+       2 |  1204.03
+       3 |  1210.62
+       4 |  1194.70
+       5 |  1190.27
+       6 |  1234.27
+       7 |  1215.47
+       8 |  1184.39
+       9 |  1196.53
+      10 |  1173.33
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1173.33
+Pior distância encontrada: 1234.27
+Distância média geral: 1198.09
+Desvio padrão das distâncias: 17.65

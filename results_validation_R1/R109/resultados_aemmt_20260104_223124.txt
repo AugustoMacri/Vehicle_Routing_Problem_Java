@@ -1,0 +1,24 @@
+Resultados AEMMT - R109
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1196.15
+       2 |  1166.17
+       3 |  1221.29
+       4 |  1169.27
+       5 |  1212.78
+       6 |  1223.80
+       7 |  1151.02
+       8 |  1234.71
+       9 |  1218.33
+      10 |  1215.65
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1151.02
+Pior distância encontrada: 1234.71
+Distância média geral: 1200.92
+Desvio padrão das distâncias: 27.32

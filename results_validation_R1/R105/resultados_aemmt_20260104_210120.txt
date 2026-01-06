@@ -1,0 +1,24 @@
+Resultados AEMMT - R105
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1237.22
+       2 |  1175.40
+       3 |  1182.37
+       4 |  1243.14
+       5 |  1129.17
+       6 |  1217.51
+       7 |  1225.92
+       8 |  1210.18
+       9 |  1161.46
+      10 |  1173.58
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1129.17
+Pior distância encontrada: 1243.14
+Distância média geral: 1195.59
+Desvio padrão das distâncias: 35.00

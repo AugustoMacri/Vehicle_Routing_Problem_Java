@@ -1,0 +1,24 @@
+Resultados AEMMT - R108
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1175.91
+       2 |  1245.44
+       3 |  1135.89
+       4 |  1203.69
+       5 |  1193.04
+       6 |  1198.16
+       7 |  1209.83
+       8 |  1168.32
+       9 |  1180.05
+      10 |  1162.89
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1135.89
+Pior distância encontrada: 1245.44
+Distância média geral: 1187.32
+Desvio padrão das distâncias: 28.44
