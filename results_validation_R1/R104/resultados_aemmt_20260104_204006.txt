@@ -1,0 +1,24 @@
+Resultados AEMMT - R104
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1193.64
+       2 |  1179.59
+       3 |  1187.67
+       4 |  1185.83
+       5 |  1195.96
+       6 |  1208.33
+       7 |  1194.87
+       8 |  1184.73
+       9 |  1224.70
+      10 |  1211.61
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1179.59
+Pior distância encontrada: 1224.70
+Distância média geral: 1196.69
+Desvio padrão das distâncias: 13.38
