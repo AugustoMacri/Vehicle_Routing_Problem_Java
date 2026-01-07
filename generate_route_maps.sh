@@ -16,12 +16,19 @@ if [ $# -eq 0 ]; then
     echo "  ./generate_route_maps.sh c101              # Gera mapas para C101 (resultsMulti)"
     echo "  ./generate_route_maps.sh r101              # Gera mapas para R101 (resultsMulti)"
     echo "  ./generate_route_maps.sh all_c1            # Gera mapas para todas as C1 (C101-C109) - 10 execuções cada"
-    echo "  ./generate_route_maps.sh all_c1_validation # Gera mapas para todas as C1 do results_validation_C1"
+    echo "  ./generate_route_maps.sh all_r1            # Gera mapas para todas as R1 (R101-R109) - 10 execuções cada"
+    echo "  ./generate_route_maps.sh all_rc1           # Gera mapas para todas as RC1 (RC101-RC108) - 10 execuções cada"
     echo ""
     exit 1
 fi
 
 INSTANCE_PARAM=$1
+
+# Diretórios de validação
+RESULTS_VALIDATION_C1_DIR="results_validation_C1"
+RESULTS_VALIDATION_DIR="results_validation_R1"
+RESULTS_VALIDATION_RC1_DIR="results_validation_RC1"
+PLOT_SCRIPT="scripts/plot_route_maps.py"
 
 generate_single_map() {
     local instance_name=$1
@@ -100,6 +107,126 @@ generate_validation_maps() {
     echo "Resumo $instance_upper: ✓ $maps_generated gerados | ✗ $maps_failed falhas"
 }
 
+# Função para gerar mapas de validação para R1 (results_validation_R1)
+generate_validation_maps_r1() {
+    echo "Gerando mapas para validação R1 (results_validation_R1)..."
+    
+    # Lista de instâncias R1 (R101 até R109)
+    INSTANCES=("r101" "r102" "r103" "r104" "r105" "r106" "r107" "r108" "r109")
+    
+    for instance_lower in "${INSTANCES[@]}"; do
+        instance_upper=$(echo "$instance_lower" | tr '[:lower:]' '[:upper:]')
+        
+        echo ""
+        echo "============================================"
+        echo "Processando instância: $instance_upper"
+        echo "============================================"
+        
+        # Diretório base dos resultados desta instância
+        base_dir="${RESULTS_VALIDATION_DIR}/${instance_upper}"
+        
+        if [ ! -d "$base_dir" ]; then
+            echo "⚠️  Aviso: Diretório $base_dir não encontrado. Pulando..."
+            continue
+        fi
+        
+        # Gera mapas para cada execução (exec01 até exec10)
+        for exec_num in $(seq -w 1 10); do
+            exec_id="exec${exec_num}"
+            results_file="${base_dir}/evo_${instance_lower}_${exec_id}.txt"
+            output_dir="${base_dir}/route_maps_${exec_id}"
+            
+            if [ ! -f "$results_file" ]; then
+                echo "⚠️  Arquivo não encontrado: $results_file. Pulando..."
+                continue
+            fi
+            
+            echo ""
+            echo "Gerando mapas para $instance_upper $exec_id..."
+            
+            # Cria o diretório de saída se não existir
+            mkdir -p "$output_dir"
+            
+            # Gera os mapas usando o script Python
+            python3 "$PLOT_SCRIPT" \
+                --instance "$instance_lower" \
+                --results-file "$results_file" \
+                --instances-dir "$INSTANCES_DIR" \
+                --output-dir "$output_dir"
+            
+            if [ $? -eq 0 ]; then
+                echo "✓ Mapas gerados em: $output_dir"
+            else
+                echo "✗ Erro ao gerar mapas para $instance_upper $exec_id"
+            fi
+        done
+    done
+    
+    echo ""
+    echo "============================================"
+    echo "Todos os mapas gerados com sucesso!"
+}
+
+# Função para gerar mapas de validação para RC1 (results_validation_RC1)
+generate_validation_maps_rc1() {
+    echo "Gerando mapas para validação RC1 (results_validation_RC1)..."
+    
+    # Lista de instâncias RC1 (RC101 até RC108)
+    INSTANCES=("rc101" "rc102" "rc103" "rc104" "rc105" "rc106" "rc107" "rc108")
+    
+    for instance_lower in "${INSTANCES[@]}"; do
+        instance_upper=$(echo "$instance_lower" | tr '[:lower:]' '[:upper:]')
+        
+        echo ""
+        echo "============================================"
+        echo "Processando instância: $instance_upper"
+        echo "============================================"
+        
+        # Diretório base dos resultados desta instância
+        base_dir="${RESULTS_VALIDATION_RC1_DIR}/${instance_upper}"
+        
+        if [ ! -d "$base_dir" ]; then
+            echo "⚠️  Aviso: Diretório $base_dir não encontrado. Pulando..."
+            continue
+        fi
+        
+        # Gera mapas para cada execução (exec01 até exec10)
+        for exec_num in $(seq -w 1 10); do
+            exec_id="exec${exec_num}"
+            results_file="${base_dir}/evo_${instance_lower}_${exec_id}.txt"
+            output_dir="${base_dir}/route_maps_${exec_id}"
+            
+            if [ ! -f "$results_file" ]; then
+                echo "⚠️  Arquivo não encontrado: $results_file. Pulando..."
+                continue
+            fi
+            
+            echo ""
+            echo "Gerando mapas para $instance_upper $exec_id..."
+            
+            # Cria o diretório de saída se não existir
+            mkdir -p "$output_dir"
+            
+            # Gera os mapas usando o script Python
+            python3 "$PLOT_SCRIPT" \
+                --instance "$instance_lower" \
+                --results-file "$results_file" \
+                --instances-dir "$INSTANCES_DIR" \
+                --output-dir "$output_dir"
+            
+            if [ $? -eq 0 ]; then
+                echo "✓ Mapas gerados em: $output_dir"
+            else
+                echo "✗ Erro ao gerar mapas para $instance_upper $exec_id"
+            fi
+        done
+    done
+    
+    echo ""
+    echo "============================================"
+    echo "Todos os mapas gerados com sucesso!"
+}
+
 # Processar comando
 case "$INSTANCE_PARAM" in
     all_c1)
@@ -139,30 +266,30 @@ case "$INSTANCE_PARAM" in
     all_r1)
         echo "=========================================="
         echo "Gerando mapas para TODAS as instâncias R1"
+        echo "Validação: 10 execuções por instância"
         echo "=========================================="
         
-        for i in {101..109}; do
-            generate_single_map "r${i}"
-        done
+        generate_validation_maps_r1
         
         echo ""
         echo "=========================================="
         echo "Geração de mapas concluída!"
+        echo "Mapas salvos em: results_validation_R1/R1XX/route_maps_execYY/"
         echo "=========================================="
         ;;
     
     all_rc1)
         echo "=========================================="
         echo "Gerando mapas para TODAS as instâncias RC1"
+        echo "Validação: 10 execuções por instância"
         echo "=========================================="
         
-        for i in {101..108}; do
-            generate_single_map "rc${i}"
-        done
+        generate_validation_maps_rc1
         
         echo ""
         echo "=========================================="
         echo "Geração de mapas concluída!"
+        echo "Mapas salvos em: results_validation_RC1/RC1XX/route_maps_execYY/"
         echo "=========================================="
         ;;
     

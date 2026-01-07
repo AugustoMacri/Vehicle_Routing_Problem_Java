@@ -4,6 +4,8 @@ debug_fitness.txt
 
 # Resultados e arquivos temporários
 results_validation_C1/**/*.txt
+results_validation_R1/**/*.txt
+results_validation_RC1/**/*.txt
 results_validation_C1_v1/**/*.txt
 resultsMulti/**/*.txt
 
