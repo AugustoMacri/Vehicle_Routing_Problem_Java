@@ -1,0 +1,24 @@
+Resultados AEMMT - C101
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   966.80
+       2 |   976.22
+       3 |   989.32
+       4 |   966.95
+       5 |   967.37
+       6 |   968.47
+       7 |   957.33
+       8 |   959.16
+       9 |   967.50
+      10 |   980.62
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 957.33
+Pior distância encontrada: 989.32
+Distância média geral: 969.97
+Desvio padrão das distâncias: 9.15

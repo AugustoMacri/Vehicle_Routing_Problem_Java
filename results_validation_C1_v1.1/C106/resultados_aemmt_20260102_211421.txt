@@ -1,0 +1,24 @@
+Resultados AEMMT - C106
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   985.59
+       2 |   973.88
+       3 |   975.85
+       4 |   970.07
+       5 |   960.93
+       6 |   975.44
+       7 |   968.81
+       8 |   973.09
+       9 |   981.65
+      10 |   970.66
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 960.93
+Pior distância encontrada: 985.59
+Distância média geral: 973.60
+Desvio padrão das distâncias: 6.50

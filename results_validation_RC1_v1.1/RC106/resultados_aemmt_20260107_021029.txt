@@ -1,0 +1,24 @@
+Resultados AEMMT - RC106
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1362.02
+       2 |  1388.28
+       3 |  1334.49
+       4 |  1331.59
+       5 |  1336.86
+       6 |  1333.87
+       7 |  1316.97
+       8 |  1250.89
+       9 |  1366.36
+      10 |  1365.33
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1250.89
+Pior distância encontrada: 1388.28
+Distância média geral: 1338.67
+Desvio padrão das distâncias: 35.71

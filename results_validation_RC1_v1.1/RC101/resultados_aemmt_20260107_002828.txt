@@ -1,0 +1,24 @@
+Resultados AEMMT - RC101
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1337.65
+       2 |  1313.79
+       3 |  1352.71
+       4 |  1324.99
+       5 |  1343.53
+       6 |  1317.26
+       7 |  1313.87
+       8 |  1322.51
+       9 |  1332.46
+      10 |  1340.85
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1313.79
+Pior distância encontrada: 1352.71
+Distância média geral: 1329.96
+Desvio padrão das distâncias: 12.84

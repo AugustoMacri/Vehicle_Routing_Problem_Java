@@ -6,7 +6,9 @@ debug_fitness.txt
 results_validation_C1/**/*.txt
 results_validation_R1/**/*.txt
 results_validation_RC1/**/*.txt
-results_validation_C1_v1/**/*.txt
+results_validation_C1_v1.0/**/*.txt
+results_validation_R1_v1.0/**/*.txt
+results_validation_RC1_v1.0/**/*.txt
 resultsMulti/**/*.txt
 
 # Compiled class files

@@ -1,0 +1,24 @@
+Resultados AEMMT - C108
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   976.63
+       2 |   971.21
+       3 |   976.66
+       4 |   972.20
+       5 |   982.82
+       6 |   968.95
+       7 |   979.87
+       8 |   979.82
+       9 |   957.75
+      10 |   973.60
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 957.75
+Pior distância encontrada: 982.82
+Distância média geral: 973.95
+Desvio padrão das distâncias: 6.79

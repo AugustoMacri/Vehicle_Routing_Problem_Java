@@ -37,7 +37,7 @@ public class App {
     public static double E_FUEL_CONSUMPTION = 5;
     public static double D_FUEL_CONSUMPTION = 12;
     public static double WEIGHT_NUM_VEHICLES = 0.25;
-    public static double WEIGHT_NUM_VIOLATIONS = 0.5;
+    public static double WEIGHT_NUM_VIOLATIONS = 10000.0; // High penalty to ensure time window feasibility
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
@@ -47,6 +47,7 @@ public class App {
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
+    public static double interRouteMutationRate = 0.3; // Probability of inter-route mutation
     public static int numGenerations = 3000;
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
@@ -756,9 +757,9 @@ public class App {
         Individual filho = Crossover.onePointCrossing(parents.get(0), parents.get(1));
         System.out.println("Filho gerado pelo crossover.");
 
-        // Mutação
-        Mutation.mutate(filho, App.mutationRate);
-        System.out.println("Filho após mutação.");
+        // Mutação (intra-rota + inter-rota)
+        Mutation.mutateCombined(filho, App.mutationRate, App.interRouteMutationRate);
+        System.out.println("Filho após mutação combinada (intra + inter-rota).");
 
         // Calcular fitness do filho
         double filhoFitness = new DefaultFitnessCalculator().calculateFitness(filho, clients);
