@@ -53,7 +53,7 @@ public class FuelFitnessCalculator implements FitnessCalculator {
                 Client nextClient = clients.get(routeClients.get(i + 1));
                 double distance = calculateDistance(currentClient, nextClient);
                 vehicleDistance += distance;
-                
+
                 // Update time and check time windows
                 currentTime += (distance / App.VEHICLE_SPEED) * 60;
                 if (currentTime < nextClient.getReadyTime()) {
@@ -81,7 +81,8 @@ public class FuelFitnessCalculator implements FitnessCalculator {
 
         }
 
-        // Calculating the total cost of the Individual with time window violations penalty
+        // Calculating the total cost of the Individual with time window violations
+        // penalty
         double fitnessFuel = (totalFuel * 0.75) + (numViolations * App.WEIGHT_NUM_VIOLATIONS);
 
         return fitnessFuel;

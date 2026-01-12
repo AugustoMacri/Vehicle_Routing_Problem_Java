@@ -10,21 +10,22 @@ import vrp.Client;
  */
 public class SolomonInsertion {
 
-    private static final double ALPHA = 1.0;  // Weight for distance
-    private static final double BETA = 1.0;   // Weight for time
-    private static final double GAMMA = 1.0;  // Weight for time window urgency
+    private static final double ALPHA = 1.0; // Weight for distance
+    private static final double BETA = 1.0; // Weight for time
+    private static final double GAMMA = 1.0; // Weight for time window urgency
 
     /**
      * Creates a single individual using Solomon I1 insertion heuristic
-     * @param clients List of all clients (including depot at index 0)
+     * 
+     * @param clients         List of all clients (including depot at index 0)
      * @param vehicleCapacity Maximum vehicle capacity
-     * @param numVehicles Maximum number of vehicles available
+     * @param numVehicles     Maximum number of vehicles available
      * @return Individual with feasible routes
      */
     public static Individual createIndividual(List<Client> clients, int vehicleCapacity, int numVehicles) {
         Individual individual = new Individual(App.nextIndividualId++, 0, 0, 0, 0);
         int[][] routes = new int[numVehicles][App.numClients];
-        
+
         // Initialize all positions with -1
         for (int v = 0; v < numVehicles; v++) {
             Arrays.fill(routes[v], -1);
@@ -43,40 +44,40 @@ public class SolomonInsertion {
 
         // Build routes until all clients are routed or vehicles exhausted
         while (!unrouted.isEmpty() && currentVehicle < numVehicles) {
-            
+
             // Find seed customer (farthest from depot with earliest due time)
             int seedClient = findSeedCustomer(unrouted, clients, depot);
-            
-            if (seedClient == -1) break;
-            
+
+            if (seedClient == -1)
+                break;
+
             // Start new route with seed
             routes[currentVehicle][0] = seedClient;
             routeSize[currentVehicle] = 1;
             routeLoad[currentVehicle] = clients.get(seedClient).getDemand();
-            
+
             // Calculate time to reach seed
             double distToSeed = distance(depot, clients.get(seedClient));
             double arrivalTime = (distToSeed / App.VEHICLE_SPEED) * 60;
-            routeTime[currentVehicle] = Math.max(arrivalTime, clients.get(seedClient).getReadyTime()) 
-                                        + clients.get(seedClient).getServiceTime();
-            
+            routeTime[currentVehicle] = Math.max(arrivalTime, clients.get(seedClient).getReadyTime())
+                    + clients.get(seedClient).getServiceTime();
+
             unrouted.remove(seedClient);
 
             // Keep inserting customers into this route
             boolean inserted = true;
             while (inserted && !unrouted.isEmpty()) {
                 inserted = false;
-                
+
                 BestInsertion best = findBestInsertion(
-                    routes[currentVehicle], 
-                    routeSize[currentVehicle],
-                    routeLoad[currentVehicle],
-                    routeTime[currentVehicle],
-                    unrouted, 
-                    clients, 
-                    depot, 
-                    vehicleCapacity
-                );
+                        routes[currentVehicle],
+                        routeSize[currentVehicle],
+                        routeLoad[currentVehicle],
+                        routeTime[currentVehicle],
+                        unrouted,
+                        clients,
+                        depot,
+                        vehicleCapacity);
 
                 if (best != null) {
                     // Insert customer at best position
@@ -96,7 +97,8 @@ public class SolomonInsertion {
         if (!unrouted.isEmpty() && currentVehicle < numVehicles) {
             // Force insert remaining customers
             for (int client : unrouted) {
-                if (currentVehicle >= numVehicles) break;
+                if (currentVehicle >= numVehicles)
+                    break;
                 routes[currentVehicle][0] = client;
                 routeSize[currentVehicle] = 1;
                 currentVehicle++;
@@ -133,12 +135,12 @@ public class SolomonInsertion {
      * Find best insertion position for any unrouted customer
      */
     private static BestInsertion findBestInsertion(
-            int[] route, 
+            int[] route,
             int routeSize,
             double currentLoad,
             double currentTime,
-            Set<Integer> unrouted, 
-            List<Client> clients, 
+            Set<Integer> unrouted,
+            List<Client> clients,
             Client depot,
             int vehicleCapacity) {
 
@@ -156,8 +158,7 @@ public class SolomonInsertion {
             // Try inserting at each position in the route
             for (int pos = 0; pos <= routeSize; pos++) {
                 InsertionCost cost = calculateInsertionCost(
-                    route, routeSize, pos, customer, clients, depot
-                );
+                        route, routeSize, pos, customer, clients, depot);
 
                 if (cost != null && cost.totalCost < bestCost) {
                     bestCost = cost.totalCost;
@@ -191,31 +192,31 @@ public class SolomonInsertion {
             Client curr = clients.get(route[i]);
             double dist = distance(prevClient, curr);
             currentTime += (dist / App.VEHICLE_SPEED) * 60;
-            
+
             if (currentTime < curr.getReadyTime()) {
                 currentTime = curr.getReadyTime();
             }
             if (currentTime > curr.getDueTime()) {
                 timeViolation += (currentTime - curr.getDueTime());
             }
-            
+
             currentTime += curr.getServiceTime();
             prevClient = curr;
         }
 
         // Calculate insertion cost
         Client nextClient = (position < routeSize) ? clients.get(route[position]) : depot;
-        
+
         double distPrevToNew = distance(prevClient, newClient);
         double distNewToNext = distance(newClient, nextClient);
         double distPrevToNext = distance(prevClient, nextClient);
-        
+
         distanceIncrease = distPrevToNew + distNewToNext - distPrevToNext;
 
         // Time at new customer
         double arrivalAtNew = currentTime + (distPrevToNew / App.VEHICLE_SPEED) * 60;
         double startServiceAtNew = Math.max(arrivalAtNew, newClient.getReadyTime());
-        
+
         // Check if new customer violates time window
         if (arrivalAtNew > newClient.getDueTime()) {
             timeViolation += (arrivalAtNew - newClient.getDueTime()) * 10000; // Heavy penalty
@@ -227,23 +228,23 @@ public class SolomonInsertion {
         double timeShift = timeAfterNew - currentTime;
         for (int i = position; i < routeSize; i++) {
             Client curr = clients.get(route[i]);
-            double dist = (i == position) ? distNewToNext : distance(clients.get(route[i-1]), curr);
+            double dist = (i == position) ? distNewToNext : distance(clients.get(route[i - 1]), curr);
             timeAfterNew += (dist / App.VEHICLE_SPEED) * 60;
-            
+
             if (timeAfterNew < curr.getReadyTime()) {
                 timeAfterNew = curr.getReadyTime();
             }
             if (timeAfterNew > curr.getDueTime()) {
                 timeViolation += (timeAfterNew - curr.getDueTime()) * 10000; // Heavy penalty
             }
-            
+
             timeAfterNew += curr.getServiceTime();
         }
 
         // Return to depot
         Client lastClient = (routeSize > 0) ? clients.get(route[routeSize - 1]) : newClient;
         double returnTime = timeAfterNew + (distance(lastClient, depot) / App.VEHICLE_SPEED) * 60;
-        
+
         if (returnTime > depot.getDueTime()) {
             timeViolation += (returnTime - depot.getDueTime()) * 100; // Penalty for late return
         }

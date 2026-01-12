@@ -57,9 +57,10 @@ public class Mutation {
 
     /**
      * Inter-route mutation: moves clients between different vehicles
-     * This helps escape local optima when initial clustering creates infeasible solutions
+     * This helps escape local optima when initial clustering creates infeasible
+     * solutions
      * 
-     * @param individual Individual to mutate
+     * @param individual   Individual to mutate
      * @param mutationRate Probability of mutation occurring
      */
     public static void mutateInterRoute(Individual individual, double mutationRate) {
@@ -71,81 +72,83 @@ public class Mutation {
         }
 
         int[][] route = individual.getRoute();
-        
+
         // Find two different vehicles with clients
         int vehicle1 = -1, vehicle2 = -1;
         int attempts = 0;
         int maxAttempts = 50;
-        
+
         while (attempts < maxAttempts) {
             vehicle1 = random.nextInt(App.numVehicles);
             vehicle2 = random.nextInt(App.numVehicles);
-            
+
             if (vehicle1 == vehicle2) {
                 attempts++;
                 continue;
             }
-            
+
             // Count clients in each vehicle
             int count1 = 0, count2 = 0;
             for (int c = 0; c < App.numClients - 1; c++) {
-                if (route[vehicle1][c] != -1 && route[vehicle1][c] != 0) count1++;
-                if (route[vehicle2][c] != -1 && route[vehicle2][c] != 0) count2++;
+                if (route[vehicle1][c] != -1 && route[vehicle1][c] != 0)
+                    count1++;
+                if (route[vehicle2][c] != -1 && route[vehicle2][c] != 0)
+                    count2++;
             }
-            
+
             // Both vehicles must have at least 1 client
             if (count1 > 0 && count2 > 0) {
                 break;
             }
             attempts++;
         }
-        
+
         if (attempts >= maxAttempts) {
             return; // Couldn't find suitable vehicles
         }
-        
+
         // Select random client from each vehicle
         int client1Pos = -1, client2Pos = -1;
-        
+
         for (int c = 0; c < App.numClients - 1; c++) {
             if (route[vehicle1][c] != -1 && route[vehicle1][c] != 0 && random.nextDouble() < 0.3) {
                 client1Pos = c;
                 break;
             }
         }
-        
+
         for (int c = 0; c < App.numClients - 1; c++) {
             if (route[vehicle2][c] != -1 && route[vehicle2][c] != 0 && random.nextDouble() < 0.3) {
                 client2Pos = c;
                 break;
             }
         }
-        
+
         if (client1Pos == -1 || client2Pos == -1) {
             return; // Couldn't select clients
         }
-        
+
         // Swap clients between vehicles
         int temp = route[vehicle1][client1Pos];
         route[vehicle1][client1Pos] = route[vehicle2][client2Pos];
         route[vehicle2][client2Pos] = temp;
-        
+
         individual.setRoute(route);
     }
 
     /**
      * Combined mutation: applies both intra-route and inter-route mutations
      * 
-     * @param individual Individual to mutate
-     * @param mutationRate Base mutation rate
+     * @param individual     Individual to mutate
+     * @param mutationRate   Base mutation rate
      * @param interRouteRate Probability of inter-route mutation (recommended: 0.3)
      */
     public static void mutateCombined(Individual individual, double mutationRate, double interRouteRate) {
         Random random = new Random();
-        
+
         // Apply standard intra-route mutation
         mutate(individual, mutationRate);
-        
+
         // Apply inter-route mutation with specified probability
         if (random.nextDouble() < interRouteRate) {
             mutateInterRoute(individual, 1.0); // Always mutate if selected

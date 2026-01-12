@@ -43,7 +43,8 @@ public class Population {
 
         // Inicializar TODA a população com Solomon I1 (garante 100% de viabilidade)
         for (int h = 0; h < solomonPopSize; h++) {
-            Individual individual = SolomonInsertion.createIndividual(clientsCopy, App.vehicleCapacity, App.numVehicles);
+            Individual individual = SolomonInsertion.createIndividual(clientsCopy, App.vehicleCapacity,
+                    App.numVehicles);
             individuals.add(individual);
         }
 
