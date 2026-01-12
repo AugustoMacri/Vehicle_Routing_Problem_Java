@@ -1,0 +1,24 @@
+Resultados AEMMT - RC102
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1307.01
+       2 |  1352.91
+       3 |  1375.38
+       4 |  1320.84
+       5 |  1381.00
+       6 |  1389.34
+       7 |  1370.46
+       8 |  1311.53
+       9 |  1336.07
+      10 |  1307.23
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1307.01
+Pior distância encontrada: 1389.34
+Distância média geral: 1345.18
+Desvio padrão das distâncias: 30.90

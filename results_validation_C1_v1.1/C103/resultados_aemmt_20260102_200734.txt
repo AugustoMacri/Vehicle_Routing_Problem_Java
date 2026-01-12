@@ -1,0 +1,24 @@
+Resultados AEMMT - C103
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   961.91
+       2 |   978.83
+       3 |   969.68
+       4 |   973.81
+       5 |   964.35
+       6 |   978.22
+       7 |   962.10
+       8 |   959.59
+       9 |   975.92
+      10 |   961.86
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 959.59
+Pior distância encontrada: 978.83
+Distância média geral: 968.63
+Desvio padrão das distâncias: 7.15

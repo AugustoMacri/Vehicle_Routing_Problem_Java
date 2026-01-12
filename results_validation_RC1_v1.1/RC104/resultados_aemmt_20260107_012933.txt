@@ -1,0 +1,24 @@
+Resultados AEMMT - RC104
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1355.45
+       2 |  1320.92
+       3 |  1370.42
+       4 |  1325.56
+       5 |  1310.88
+       6 |  1310.04
+       7 |  1359.84
+       8 |  1301.94
+       9 |  1330.63
+      10 |  1320.94
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1301.94
+Pior distância encontrada: 1370.42
+Distância média geral: 1330.66
+Desvio padrão das distâncias: 22.14

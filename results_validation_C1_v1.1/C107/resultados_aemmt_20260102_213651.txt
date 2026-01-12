@@ -1,0 +1,24 @@
+Resultados AEMMT - C107
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   977.17
+       2 |   981.93
+       3 |   976.10
+       4 |   968.09
+       5 |   966.87
+       6 |   969.94
+       7 |   970.60
+       8 |   961.18
+       9 |   958.02
+      10 |   973.09
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 958.02
+Pior distância encontrada: 981.93
+Distância média geral: 970.30
+Desvio padrão das distâncias: 6.89

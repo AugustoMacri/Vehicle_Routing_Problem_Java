@@ -1,0 +1,95 @@
+Subpopulação\Geração	g0	g100	g200	g300	g400	g500	g600	g700	g800	g900	g1000	g1100	g1200	g1300	g1400	g1500	g1600	g1700	g1800	g1900	g2000	g2100	g2200	g2300	g2400	g2500	g2600	g2700	g2800	g2900	g2999	
+subPopDistance	1291,62	1291,62	1291,62	1291,62	1291,62	1291,62	1283,38	1281,40	1281,40	1279,52	1279,52	1279,52	1279,52	1279,52	1279,52	1273,02	1247,59	1247,59	1247,59	1247,59	1247,59	1244,01	1230,14	1230,14	1230,14	1230,14	1223,80	1223,80	1223,80	1223,80	1223,80	
+subPopTime	1275,61	1249,92	1249,92	1249,92	1249,92	1249,92	1245,03	1243,84	1243,84	1243,84	1242,71	1242,71	1242,71	1242,71	1242,71	1233,74	1223,05	1223,05	1223,05	1223,05	1223,05	1222,90	1212,08	1212,08	1212,08	1212,08	1208,28	1208,28	1208,28	1208,28	1208,28	
+subPopFuel	712,02	703,31	703,31	703,31	703,31	703,31	692,08	692,08	692,08	685,65	685,65	685,65	685,65	685,65	685,65	666,56	666,56	666,56	666,56	666,56	666,56	666,56	660,49	660,49	660,49	660,49	660,33	660,33	660,33	660,33	660,33	
+subPopPonderation	3354,88	3228,23	3228,23	3228,23	3228,23	3228,23	3226,73	3226,73	3226,73	3217,30	3217,30	3217,30	3217,30	3217,30	3195,14	3143,46	3143,46	3143,46	3143,46	3143,46	3143,46	3143,46	3108,97	3108,97	3108,97	3108,97	3095,84	3095,84	3095,84	3095,84	3095,84	
+
+
+
+ROTAS INICIAIS (Antes da Evolução)
+================================================================================
+
+Fitness Distance do indivíduo: 0,00
+
+Veículo 0: Depósito(0) -> Cliente(6) -> Cliente(94) -> Cliente(95) -> Cliente(96) -> Cliente(99) -> Cliente(59) -> Cliente(92) -> Cliente(93) -> Cliente(5) -> Cliente(37) -> Cliente(98) -> Depósito(0)
+    Clientes: 11 | Demanda: 166/200 | Distância: 73,49
+
+Veículo 1: Depósito(0) -> Cliente(85) -> Cliente(100) -> Cliente(61) -> Cliente(91) -> Cliente(16) -> Cliente(44) -> Cliente(14) -> Cliente(86) -> Cliente(38) -> Depósito(0)
+    Clientes: 9 | Demanda: 180/200 | Distância: 127,72
+
+Veículo 2: Depósito(0) -> Cliente(21) -> Cliente(73) -> Cliente(72) -> Cliente(74) -> Cliente(22) -> Cliente(75) -> Cliente(41) -> Cliente(56) -> Cliente(39) -> Cliente(23) -> Cliente(67) -> Depósito(0)
+    Clientes: 11 | Demanda: 185/200 | Distância: 126,41
+
+Veículo 3: Depósito(0) -> Cliente(19) -> Cliente(11) -> Cliente(47) -> Cliente(36) -> Cliente(49) -> Cliente(64) -> Depósito(0)
+    Clientes: 6 | Demanda: 100/200 | Distância: 129,49
+
+Veículo 4: Depósito(0) -> Cliente(53) -> Cliente(27) -> Cliente(28) -> Cliente(58) -> Cliente(26) -> Cliente(40) -> Cliente(12) -> Depósito(0)
+    Clientes: 7 | Demanda: 109/200 | Distância: 78,54
+
+Veículo 5: Depósito(0) -> Cliente(89) -> Cliente(52) -> Cliente(18) -> Cliente(60) -> Cliente(83) -> Cliente(7) -> Cliente(82) -> Cliente(84) -> Cliente(8) -> Cliente(48) -> Cliente(45) -> Cliente(17) -> Cliente(46) -> Depósito(0)
+    Clientes: 13 | Demanda: 142/200 | Distância: 171,23
+
+Veículo 6: Depósito(0) -> Cliente(76) -> Cliente(50) -> Cliente(77) -> Cliente(80) -> Cliente(68) -> Cliente(3) -> Cliente(33) -> Cliente(79) -> Cliente(81) -> Cliente(29) -> Cliente(78) -> Cliente(34) -> Depósito(0)
+    Clientes: 12 | Demanda: 181/200 | Distância: 128,80
+
+Veículo 7: Depósito(0) -> Cliente(54) -> Cliente(4) -> Cliente(24) -> Cliente(55) -> Cliente(25) -> Depósito(0)
+    Clientes: 5 | Demanda: 48/200 | Distância: 99,36
+
+Veículo 8: Depósito(0) -> Cliente(51) -> Cliente(20) -> Cliente(9) -> Cliente(71) -> Cliente(66) -> Cliente(35) -> Cliente(65) -> Depósito(0)
+    Clientes: 7 | Demanda: 103/200 | Distância: 141,94
+
+Veículo 9: Depósito(0) -> Cliente(69) -> Cliente(1) -> Cliente(31) -> Cliente(88) -> Cliente(70) -> Cliente(10) -> Cliente(30) -> Cliente(62) -> Cliente(90) -> Cliente(32) -> Cliente(63) -> Depósito(0)
+    Clientes: 11 | Demanda: 149/200 | Distância: 136,77
+
+Veículo 10: Depósito(0) -> Cliente(13) -> Cliente(97) -> Cliente(2) -> Cliente(87) -> Cliente(57) -> Cliente(42) -> Cliente(15) -> Cliente(43) -> Depósito(0)
+    Clientes: 8 | Demanda: 95/200 | Distância: 101,31
+
+Total de veículos usados: 11
+Distância total: 1315,07
+================================================================================
+
+
+
+
+ROTAS FINAIS (Após 3000 Gerações)
+================================================================================
+
+Fitness Distance do indivíduo: 1223,80
+
+Veículo 0: Depósito(0) -> Cliente(6) -> Cliente(89) -> Cliente(52) -> Cliente(18) -> Cliente(60) -> Cliente(5) -> Cliente(83) -> Cliente(84) -> Cliente(17) -> Cliente(45) -> Cliente(8) -> Depósito(0)
+    Clientes: 11 | Demanda: 113/200 | Distância: 103,71
+
+Veículo 1: Depósito(0) -> Cliente(94) -> Cliente(95) -> Cliente(96) -> Cliente(99) -> Cliente(59) -> Cliente(92) -> Cliente(93) -> Cliente(37) -> Cliente(98) -> Cliente(85) -> Cliente(100) -> Depósito(0)
+    Clientes: 11 | Demanda: 195/200 | Distância: 68,19
+
+Veículo 2: Depósito(0) -> Cliente(91) -> Cliente(61) -> Cliente(16) -> Cliente(44) -> Cliente(14) -> Cliente(38) -> Cliente(86) -> Depósito(0)
+    Clientes: 7 | Demanda: 122/200 | Distância: 107,23
+
+Veículo 3: Depósito(0) -> Cliente(4) -> Cliente(54) -> Cliente(24) -> Cliente(55) -> Cliente(25) -> Cliente(67) -> Cliente(39) -> Depósito(0)
+    Clientes: 7 | Demanda: 104/200 | Distância: 118,99
+
+Veículo 4: Depósito(0) -> Cliente(3) -> Cliente(33) -> Cliente(79) -> Cliente(81) -> Cliente(29) -> Cliente(78) -> Cliente(9) -> Cliente(71) -> Cliente(65) -> Cliente(35) -> Cliente(34) -> Depósito(0)
+    Clientes: 11 | Demanda: 158/200 | Distância: 153,90
+
+Veículo 5: Depósito(0) -> Cliente(7) -> Cliente(82) -> Cliente(48) -> Cliente(19) -> Cliente(47) -> Cliente(46) -> Cliente(36) -> Cliente(49) -> Depósito(0)
+    Clientes: 8 | Demanda: 137/200 | Distância: 123,61
+
+Veículo 6: Depósito(0) -> Cliente(27) -> Cliente(53) -> Cliente(28) -> Cliente(58) -> Cliente(26) -> Cliente(40) -> Cliente(12) -> Cliente(68) -> Cliente(77) -> Cliente(80) -> Cliente(76) -> Depósito(0)
+    Clientes: 11 | Demanda: 178/200 | Distância: 107,75
+
+Veículo 7: Depósito(0) -> Cliente(88) -> Cliente(10) -> Cliente(62) -> Cliente(90) -> Cliente(63) -> Cliente(32) -> Cliente(64) -> Cliente(11) -> Depósito(0)
+    Clientes: 8 | Demanda: 101/200 | Distância: 126,46
+
+Veículo 8: Depósito(0) -> Cliente(69) -> Cliente(1) -> Cliente(50) -> Cliente(31) -> Cliente(70) -> Cliente(51) -> Cliente(66) -> Cliente(20) -> Cliente(30) -> Depósito(0)
+    Clientes: 9 | Demanda: 126/200 | Distância: 115,61
+
+Veículo 9: Depósito(0) -> Cliente(13) -> Cliente(97) -> Cliente(2) -> Cliente(87) -> Cliente(57) -> Cliente(42) -> Cliente(15) -> Cliente(43) -> Depósito(0)
+    Clientes: 8 | Demanda: 95/200 | Distância: 101,31
+
+Veículo 10: Depósito(0) -> Cliente(21) -> Cliente(73) -> Cliente(72) -> Cliente(41) -> Cliente(22) -> Cliente(75) -> Cliente(74) -> Cliente(56) -> Cliente(23) -> Depósito(0)
+    Clientes: 9 | Demanda: 129/200 | Distância: 97,03
+
+Total de veículos usados: 11
+Distância total: 1223,80
+================================================================================
+

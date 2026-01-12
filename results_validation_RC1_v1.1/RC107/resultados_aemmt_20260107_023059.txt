@@ -1,0 +1,24 @@
+Resultados AEMMT - RC107
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1346.21
+       2 |  1315.06
+       3 |  1338.13
+       4 |  1344.45
+       5 |  1340.49
+       6 |  1336.75
+       7 |  1349.77
+       8 |  1366.04
+       9 |  1341.77
+      10 |  1374.75
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1315.06
+Pior distância encontrada: 1374.75
+Distância média geral: 1345.34
+Desvio padrão das distâncias: 15.47

@@ -35,102 +35,20 @@ public class Population {
         // Copying the clients array
         List<Client> clientsCopy = new ArrayList<>(clients);
 
-        // Usar K-means clustering para 70% da população inicial
-        int clusteringPopSize = (int) (App.pop_size * 0.7);
+        // Usar 100% Solomon I1 para garantir população inicial viável
+        int solomonPopSize = App.pop_size;
 
-        System.out.println("Inicializando população com K-means clustering...");
-        System.out.println("Indivíduos com clustering: " + clusteringPopSize);
-        System.out.println("Indivíduos com Gillet-Miller: " + (App.pop_size - clusteringPopSize));
+        System.out.println("Inicializando população com Solomon I1 (heurística construtiva)...");
+        System.out.println("Todos os " + solomonPopSize + " indivíduos criados com Solomon I1");
 
-        KMeansClusteringInitializer kmeansInitializer = new KMeansClusteringInitializer();
-
-        // Inicializar com K-means clustering
-        for (int h = 0; h < clusteringPopSize; h++) {
-            // Variar o número de clusters para diversidade (entre 8 e 15 clusters)
-            int numClusters = 8 + (h % 8);
-            Individual individual = kmeansInitializer.initializeWithClustering(h, clientsCopy, numClusters);
-            individuals.add(individual);
-        }
-
-        // Inicializar o resto com Gillet-Miller (método original)
-        for (int h = clusteringPopSize; h < App.pop_size; h++) {
-            Individual individual = new Individual(h, 0, 0, 0, 0);
-            boolean[] visited = new boolean[App.numClients];
-
-            // "Cleaning" the array
-            Arrays.fill(visited, false);
-
-            visited[0] = true; // Distribution center is the starting point
-
-            Client distributionCenter = clientsCopy.get(0);
-
-            // Calculating the distance beetween the distributioncenter and the clients
-            for (Client client : clientsCopy) {
-
-                if (client.getId() == 0)
-                    continue; // Skip the distribution center
-
-                double distance = calculateDistance(client, distributionCenter);
-                client.setDistanceFromDepot(distance);
-            }
-
-            // Sorting the clients list
-            clientsCopy.sort(Comparator.comparingDouble(Client::getDistanceFromDepot));
-
-            int clientIndex = 1;
-
-            for (int v = 0; v < App.numVehicles; v++) {
-                int capacity = 0;
-                int pos = 0;
-                int currentClient = 0;
-
-                // Adding the distribution center as the first client in the route
-                individual.setClientInRoute(v, pos, 0);
-                pos++;
-
-                while (clientIndex < App.numClients) {
-                    int nextClient = findClosestClient(currentClient, clientsCopy, visited);
-
-                    if (nextClient == -1)
-                        break; // To this work, we need to have all routes -1
-
-                    // ---------------------------------------------------------------------------------------------------------
-                    // Esse trecho é porque estava tendo um problema de passar o next client como
-                    // posição, nao como ID, sendo que eu passava o ID como parâmetro
-                    // Isso é absudo, porque se o próximo cliente era o com ID 5, ele pegava o
-                    // cliente na posição 5 da lista.
-                    Client client = null;
-                    for (Client c : clientsCopy) {
-                        if (c.getId() == nextClient) {
-                            client = c;
-                            break;
-                        }
-                    }
-                    if (client == null) {
-                        throw new RuntimeException("Cliente com ID " + nextClient + " não encontrado na lista");
-                    }
-
-                    int demand = client.getDemand();
-
-                    if (capacity + demand > App.vehicleCapacity)
-                        break;
-
-                    individual.setClientInRoute(v, pos, nextClient);
-                    visited[nextClient] = true;
-                    capacity += demand;
-                    currentClient = nextClient;
-                    pos++;
-                }
-
-                individual.setClientInRoute(v, pos, 0); // Return to depot
-
-            }
-
+        // Inicializar TODA a população com Solomon I1 (garante 100% de viabilidade)
+        for (int h = 0; h < solomonPopSize; h++) {
+            Individual individual = SolomonInsertion.createIndividual(clientsCopy, App.vehicleCapacity,
+                    App.numVehicles);
             individuals.add(individual);
         }
 
         System.out.println("População inicializada com sucesso!");
-
     }
 
     public void distributeSubpopulations() {
@@ -483,7 +401,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonD, App.mutationRate);
+                Mutation.mutateCombined(newSonD, App.mutationRate, App.interRouteMutationRate);
                 newSonD.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonD, clients));
@@ -499,7 +417,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonT, App.mutationRate);
+                Mutation.mutateCombined(newSonT, App.mutationRate, App.interRouteMutationRate);
                 newSonT.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonT, clients));
@@ -515,7 +433,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonF, App.mutationRate);
+                Mutation.mutateCombined(newSonF, App.mutationRate, App.interRouteMutationRate);
                 newSonF.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonF, clients));
@@ -531,7 +449,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonP, App.mutationRate);
+                Mutation.mutateCombined(newSonP, App.mutationRate, App.interRouteMutationRate);
                 newSonP.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonP, clients));
@@ -560,7 +478,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonD, App.mutationRate);
+                Mutation.mutateCombined(newSonD, App.mutationRate, App.interRouteMutationRate);
                 newSonD.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonD, clients));
@@ -576,7 +494,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonT, App.mutationRate);
+                Mutation.mutateCombined(newSonT, App.mutationRate, App.interRouteMutationRate);
                 newSonT.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonT, clients));
@@ -592,7 +510,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonF, App.mutationRate);
+                Mutation.mutateCombined(newSonF, App.mutationRate, App.interRouteMutationRate);
                 newSonF.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonF, clients));
@@ -608,7 +526,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutate(newSonP, App.mutationRate);
+                Mutation.mutateCombined(newSonP, App.mutationRate, App.interRouteMutationRate);
                 newSonP.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonP, clients));
@@ -659,7 +577,7 @@ public class Population {
                 Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
-                Mutation.mutate(newSon, App.mutationRate);
+                Mutation.mutateCombined(newSon, App.mutationRate, App.interRouteMutationRate);
 
                 // Cálculo do fitness usando apenas o DefaultFitnessCalculator
                 double fitness = new DefaultFitnessCalculator().calculateFitness(newSon, clients);
@@ -686,7 +604,7 @@ public class Population {
                 Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
-                Mutation.mutate(newSon, App.mutationRate);
+                Mutation.mutateCombined(newSon, App.mutationRate, App.interRouteMutationRate);
 
                 // Cálculo do fitness usando apenas o DefaultFitnessCalculator
                 double fitness = new DefaultFitnessCalculator().calculateFitness(newSon, clients);

@@ -1,0 +1,24 @@
+Resultados AEMMT - RC103
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1379.75
+       2 |  1367.65
+       3 |  1336.64
+       4 |  1296.43
+       5 |  1321.15
+       6 |  1336.52
+       7 |  1358.54
+       8 |  1341.55
+       9 |  1344.97
+      10 |  1428.88
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1296.43
+Pior distância encontrada: 1428.88
+Distância média geral: 1351.21
+Desvio padrão das distâncias: 34.11

@@ -1,0 +1,24 @@
+Resultados AEMMT - C109
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |   963.77
+       2 |   969.13
+       3 |   959.23
+       4 |   969.63
+       5 |   965.50
+       6 |   974.80
+       7 |   974.93
+       8 |   983.80
+       9 |   969.91
+      10 |   979.25
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 959.23
+Pior distância encontrada: 983.80
+Distância média geral: 971.00
+Desvio padrão das distâncias: 7.00

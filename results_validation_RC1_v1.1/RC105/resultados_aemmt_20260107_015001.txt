@@ -1,0 +1,24 @@
+Resultados AEMMT - RC105
+============================================================
+
+Total de execuções: 10
+
+Execução | Melhor Distância Encontrada
+----------------------------------------
+       1 |  1327.52
+       2 |  1297.58
+       3 |  1310.89
+       4 |  1338.26
+       5 |  1335.45
+       6 |  1351.08
+       7 |  1301.31
+       8 |  1356.54
+       9 |  1328.36
+      10 |  1321.87
+
+Estatísticas:
+----------------------------------------
+Melhor distância encontrada: 1297.58
+Pior distância encontrada: 1356.54
+Distância média geral: 1326.89
+Desvio padrão das distâncias: 18.61

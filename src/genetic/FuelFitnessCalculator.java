@@ -11,10 +11,12 @@ public class FuelFitnessCalculator implements FitnessCalculator {
     @Override
     public double calculateFitness(Individual individual, List<Client> clients) {
         double totalFuel = 0;
+        int numViolations = 0;
         Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double vehicleDistance = 0;
+            double currentTime = 0;
 
             // Collect all clients in this vehicle's route
             List<Integer> routeClients = new ArrayList<>();
@@ -32,13 +34,35 @@ public class FuelFitnessCalculator implements FitnessCalculator {
 
             // Calculate distance: depot -> first client
             Client firstClient = clients.get(routeClients.get(0));
-            vehicleDistance += calculateDistance(depot, firstClient);
+            double depotToFirstDistance = calculateDistance(depot, firstClient);
+            vehicleDistance += depotToFirstDistance;
+            currentTime += (depotToFirstDistance / App.VEHICLE_SPEED) * 60;
+
+            // Check time window for first client
+            if (currentTime < firstClient.getReadyTime()) {
+                currentTime = firstClient.getReadyTime(); // Wait
+            }
+            if (currentTime > firstClient.getDueTime()) {
+                numViolations++;
+            }
+            currentTime += firstClient.getServiceTime();
 
             // Calculate distances between consecutive clients
             for (int i = 0; i < routeClients.size() - 1; i++) {
                 Client currentClient = clients.get(routeClients.get(i));
                 Client nextClient = clients.get(routeClients.get(i + 1));
-                vehicleDistance += calculateDistance(currentClient, nextClient);
+                double distance = calculateDistance(currentClient, nextClient);
+                vehicleDistance += distance;
+
+                // Update time and check time windows
+                currentTime += (distance / App.VEHICLE_SPEED) * 60;
+                if (currentTime < nextClient.getReadyTime()) {
+                    currentTime = nextClient.getReadyTime(); // Wait
+                }
+                if (currentTime > nextClient.getDueTime()) {
+                    numViolations++;
+                }
+                currentTime += nextClient.getServiceTime();
             }
 
             // Calculate distance: last client -> depot
@@ -57,8 +81,9 @@ public class FuelFitnessCalculator implements FitnessCalculator {
 
         }
 
-        // Calculating the total cost of the Individual
-        double fitnessFuel = totalFuel * 0.75;
+        // Calculating the total cost of the Individual with time window violations
+        // penalty
+        double fitnessFuel = (totalFuel * 0.75) + (numViolations * App.WEIGHT_NUM_VIOLATIONS);
 
         return fitnessFuel;
     }
