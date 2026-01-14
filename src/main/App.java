@@ -28,7 +28,7 @@ public class App {
     public static int numVehicles;
     public static int vehicleCapacity;
     public static int numClients;
-    public static int VEHICLE_SPEED = 50;
+    public static int VEHICLE_SPEED = 1; // Solomon instances: travel time = euclidean distance
     public static int NUM_FUEL_TYPES = 3;
     public static double G_FUEL_PRICE = 5.48;
     public static double E_FUEL_PRICE = 3.99;
@@ -37,7 +37,8 @@ public class App {
     public static double E_FUEL_CONSUMPTION = 5;
     public static double D_FUEL_CONSUMPTION = 12;
     public static double WEIGHT_NUM_VEHICLES = 0.25;
-    public static double WEIGHT_NUM_VIOLATIONS = 10000.0; // High penalty to ensure time window feasibility
+    public static double WEIGHT_NUM_VIOLATIONS = 1000.0; // Penalty for time window violations (reduced to allow Solomon
+                                                         // I1 solutions)
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables
@@ -47,8 +48,8 @@ public class App {
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
     public static double mutationRate = 0.1;
-    public static double interRouteMutationRate = 0.3; // Probability of inter-route mutation
-    public static int numGenerations = 3000;
+    public static double interRouteMutationRate = 0.6; // Increased to improve time window feasibility
+    public static int numGenerations = 5000; // Increased to allow more evolution
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     // Variável estática para armazenar o nome da instância (sem extensão)
@@ -754,11 +755,11 @@ public class App {
 
         // Cruzamento (one-point crossover)
         System.out.println("\n=== INICIANDO CROSSOVER ===");
-        Individual filho = Crossover.onePointCrossing(parents.get(0), parents.get(1));
+        Individual filho = Crossover.onePointCrossing(parents.get(0), parents.get(1), clients);
         System.out.println("Filho gerado pelo crossover.");
 
         // Mutação (intra-rota + inter-rota)
-        Mutation.mutateCombined(filho, App.mutationRate, App.interRouteMutationRate);
+        Mutation.mutateCombined(filho, App.mutationRate, App.interRouteMutationRate, clients);
         System.out.println("Filho após mutação combinada (intra + inter-rota).");
 
         // Calcular fitness do filho

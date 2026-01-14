@@ -36,7 +36,7 @@ public class DistanceFitnessCalculator implements FitnessCalculator {
             Client firstClient = clients.get(routeClients.get(0));
             double depotToFirstDistance = calculateDistance(depot, firstClient);
             vehicleDistance += depotToFirstDistance;
-            currentTime += (depotToFirstDistance / App.VEHICLE_SPEED) * 60;
+            currentTime += depotToFirstDistance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
 
             // Check time window for first client
             if (currentTime < firstClient.getReadyTime()) {
@@ -55,7 +55,7 @@ public class DistanceFitnessCalculator implements FitnessCalculator {
                 vehicleDistance += distance;
 
                 // Update time and check time windows
-                currentTime += (distance / App.VEHICLE_SPEED) * 60;
+                currentTime += distance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
                 if (currentTime < nextClient.getReadyTime()) {
                     currentTime = nextClient.getReadyTime(); // Wait
                 }
