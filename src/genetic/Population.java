@@ -401,7 +401,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonD, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonD, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonD.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonD, clients));
@@ -417,7 +417,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonT, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonT, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonT.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonT, clients));
@@ -433,7 +433,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonF, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonF, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonF.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonF, clients));
@@ -449,7 +449,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonP, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonP, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonP.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonP, clients));
@@ -478,7 +478,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonD, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonD, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonD.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonD, clients));
                 newSonD.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonD, clients));
@@ -494,7 +494,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonT, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonT, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonT.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonT, clients));
                 newSonT.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonT, clients));
@@ -510,7 +510,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonF, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonF, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonF.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonF, clients));
                 newSonF.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonF, clients));
@@ -526,7 +526,7 @@ public class Population {
                     default:
                         throw new IllegalArgumentException("Tipo de cruzamento não implementado");
                 }
-                Mutation.mutateCombined(newSonP, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSonP, App.mutationRate, App.interRouteMutationRate, clients);
                 newSonP.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessTime(new TimeFitnessCalculator().calculateFitness(newSonP, clients));
                 newSonP.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(newSonP, clients));
@@ -577,7 +577,7 @@ public class Population {
                 Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
-                Mutation.mutateCombined(newSon, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSon, App.mutationRate, App.interRouteMutationRate, clients);
 
                 // Cálculo do fitness usando apenas o DefaultFitnessCalculator
                 double fitness = new DefaultFitnessCalculator().calculateFitness(newSon, clients);
@@ -604,7 +604,7 @@ public class Population {
                 Individual newSon = Crossover.onePointCrossing(parent1, parent2, clients);
 
                 // Mutação
-                Mutation.mutateCombined(newSon, App.mutationRate, App.interRouteMutationRate);
+                Mutation.mutateCombined(newSon, App.mutationRate, App.interRouteMutationRate, clients);
 
                 // Cálculo do fitness usando apenas o DefaultFitnessCalculator
                 double fitness = new DefaultFitnessCalculator().calculateFitness(newSon, clients);

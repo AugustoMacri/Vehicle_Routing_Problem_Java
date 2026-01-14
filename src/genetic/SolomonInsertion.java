@@ -58,7 +58,7 @@ public class SolomonInsertion {
 
             // Calculate time to reach seed
             double distToSeed = distance(depot, clients.get(seedClient));
-            double arrivalTime = (distToSeed / App.VEHICLE_SPEED) * 60;
+            double arrivalTime = distToSeed / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
             routeTime[currentVehicle] = Math.max(arrivalTime, clients.get(seedClient).getReadyTime())
                     + clients.get(seedClient).getServiceTime();
 
@@ -93,15 +93,103 @@ public class SolomonInsertion {
             currentVehicle++;
         }
 
-        // Handle remaining unrouted customers (shouldn't happen if enough vehicles)
-        if (!unrouted.isEmpty() && currentVehicle < numVehicles) {
-            // Force insert remaining customers
-            for (int client : unrouted) {
-                if (currentVehicle >= numVehicles)
-                    break;
-                routes[currentVehicle][0] = client;
-                routeSize[currentVehicle] = 1;
-                currentVehicle++;
+        // Handle remaining unrouted customers with intelligent insertion
+        if (!unrouted.isEmpty()) {
+            System.out.println("⚠️  Solomon I1: " + unrouted.size() + " clientes não roteados após construção inicial");
+
+            // Try to insert remaining customers into existing routes with violations
+            // allowed
+            List<Integer> remaining = new ArrayList<>(unrouted);
+
+            for (int client : remaining) {
+                double bestCost = Double.POSITIVE_INFINITY;
+                int bestVehicle = -1;
+                int bestPosition = -1;
+                double bestTime = 0;
+
+                // Try inserting into any existing route (even with violations)
+                for (int v = 0; v < currentVehicle; v++) {
+                    Client clientObj = clients.get(client);
+
+                    // Try each position in this route (ignore capacity for now in fallback)
+                    for (int pos = 0; pos <= routeSize[v]; pos++) {
+                        InsertionCost cost = calculateInsertionCost(
+                                routes[v], routeSize[v], pos, client, clients, depot, false);
+
+                        if (cost != null && cost.totalCost < bestCost) {
+                            // Check if capacity is still OK
+                            if (routeLoad[v] + clientObj.getDemand() <= vehicleCapacity) {
+                                bestCost = cost.totalCost;
+                                bestVehicle = v;
+                                bestPosition = pos;
+                                bestTime = cost.newTime;
+                            }
+                        }
+                    }
+                }
+
+                // Insert into best found position
+                if (bestVehicle != -1) {
+                    insertCustomer(routes[bestVehicle], routeSize[bestVehicle], bestPosition, client);
+                    routeSize[bestVehicle]++;
+                    routeLoad[bestVehicle] += clients.get(client).getDemand();
+                    routeTime[bestVehicle] = bestTime;
+                    unrouted.remove(Integer.valueOf(client));
+                    System.out.println("   ✓ Cliente " + client + " inserido no veículo " + bestVehicle);
+                } else if (currentVehicle < numVehicles) {
+                    // Create new route for this client
+                    routes[currentVehicle][0] = client;
+                    routeSize[currentVehicle] = 1;
+                    routeLoad[currentVehicle] = clients.get(client).getDemand();
+                    unrouted.remove(Integer.valueOf(client));
+                    System.out.println("   ✓ Cliente " + client + " em novo veículo " + currentVehicle);
+                    currentVehicle++;
+                } else {
+                    // Last resort: try to find ANY vehicle where capacity allows
+                    // Even if it causes time window violations
+                    boolean inserted = false;
+                    for (int v = 0; v < currentVehicle; v++) {
+                        Client clientObj = clients.get(client);
+                        if (routeLoad[v] + clientObj.getDemand() <= vehicleCapacity) {
+                            // Can fit capacity-wise, insert at end
+                            routes[v][routeSize[v]] = client;
+                            routeSize[v]++;
+                            routeLoad[v] += clientObj.getDemand();
+                            unrouted.remove(Integer.valueOf(client));
+                            System.out.println("   ⚠️  Cliente " + client + " inserido no fim do veículo " + v +
+                                    " (pode violar janelas de tempo)");
+                            inserted = true;
+                            break;
+                        }
+                    }
+
+                    if (!inserted) {
+                        // Absolutely cannot insert - would need capacity violation
+                        System.err.println("   ❌ ERRO CRÍTICO: Cliente " + client +
+                                " não pode ser inserido sem violar capacidade!");
+                        // Try smallest demand vehicle and insert anyway
+                        int smallestLoadVehicle = 0;
+                        double smallestLoad = routeLoad[0];
+                        for (int v = 1; v < currentVehicle; v++) {
+                            if (routeLoad[v] < smallestLoad) {
+                                smallestLoad = routeLoad[v];
+                                smallestLoadVehicle = v;
+                            }
+                        }
+                        routes[smallestLoadVehicle][routeSize[smallestLoadVehicle]] = client;
+                        routeSize[smallestLoadVehicle]++;
+                        routeLoad[smallestLoadVehicle] += clients.get(client).getDemand();
+                        unrouted.remove(Integer.valueOf(client));
+                        System.err.println("   ⚠️  Cliente " + client + " FORÇADO no veículo " +
+                                smallestLoadVehicle + " (VIOLARÁ CAPACIDADE!)");
+                    }
+                }
+            }
+
+            if (unrouted.isEmpty()) {
+                System.out.println("✅ Todos os clientes foram roteados!");
+            } else {
+                System.out.println("❌ ERRO: " + unrouted.size() + " clientes ainda não roteados: " + unrouted);
             }
         }
 
@@ -133,6 +221,7 @@ public class SolomonInsertion {
 
     /**
      * Find best insertion position for any unrouted customer
+     * If no feasible insertion found, accepts violations with penalties
      */
     private static BestInsertion findBestInsertion(
             int[] route,
@@ -146,6 +235,8 @@ public class SolomonInsertion {
 
         BestInsertion best = null;
         double bestCost = Double.POSITIVE_INFINITY;
+        BestInsertion bestWithViolation = null;
+        double bestViolationCost = Double.POSITIVE_INFINITY;
 
         for (int customer : unrouted) {
             Client client = clients.get(customer);
@@ -158,15 +249,28 @@ public class SolomonInsertion {
             // Try inserting at each position in the route
             for (int pos = 0; pos <= routeSize; pos++) {
                 InsertionCost cost = calculateInsertionCost(
-                        route, routeSize, pos, customer, clients, depot);
+                        route, routeSize, pos, customer, clients, depot, false);
 
-                if (cost != null && cost.totalCost < bestCost) {
-                    bestCost = cost.totalCost;
-                    best = new BestInsertion(customer, pos, cost.newTime);
+                if (cost != null) {
+                    if (cost.hasViolation) {
+                        // Track best insertion with violation as backup
+                        if (cost.totalCost < bestViolationCost) {
+                            bestViolationCost = cost.totalCost;
+                            bestWithViolation = new BestInsertion(customer, pos, cost.newTime);
+                        }
+                    } else {
+                        // Prefer insertions without violations
+                        if (cost.totalCost < bestCost) {
+                            bestCost = cost.totalCost;
+                            best = new BestInsertion(customer, pos, cost.newTime);
+                        }
+                    }
                 }
             }
         }
 
+        // ONLY return feasible insertion (no violations)
+        // If no feasible insertion found, return null to force new vehicle
         return best;
     }
 
@@ -179,7 +283,8 @@ public class SolomonInsertion {
             int position,
             int customer,
             List<Client> clients,
-            Client depot) {
+            Client depot,
+            boolean rejectViolations) {
 
         Client newClient = clients.get(customer);
         double currentTime = 0;
@@ -191,7 +296,7 @@ public class SolomonInsertion {
         for (int i = 0; i < position; i++) {
             Client curr = clients.get(route[i]);
             double dist = distance(prevClient, curr);
-            currentTime += (dist / App.VEHICLE_SPEED) * 60;
+            currentTime += dist / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
 
             if (currentTime < curr.getReadyTime()) {
                 currentTime = curr.getReadyTime();
@@ -214,7 +319,7 @@ public class SolomonInsertion {
         distanceIncrease = distPrevToNew + distNewToNext - distPrevToNext;
 
         // Time at new customer
-        double arrivalAtNew = currentTime + (distPrevToNew / App.VEHICLE_SPEED) * 60;
+        double arrivalAtNew = currentTime + distPrevToNew / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
         double startServiceAtNew = Math.max(arrivalAtNew, newClient.getReadyTime());
 
         // Check if new customer violates time window
@@ -229,7 +334,7 @@ public class SolomonInsertion {
         for (int i = position; i < routeSize; i++) {
             Client curr = clients.get(route[i]);
             double dist = (i == position) ? distNewToNext : distance(clients.get(route[i - 1]), curr);
-            timeAfterNew += (dist / App.VEHICLE_SPEED) * 60;
+            timeAfterNew += dist / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
 
             if (timeAfterNew < curr.getReadyTime()) {
                 timeAfterNew = curr.getReadyTime();
@@ -243,7 +348,8 @@ public class SolomonInsertion {
 
         // Return to depot
         Client lastClient = (routeSize > 0) ? clients.get(route[routeSize - 1]) : newClient;
-        double returnTime = timeAfterNew + (distance(lastClient, depot) / App.VEHICLE_SPEED) * 60;
+        double returnTime = timeAfterNew + distance(lastClient, depot) / App.VEHICLE_SPEED; // Travel time = distance
+                                                                                            // (Solomon)
 
         if (returnTime > depot.getDueTime()) {
             timeViolation += (returnTime - depot.getDueTime()) * 100; // Penalty for late return
@@ -251,12 +357,14 @@ public class SolomonInsertion {
 
         // Total cost considers distance increase and time violations
         double totalCost = ALPHA * distanceIncrease + BETA * timeViolation;
+        boolean hasViolation = (timeViolation > 0);
 
-        if (timeViolation > 0) {
-            return null; // Reject insertions that violate time windows
+        // Optionally reject insertions with violations (only in strict mode)
+        if (rejectViolations && hasViolation) {
+            return null;
         }
 
-        return new InsertionCost(totalCost, timeAfterNew);
+        return new InsertionCost(totalCost, timeAfterNew, hasViolation);
     }
 
     /**
@@ -295,10 +403,12 @@ public class SolomonInsertion {
     static class InsertionCost {
         double totalCost;
         double newTime;
+        boolean hasViolation;
 
-        InsertionCost(double totalCost, double newTime) {
+        InsertionCost(double totalCost, double newTime, boolean hasViolation) {
             this.totalCost = totalCost;
             this.newTime = newTime;
+            this.hasViolation = hasViolation;
         }
     }
 }

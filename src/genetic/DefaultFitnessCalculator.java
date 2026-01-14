@@ -28,7 +28,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 firstClient = clients.get(firstClientId);
                 double depotToFirstDistance = calculateDistance(depot, firstClient);
                 vehicleDistance += depotToFirstDistance;
-                currentTime += (depotToFirstDistance / App.VEHICLE_SPEED) * 60;
+                currentTime += depotToFirstDistance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
             }
 
             for (int c = 0; c < App.numClients - 1; c++) {
@@ -49,7 +49,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 vehicleDistance += distance;
 
                 // Calculating the time
-                currentTime += (distance / App.VEHICLE_SPEED) * 60; // Convert to minutes
+                currentTime += distance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
 
                 // Check if the vehicle arrives between the ready time and due time and if the
                 // service time plus current time is less than the due time (respect the due
@@ -72,7 +72,7 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
             if (lastClient != null) {
                 double lastToDepotDistance = calculateDistance(lastClient, depot);
                 vehicleDistance += lastToDepotDistance;
-                currentTime += (lastToDepotDistance / App.VEHICLE_SPEED) * 60;
+                currentTime += lastToDepotDistance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
             }
 
             // Calculating the fuel cost
