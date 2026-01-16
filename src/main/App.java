@@ -47,8 +47,8 @@ public class App {
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;
-    public static double mutationRate = 0.1;
-    public static double interRouteMutationRate = 0.6; // Increased to improve time window feasibility
+    public static double mutationRate = 0.01; // 1% mutation rate
+    public static double interRouteMutationRate = 1.0; // Always apply inter-route mutation when mutation occurs
     public static int numGenerations = 5000; // Increased to allow more evolution
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
