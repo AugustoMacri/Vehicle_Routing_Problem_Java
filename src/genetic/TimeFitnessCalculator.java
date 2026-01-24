@@ -27,6 +27,14 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                 double depotToFirstDistance = calculateDistance(depot, firstClient);
                 vehicleDistance += depotToFirstDistance;
                 currentTime += depotToFirstDistance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
+
+                // ✅ CORREÇÃO: Verificar janela de tempo do primeiro cliente
+                if (currentTime < firstClient.getReadyTime() || currentTime > firstClient.getDueTime()) {
+                    numViolations++;
+                    numViolationsVehicle++;
+                }
+
+                currentTime += firstClient.getServiceTime(); // Add service time
             }
 
             for (int c = 0; c < App.numClients - 1; c++) {
@@ -49,21 +57,21 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                 // Calculating the time
                 currentTime += distance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
 
-                // Check if the vehicle arrives between the ready time and due time and if the
-                // service time plus current time is less than the due time (respect the due
-                // time)
-                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()) {
+                // ✅ CORREÇÃO CRÍTICA: Verificar janela de tempo do NEXT CLIENT
+                // Após viajar (currentTime += distance), o veículo está no nextClient!
+                // Antes estava verificando currentClient (ERRADO)
+                if (currentTime < nextClient.getReadyTime() || currentTime > nextClient.getDueTime()) {
 
-                    // System.out.println("Vehicle " + v + " | Client Id " + currentClientId + " |
+                    // System.out.println("Vehicle " + v + " | Client Id " + nextClientId + " |
                     // Current time: " + currentTime
-                    // + " | Ready time: " + currentClient.getReadyTime() + " | Due time: "
-                    // + currentClient.getDueTime());
+                    // + " | Ready time: " + nextClient.getReadyTime() + " | Due time: "
+                    // + nextClient.getDueTime());
 
                     numViolations++;
                     numViolationsVehicle++;
                 }
 
-                currentTime += currentClient.getServiceTime(); // Add service time
+                currentTime += nextClient.getServiceTime(); // Add service time do cliente ATUAL (nextClient)
             }
 
             // Distância do último cliente de volta ao depósito
