@@ -29,7 +29,13 @@ public class TimeFitnessCalculator implements FitnessCalculator {
                 currentTime += depotToFirstDistance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
 
                 // ✅ CORREÇÃO: Verificar janela de tempo do primeiro cliente
-                if (currentTime < firstClient.getReadyTime() || currentTime > firstClient.getDueTime()) {
+                // Se chegar ANTES de readyTime, veículo ESPERA (não é violação)
+                // Só é violação se chegar DEPOIS de dueTime
+                if (currentTime < firstClient.getReadyTime()) {
+                    // Esperar até readyTime - NÃO é violação
+                    currentTime = firstClient.getReadyTime();
+                } else if (currentTime > firstClient.getDueTime()) {
+                    // Chegou atrasado - É VIOLAÇÃO
                     numViolations++;
                     numViolationsVehicle++;
                 }
@@ -59,14 +65,13 @@ public class TimeFitnessCalculator implements FitnessCalculator {
 
                 // ✅ CORREÇÃO CRÍTICA: Verificar janela de tempo do NEXT CLIENT
                 // Após viajar (currentTime += distance), o veículo está no nextClient!
-                // Antes estava verificando currentClient (ERRADO)
-                if (currentTime < nextClient.getReadyTime() || currentTime > nextClient.getDueTime()) {
-
-                    // System.out.println("Vehicle " + v + " | Client Id " + nextClientId + " |
-                    // Current time: " + currentTime
-                    // + " | Ready time: " + nextClient.getReadyTime() + " | Due time: "
-                    // + nextClient.getDueTime());
-
+                // Se chegar ANTES de readyTime, veículo ESPERA (não é violação)
+                // Só é violação se chegar DEPOIS de dueTime
+                if (currentTime < nextClient.getReadyTime()) {
+                    // Esperar até readyTime - NÃO é violação
+                    currentTime = nextClient.getReadyTime();
+                } else if (currentTime > nextClient.getDueTime()) {
+                    // Chegou atrasado - É VIOLAÇÃO
                     numViolations++;
                     numViolationsVehicle++;
                 }
