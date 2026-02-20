@@ -49,7 +49,7 @@ public class App {
     public static int tournamentSize = 2;
     public static double mutationRate = 0.01; // 1% mutation rate
     public static double interRouteMutationRate = 1.0; // Always apply inter-route mutation when mutation occurs
-    public static int numGenerations = 5000; // Increased to allow more evolution
+    public static int numGenerations = 3000; // Increased to allow more evolution
     public static int nextIndividualId = pop_size; // Inicializa com pop_size
 
     // Variável estática para armazenar o nome da instância (sem extensão)
