@@ -119,12 +119,12 @@ def plot_coordinates(coordinates, instance_name, output_dir="mapping_results"):
                     c='red', marker='s', s=100, label='Depósito')
 
     # Configurações do gráfico
-    plt.title(
-        f'Mapa de Clientes - Instância {instance_name}', fontsize=16, fontweight='bold')
-    plt.xlabel('Coordenada X', fontsize=12)
-    plt.ylabel('Coordenada Y', fontsize=12)
+    # plt.title(
+    #     f'Mapa de Clientes - Instância {instance_name}', fontsize=16, fontweight='bold')
+    # plt.xlabel('Coordenada X', fontsize=12)
+    # plt.ylabel('Coordenada Y', fontsize=12)
     plt.grid(True, linestyle='--', alpha=0.7)
-    plt.legend(fontsize=10)
+    # plt.legend(fontsize=10)
 
     # Ajustar limites para visualização adequada (margem de 10%)
     x_min, x_max = min(x_coords), max(x_coords)
