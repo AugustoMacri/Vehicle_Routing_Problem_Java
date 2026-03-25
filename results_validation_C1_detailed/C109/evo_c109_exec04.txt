@@ -1,0 +1,1551 @@
+================================================================================
+RELATÓRIO DETALHADO DE VALIDAÇÃO
+================================================================================
+
+Instância: C109.txt
+Solução: evo_c109_exec04.txt
+Número de veículos: 0
+Capacidade dos veículos: 200
+
+================================================================================
+VEÍCULO 1
+================================================================================
+
+📦 Carga total: 160/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 14.14 unidades (tempo: 14.14)
+
+👤 Cliente 63 (Passo 1)
+   Posição: (50.0, 40.0)
+   Demanda: 50
+   Janela de tempo: [15, 375]
+   Tempo de serviço: 90
+
+   • Chegada: 14.14
+   • Espera até: 15.00 (aguarda 0.86 unidades)
+   • Inicia serviço: 15.00
+   • Termina serviço: 105.00
+
+   ↓ viaja 35.36 unidades (tempo: 35.36)
+
+👤 Cliente 81 (Passo 2)
+   Posição: (85.0, 35.0)
+   Demanda: 30
+   Janela de tempo: [47, 407]
+   Tempo de serviço: 90
+
+   • Chegada: 140.36
+   • ✓ Dentro da janela!
+   • Inicia serviço: 140.36
+   • Termina serviço: 230.36
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 78 (Passo 3)
+   Posição: (88.0, 35.0)
+   Demanda: 20
+   Janela de tempo: [50, 410]
+   Tempo de serviço: 90
+
+   • Chegada: 233.36
+   • ✓ Dentro da janela!
+   • Inicia serviço: 233.36
+   • Termina serviço: 323.36
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 76 (Passo 4)
+   Posição: (90.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [52, 412]
+   Tempo de serviço: 90
+
+   • Chegada: 325.36
+   • ✓ Dentro da janela!
+   • Inicia serviço: 325.36
+   • Termina serviço: 415.36
+
+   ↓ viaja 5.83 unidades (tempo: 5.83)
+
+👤 Cliente 79 (Passo 5)
+   Posição: (87.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [520, 880]
+   Tempo de serviço: 90
+
+   • Chegada: 421.19
+   • Espera até: 520.00 (aguarda 98.81 unidades)
+   • Inicia serviço: 520.00
+   • Termina serviço: 610.00
+
+   ↓ viaja 34.00 unidades (tempo: 34.00)
+
+👤 Cliente 72 (Passo 6)
+   Posição: (53.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [298, 658]
+   Tempo de serviço: 90
+
+   • Chegada: 644.00
+   • ✓ Dentro da janela!
+   • Inicia serviço: 644.00
+   • Termina serviço: 734.00
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 61 (Passo 7)
+   Posição: (50.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [391, 751]
+   Tempo de serviço: 90
+
+   • Chegada: 737.00
+   • ✓ Dentro da janela!
+   • Inicia serviço: 737.00
+   • Termina serviço: 827.00
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 64 (Passo 8)
+   Posição: (48.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [483, 843]
+   Tempo de serviço: 90
+
+   • Chegada: 829.00
+   • ✓ Dentro da janela!
+   • Inicia serviço: 829.00
+   • Termina serviço: 919.00
+
+   ↓ viaja 5.83 unidades (tempo: 5.83)
+
+👤 Cliente 69 (Passo 9)
+   Posição: (45.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [763, 1123]
+   Tempo de serviço: 90
+
+   • Chegada: 924.83
+   • ✓ Dentro da janela!
+   • Inicia serviço: 924.83
+   • Termina serviço: 1014.83
+
+   ↓ viaja 15.81 unidades (tempo: 15.81)
+
+🏢 Retorno ao Depósito
+   • Chegada: 1030.64
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 120.97
+
+================================================================================
+VEÍCULO 2
+================================================================================
+
+📦 Carga total: 190/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 12.21 unidades (tempo: 12.21)
+
+👤 Cliente 67 (Passo 1)
+   Posição: (47.0, 40.0)
+   Demanda: 10
+   Janela de tempo: [12, 372]
+   Tempo de serviço: 90
+
+   • Chegada: 12.21
+   • ✓ Dentro da janela!
+   • Inicia serviço: 12.21
+   • Termina serviço: 102.21
+
+   ↓ viaja 1.00 unidades (tempo: 1.00)
+
+👤 Cliente 65 (Passo 2)
+   Posição: (48.0, 40.0)
+   Demanda: 10
+   Janela de tempo: [12, 372]
+   Tempo de serviço: 90
+
+   • Chegada: 103.21
+   • ✓ Dentro da janela!
+   • Inicia serviço: 103.21
+   • Termina serviço: 193.21
+
+   ↓ viaja 5.39 unidades (tempo: 5.39)
+
+👤 Cliente 62 (Passo 3)
+   Posição: (50.0, 35.0)
+   Demanda: 20
+   Janela de tempo: [110, 470]
+   Tempo de serviço: 90
+
+   • Chegada: 198.59
+   • ✓ Dentro da janela!
+   • Inicia serviço: 198.59
+   • Termina serviço: 288.59
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 74 (Passo 4)
+   Posição: (53.0, 35.0)
+   Demanda: 50
+   Janela de tempo: [203, 563]
+   Tempo de serviço: 90
+
+   • Chegada: 291.59
+   • ✓ Dentro da janela!
+   • Inicia serviço: 291.59
+   • Termina serviço: 381.59
+
+   ↓ viaja 42.00 unidades (tempo: 42.00)
+
+👤 Cliente 71 (Passo 5)
+   Posição: (95.0, 35.0)
+   Demanda: 20
+   Janela de tempo: [147, 507]
+   Tempo de serviço: 90
+
+   • Chegada: 423.59
+   • ✓ Dentro da janela!
+   • Inicia serviço: 423.59
+   • Termina serviço: 513.59
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 70 (Passo 6)
+   Posição: (95.0, 30.0)
+   Demanda: 30
+   Janela de tempo: [242, 602]
+   Tempo de serviço: 90
+
+   • Chegada: 518.59
+   • ✓ Dentro da janela!
+   • Inicia serviço: 518.59
+   • Termina serviço: 608.59
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 73 (Passo 7)
+   Posição: (92.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [335, 695]
+   Tempo de serviço: 90
+
+   • Chegada: 611.59
+   • ✓ Dentro da janela!
+   • Inicia serviço: 611.59
+   • Termina serviço: 701.59
+
+   ↓ viaja 4.00 unidades (tempo: 4.00)
+
+👤 Cliente 77 (Passo 8)
+   Posição: (88.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [429, 789]
+   Tempo de serviço: 90
+
+   • Chegada: 705.59
+   • ✓ Dentro da janela!
+   • Inicia serviço: 705.59
+   • Termina serviço: 795.59
+
+   ↓ viaja 5.83 unidades (tempo: 5.83)
+
+👤 Cliente 80 (Passo 9)
+   Posição: (85.0, 25.0)
+   Demanda: 10
+   Janela de tempo: [615, 975]
+   Tempo de serviço: 90
+
+   • Chegada: 801.42
+   • ✓ Dentro da janela!
+   • Inicia serviço: 801.42
+   • Termina serviço: 891.42
+
+   ↓ viaja 39.66 unidades (tempo: 39.66)
+
+👤 Cliente 89 (Passo 10)
+   Posição: (63.0, 58.0)
+   Demanda: 10
+   Janela de tempo: [590, 950]
+   Tempo de serviço: 90
+
+   • Chegada: 931.08
+   • ✓ Dentro da janela!
+   • Inicia serviço: 931.08
+   • Termina serviço: 1021.08
+
+   ↓ viaja 3.61 unidades (tempo: 3.61)
+
+👤 Cliente 91 (Passo 11)
+   Posição: (60.0, 60.0)
+   Demanda: 10
+   Janela de tempo: [683, 1043]
+   Tempo de serviço: 90
+
+   • Chegada: 1024.69
+   • ✓ Dentro da janela!
+   • Inicia serviço: 1024.69
+   • Termina serviço: 1114.69
+
+   ↓ viaja 22.36 unidades (tempo: 22.36)
+
+🏢 Retorno ao Depósito
+   • Chegada: 1137.05
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 147.05
+
+================================================================================
+VEÍCULO 3
+================================================================================
+
+📦 Carga total: 200/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 35.06 unidades (tempo: 35.06)
+
+👤 Cliente 55 (Passo 1)
+   Posição: (42.0, 15.0)
+   Demanda: 10
+   Janela de tempo: [35, 395]
+   Tempo de serviço: 90
+
+   • Chegada: 35.06
+   • ✓ Dentro da janela!
+   • Inicia serviço: 35.06
+   • Termina serviço: 125.06
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 54 (Passo 2)
+   Posição: (42.0, 10.0)
+   Demanda: 40
+   Janela de tempo: [42, 402]
+   Tempo de serviço: 90
+
+   • Chegada: 130.06
+   • ✓ Dentro da janela!
+   • Inicia serviço: 130.06
+   • Termina serviço: 220.06
+
+   ↓ viaja 5.39 unidades (tempo: 5.39)
+
+👤 Cliente 57 (Passo 3)
+   Posição: (40.0, 15.0)
+   Demanda: 40
+   Janela de tempo: [35, 395]
+   Tempo de serviço: 90
+
+   • Chegada: 225.44
+   • ✓ Dentro da janela!
+   • Inicia serviço: 225.44
+   • Termina serviço: 315.44
+
+   ↓ viaja 17.72 unidades (tempo: 17.72)
+
+👤 Cliente 41 (Passo 4)
+   Posição: (35.0, 32.0)
+   Demanda: 10
+   Janela de tempo: [21, 381]
+   Tempo de serviço: 90
+
+   • Chegada: 333.16
+   • ✓ Dentro da janela!
+   • Inicia serviço: 333.16
+   • Termina serviço: 423.16
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 40 (Passo 5)
+   Posição: (35.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [113, 473]
+   Tempo de serviço: 90
+
+   • Chegada: 425.16
+   • ✓ Dentro da janela!
+   • Inicia serviço: 425.16
+   • Termina serviço: 515.16
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 44 (Passo 6)
+   Posição: (32.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [206, 566]
+   Tempo de serviço: 90
+
+   • Chegada: 518.16
+   • ✓ Dentro da janela!
+   • Inicia serviço: 518.16
+   • Termina serviço: 608.16
+
+   ↓ viaja 2.83 unidades (tempo: 2.83)
+
+👤 Cliente 46 (Passo 7)
+   Posição: (30.0, 32.0)
+   Demanda: 30
+   Janela de tempo: [299, 659]
+   Tempo de serviço: 90
+
+   • Chegada: 610.99
+   • ✓ Dentro da janela!
+   • Inicia serviço: 610.99
+   • Termina serviço: 700.99
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 45 (Passo 8)
+   Posição: (30.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [391, 751]
+   Tempo de serviço: 90
+
+   • Chegada: 702.99
+   • ✓ Dentro da janela!
+   • Inicia serviço: 702.99
+   • Termina serviço: 792.99
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 48 (Passo 9)
+   Posição: (28.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [483, 843]
+   Tempo de serviço: 90
+
+   • Chegada: 794.99
+   • ✓ Dentro da janela!
+   • Inicia serviço: 794.99
+   • Termina serviço: 884.99
+
+   ↓ viaja 2.83 unidades (tempo: 2.83)
+
+👤 Cliente 50 (Passo 10)
+   Posição: (26.0, 32.0)
+   Demanda: 10
+   Janela de tempo: [668, 1028]
+   Tempo de serviço: 90
+
+   • Chegada: 887.82
+   • ✓ Dentro da janela!
+   • Inicia serviço: 887.82
+   • Termina serviço: 977.82
+
+   ↓ viaja 3.61 unidades (tempo: 3.61)
+
+👤 Cliente 49 (Passo 11)
+   Posição: (28.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [766, 1126]
+   Tempo de serviço: 90
+
+   • Chegada: 981.42
+   • ✓ Dentro da janela!
+   • Inicia serviço: 981.42
+   • Termina serviço: 1071.42
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 47 (Passo 12)
+   Posição: (30.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [767, 1127]
+   Tempo de serviço: 90
+
+   • Chegada: 1073.42
+   • ✓ Dentro da janela!
+   • Inicia serviço: 1073.42
+   • Termina serviço: 1163.42
+
+   ↓ viaja 18.03 unidades (tempo: 18.03)
+
+🏢 Retorno ao Depósito
+   • Chegada: 1181.45
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 101.45
+
+================================================================================
+VEÍCULO 4
+================================================================================
+
+📦 Carga total: 200/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 20.62 unidades (tempo: 20.62)
+
+👤 Cliente 90 (Passo 1)
+   Posição: (60.0, 55.0)
+   Demanda: 10
+   Janela de tempo: [20, 380]
+   Tempo de serviço: 90
+
+   • Chegada: 20.62
+   • ✓ Dentro da janela!
+   • Inicia serviço: 20.62
+   • Termina serviço: 110.62
+
+   ↓ viaja 20.10 unidades (tempo: 20.10)
+
+👤 Cliente 98 (Passo 2)
+   Posição: (58.0, 75.0)
+   Demanda: 20
+   Janela de tempo: [30, 390]
+   Tempo de serviço: 90
+
+   • Chegada: 130.72
+   • ✓ Dentro da janela!
+   • Inicia serviço: 130.72
+   • Termina serviço: 220.72
+
+   ↓ viaja 6.40 unidades (tempo: 6.40)
+
+👤 Cliente 95 (Passo 3)
+   Posição: (62.0, 80.0)
+   Demanda: 30
+   Janela de tempo: [38, 398]
+   Tempo de serviço: 90
+
+   • Chegada: 227.12
+   • ✓ Dentro da janela!
+   • Inicia serviço: 227.12
+   • Termina serviço: 317.12
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 96 (Passo 4)
+   Posição: (60.0, 80.0)
+   Demanda: 10
+   Janela de tempo: [36, 396]
+   Tempo de serviço: 90
+
+   • Chegada: 319.12
+   • ✓ Dentro da janela!
+   • Inicia serviço: 319.12
+   • Termina serviço: 409.12
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 97 (Passo 5)
+   Posição: (60.0, 85.0)
+   Demanda: 30
+   Janela de tempo: [412, 772]
+   Tempo de serviço: 90
+
+   • Chegada: 414.12
+   • ✓ Dentro da janela!
+   • Inicia serviço: 414.12
+   • Termina serviço: 504.12
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 100 (Passo 6)
+   Posição: (55.0, 85.0)
+   Demanda: 20
+   Janela de tempo: [507, 867]
+   Tempo de serviço: 90
+
+   • Chegada: 509.12
+   • ✓ Dentro da janela!
+   • Inicia serviço: 509.12
+   • Termina serviço: 599.12
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 99 (Passo 7)
+   Posição: (55.0, 80.0)
+   Demanda: 10
+   Janela de tempo: [602, 962]
+   Tempo de serviço: 90
+
+   • Chegada: 604.12
+   • ✓ Dentro da janela!
+   • Inicia serviço: 604.12
+   • Termina serviço: 694.12
+
+   ↓ viaja 14.14 unidades (tempo: 14.14)
+
+👤 Cliente 2 (Passo 8)
+   Posição: (45.0, 70.0)
+   Demanda: 30
+   Janela de tempo: [668, 1028]
+   Tempo de serviço: 90
+
+   • Chegada: 708.26
+   • ✓ Dentro da janela!
+   • Inicia serviço: 708.26
+   • Termina serviço: 798.26
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 1 (Passo 9)
+   Posição: (45.0, 68.0)
+   Demanda: 10
+   Janela de tempo: [760, 1120]
+   Tempo de serviço: 90
+
+   • Chegada: 800.26
+   • ✓ Dentro da janela!
+   • Inicia serviço: 800.26
+   • Termina serviço: 890.26
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 4 (Passo 10)
+   Posição: (42.0, 68.0)
+   Demanda: 10
+   Janela de tempo: [575, 935]
+   Tempo de serviço: 90
+
+   • Chegada: 893.26
+   • ✓ Dentro da janela!
+   • Inicia serviço: 893.26
+   • Termina serviço: 983.26
+
+   ↓ viaja 4.24 unidades (tempo: 4.24)
+
+👤 Cliente 75 (Passo 11)
+   Posição: (45.0, 65.0)
+   Demanda: 20
+   Janela de tempo: [770, 1130]
+   Tempo de serviço: 90
+
+   • Chegada: 987.50
+   • ✓ Dentro da janela!
+   • Inicia serviço: 987.50
+   • Termina serviço: 1077.50
+
+   ↓ viaja 15.81 unidades (tempo: 15.81)
+
+🏢 Retorno ao Depósito
+   • Chegada: 1093.31
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 103.31
+
+================================================================================
+VEÍCULO 5
+================================================================================
+
+📦 Carga total: 200/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 16.55 unidades (tempo: 16.55)
+
+👤 Cliente 43 (Passo 1)
+   Posição: (33.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [16, 376]
+   Tempo de serviço: 90
+
+   • Chegada: 16.55
+   • ✓ Dentro da janela!
+   • Inicia serviço: 16.55
+   • Termina serviço: 106.55
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 42 (Passo 2)
+   Posição: (33.0, 32.0)
+   Demanda: 20
+   Janela de tempo: [19, 379]
+   Tempo de serviço: 90
+
+   • Chegada: 109.55
+   • ✓ Dentro da janela!
+   • Inicia serviço: 109.55
+   • Termina serviço: 199.55
+
+   ↓ viaja 29.15 unidades (tempo: 29.15)
+
+👤 Cliente 53 (Passo 3)
+   Posição: (44.0, 5.0)
+   Demanda: 20
+   Janela de tempo: [137, 497]
+   Tempo de serviço: 90
+
+   • Chegada: 228.71
+   • ✓ Dentro da janela!
+   • Inicia serviço: 228.71
+   • Termina serviço: 318.71
+
+   ↓ viaja 4.00 unidades (tempo: 4.00)
+
+👤 Cliente 56 (Passo 4)
+   Posição: (40.0, 5.0)
+   Demanda: 30
+   Janela de tempo: [231, 591]
+   Tempo de serviço: 90
+
+   • Chegada: 322.71
+   • ✓ Dentro da janela!
+   • Inicia serviço: 322.71
+   • Termina serviço: 412.71
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 58 (Passo 5)
+   Posição: (38.0, 5.0)
+   Demanda: 30
+   Janela de tempo: [323, 683]
+   Tempo de serviço: 90
+
+   • Chegada: 414.71
+   • ✓ Dentro da janela!
+   • Inicia serviço: 414.71
+   • Termina serviço: 504.71
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 60 (Passo 6)
+   Posição: (35.0, 5.0)
+   Demanda: 20
+   Janela de tempo: [416, 776]
+   Tempo de serviço: 90
+
+   • Chegada: 507.71
+   • ✓ Dentro da janela!
+   • Inicia serviço: 507.71
+   • Termina serviço: 597.71
+
+   ↓ viaja 10.44 unidades (tempo: 10.44)
+
+👤 Cliente 59 (Passo 7)
+   Posição: (38.0, 15.0)
+   Demanda: 10
+   Janela de tempo: [516, 876]
+   Tempo de serviço: 90
+
+   • Chegada: 608.15
+   • ✓ Dentro da janela!
+   • Inicia serviço: 608.15
+   • Termina serviço: 698.15
+
+   ↓ viaja 16.55 unidades (tempo: 16.55)
+
+👤 Cliente 68 (Passo 8)
+   Posição: (45.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [576, 936]
+   Tempo de serviço: 90
+
+   • Chegada: 714.70
+   • ✓ Dentro da janela!
+   • Inicia serviço: 714.70
+   • Termina serviço: 804.70
+
+   ↓ viaja 5.39 unidades (tempo: 5.39)
+
+👤 Cliente 66 (Passo 9)
+   Posição: (47.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [671, 1031]
+   Tempo de serviço: 90
+
+   • Chegada: 810.09
+   • ✓ Dentro da janela!
+   • Inicia serviço: 810.09
+   • Termina serviço: 900.09
+
+   ↓ viaja 25.50 unidades (tempo: 25.50)
+
+👤 Cliente 22 (Passo 10)
+   Posição: (28.0, 52.0)
+   Demanda: 20
+   Janela de tempo: [668, 1028]
+   Tempo de serviço: 90
+
+   • Chegada: 925.58
+   • ✓ Dentro da janela!
+   • Inicia serviço: 925.58
+   • Termina serviço: 1015.58
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 21 (Passo 11)
+   Posição: (30.0, 52.0)
+   Demanda: 20
+   Janela de tempo: [760, 1120]
+   Tempo de serviço: 90
+
+   • Chegada: 1017.58
+   • ✓ Dentro da janela!
+   • Inicia serviço: 1017.58
+   • Termina serviço: 1107.58
+
+   ↓ viaja 10.20 unidades (tempo: 10.20)
+
+🏢 Retorno ao Depósito
+   • Chegada: 1117.78
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 127.78
+
+================================================================================
+VEÍCULO 6
+================================================================================
+
+📦 Carga total: 170/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 30.81 unidades (tempo: 30.81)
+
+👤 Cliente 13 (Passo 1)
+   Posição: (22.0, 75.0)
+   Demanda: 30
+   Janela de tempo: [30, 390]
+   Tempo de serviço: 90
+
+   • Chegada: 30.81
+   • ✓ Dentro da janela!
+   • Inicia serviço: 30.81
+   • Termina serviço: 120.81
+
+   ↓ viaja 4.00 unidades (tempo: 4.00)
+
+👤 Cliente 17 (Passo 2)
+   Posição: (18.0, 75.0)
+   Demanda: 20
+   Janela de tempo: [33, 393]
+   Tempo de serviço: 90
+
+   • Chegada: 124.81
+   • ✓ Dentro da janela!
+   • Inicia serviço: 124.81
+   • Termina serviço: 214.81
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 18 (Passo 3)
+   Posição: (15.0, 75.0)
+   Demanda: 20
+   Janela de tempo: [37, 397]
+   Tempo de serviço: 90
+
+   • Chegada: 217.81
+   • ✓ Dentro da janela!
+   • Inicia serviço: 217.81
+   • Termina serviço: 307.81
+
+   ↓ viaja 20.62 unidades (tempo: 20.62)
+
+👤 Cliente 30 (Passo 4)
+   Posição: (20.0, 55.0)
+   Demanda: 10
+   Janela de tempo: [297, 657]
+   Tempo de serviço: 90
+
+   • Chegada: 328.42
+   • ✓ Dentro da janela!
+   • Inicia serviço: 328.42
+   • Termina serviço: 418.42
+
+   ↓ viaja 4.24 unidades (tempo: 4.24)
+
+👤 Cliente 27 (Passo 5)
+   Posição: (23.0, 52.0)
+   Demanda: 10
+   Janela de tempo: [109, 469]
+   Tempo de serviço: 90
+
+   • Chegada: 422.66
+   • ✓ Dentro da janela!
+   • Inicia serviço: 422.66
+   • Termina serviço: 512.66
+
+   ↓ viaja 3.61 unidades (tempo: 3.61)
+
+👤 Cliente 29 (Passo 6)
+   Posição: (20.0, 50.0)
+   Demanda: 10
+   Janela de tempo: [202, 562]
+   Tempo de serviço: 90
+
+   • Chegada: 516.27
+   • ✓ Dentro da janela!
+   • Inicia serviço: 516.27
+   • Termina serviço: 606.27
+
+   ↓ viaja 13.00 unidades (tempo: 13.00)
+
+👤 Cliente 34 (Passo 7)
+   Posição: (8.0, 45.0)
+   Demanda: 20
+   Janela de tempo: [604, 964]
+   Tempo de serviço: 90
+
+   • Chegada: 619.27
+   • ✓ Dentro da janela!
+   • Inicia serviço: 619.27
+   • Termina serviço: 709.27
+
+   ↓ viaja 18.03 unidades (tempo: 18.03)
+
+👤 Cliente 28 (Passo 8)
+   Posição: (23.0, 55.0)
+   Demanda: 20
+   Janela de tempo: [390, 750]
+   Tempo de serviço: 90
+
+   • Chegada: 727.30
+   • ✓ Dentro da janela!
+   • Inicia serviço: 727.30
+   • Termina serviço: 817.30
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 26 (Passo 9)
+   Posição: (25.0, 55.0)
+   Demanda: 10
+   Janela de tempo: [482, 842]
+   Tempo de serviço: 90
+
+   • Chegada: 819.30
+   • ✓ Dentro da janela!
+   • Inicia serviço: 819.30
+   • Termina serviço: 909.30
+
+   ↓ viaja 25.00 unidades (tempo: 25.00)
+
+👤 Cliente 51 (Passo 10)
+   Posição: (25.0, 30.0)
+   Demanda: 10
+   Janela de tempo: [576, 936]
+   Tempo de serviço: 90
+
+   • Chegada: 934.30
+   • ✓ Dentro da janela!
+   • Inicia serviço: 934.30
+   • Termina serviço: 1024.30
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 52 (Passo 11)
+   Posição: (25.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [761, 1121]
+   Tempo de serviço: 90
+
+   • Chegada: 1029.30
+   • ✓ Dentro da janela!
+   • Inicia serviço: 1029.30
+   • Termina serviço: 1119.30
+
+   ↓ viaja 21.21 unidades (tempo: 21.21)
+
+🏢 Retorno ao Depósito
+   • Chegada: 1140.51
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 150.51
+
+================================================================================
+VEÍCULO 7
+================================================================================
+
+📦 Carga total: 150/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 10.00 unidades (tempo: 10.00)
+
+👤 Cliente 20 (Passo 1)
+   Posição: (30.0, 50.0)
+   Demanda: 10
+   Janela de tempo: [10, 370]
+   Tempo de serviço: 90
+
+   • Chegada: 10.00
+   • ✓ Dentro da janela!
+   • Inicia serviço: 10.00
+   • Termina serviço: 100.00
+
+   ↓ viaja 22.36 unidades (tempo: 22.36)
+
+👤 Cliente 32 (Passo 2)
+   Posição: (10.0, 40.0)
+   Demanda: 30
+   Janela de tempo: [31, 391]
+   Tempo de serviço: 90
+
+   • Chegada: 122.36
+   • ✓ Dentro da janela!
+   • Inicia serviço: 122.36
+   • Termina serviço: 212.36
+
+   ↓ viaja 18.03 unidades (tempo: 18.03)
+
+👤 Cliente 24 (Passo 3)
+   Posição: (25.0, 50.0)
+   Demanda: 10
+   Janela de tempo: [15, 375]
+   Tempo de serviço: 90
+
+   • Chegada: 230.39
+   • ✓ Dentro da janela!
+   • Inicia serviço: 230.39
+   • Termina serviço: 320.39
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 25 (Passo 4)
+   Posição: (25.0, 52.0)
+   Demanda: 40
+   Janela de tempo: [17, 377]
+   Tempo de serviço: 90
+
+   • Chegada: 322.39
+   • ✓ Dentro da janela!
+   • Inicia serviço: 322.39
+   • Termina serviço: 412.39
+
+   ↓ viaja 19.72 unidades (tempo: 19.72)
+
+👤 Cliente 11 (Passo 5)
+   Posição: (35.0, 69.0)
+   Demanda: 10
+   Janela de tempo: [297, 657]
+   Tempo de serviço: 90
+
+   • Chegada: 432.11
+   • ✓ Dentro da janela!
+   • Inicia serviço: 432.11
+   • Termina serviço: 522.11
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 10 (Passo 6)
+   Posição: (35.0, 66.0)
+   Demanda: 10
+   Janela de tempo: [204, 564]
+   Tempo de serviço: 90
+
+   • Chegada: 525.11
+   • ✓ Dentro da janela!
+   • Inicia serviço: 525.11
+   • Termina serviço: 615.11
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 9 (Passo 7)
+   Posição: (38.0, 70.0)
+   Demanda: 10
+   Janela de tempo: [390, 750]
+   Tempo de serviço: 90
+
+   • Chegada: 620.11
+   • ✓ Dentro da janela!
+   • Inicia serviço: 620.11
+   • Termina serviço: 710.11
+
+   ↓ viaja 2.24 unidades (tempo: 2.24)
+
+👤 Cliente 6 (Passo 8)
+   Posição: (40.0, 69.0)
+   Demanda: 20
+   Janela de tempo: [482, 842]
+   Tempo de serviço: 90
+
+   • Chegada: 712.35
+   • ✓ Dentro da janela!
+   • Inicia serviço: 712.35
+   • Termina serviço: 802.35
+
+   ↓ viaja 18.44 unidades (tempo: 18.44)
+
+👤 Cliente 23 (Passo 9)
+   Posição: (28.0, 55.0)
+   Demanda: 10
+   Janela de tempo: [575, 935]
+   Tempo de serviço: 90
+
+   • Chegada: 820.79
+   • ✓ Dentro da janela!
+   • Inicia serviço: 820.79
+   • Termina serviço: 910.79
+
+   ↓ viaja 13.00 unidades (tempo: 13.00)
+
+🏢 Retorno ao Depósito
+   • Chegada: 923.79
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 113.79
+
+================================================================================
+VEÍCULO 8
+================================================================================
+
+📦 Carga total: 180/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 33.54 unidades (tempo: 33.54)
+
+👤 Cliente 31 (Passo 1)
+   Posição: (10.0, 35.0)
+   Demanda: 20
+   Janela de tempo: [39, 399]
+   Tempo de serviço: 90
+
+   • Chegada: 33.54
+   • Espera até: 39.00 (aguarda 5.46 unidades)
+   • Inicia serviço: 39.00
+   • Termina serviço: 129.00
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 35 (Passo 2)
+   Posição: (5.0, 35.0)
+   Demanda: 10
+   Janela de tempo: [134, 494]
+   Tempo de serviço: 90
+
+   • Chegada: 134.00
+   • ✓ Dentro da janela!
+   • Inicia serviço: 134.00
+   • Termina serviço: 224.00
+
+   ↓ viaja 5.83 unidades (tempo: 5.83)
+
+👤 Cliente 37 (Passo 3)
+   Posição: (2.0, 40.0)
+   Demanda: 20
+   Janela de tempo: [229, 589]
+   Tempo de serviço: 90
+
+   • Chegada: 229.83
+   • ✓ Dentro da janela!
+   • Inicia serviço: 229.83
+   • Termina serviço: 319.83
+
+   ↓ viaja 6.00 unidades (tempo: 6.00)
+
+👤 Cliente 33 (Passo 4)
+   Posição: (8.0, 40.0)
+   Demanda: 40
+   Janela de tempo: [33, 393]
+   Tempo de serviço: 90
+
+   • Chegada: 325.83
+   • ✓ Dentro da janela!
+   • Inicia serviço: 325.83
+   • Termina serviço: 415.83
+
+   ↓ viaja 8.00 unidades (tempo: 8.00)
+
+👤 Cliente 38 (Passo 5)
+   Posição: (0.0, 40.0)
+   Demanda: 30
+   Janela de tempo: [321, 681]
+   Tempo de serviço: 90
+
+   • Chegada: 423.83
+   • ✓ Dentro da janela!
+   • Inicia serviço: 423.83
+   • Termina serviço: 513.83
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 39 (Passo 6)
+   Posição: (0.0, 45.0)
+   Demanda: 20
+   Janela de tempo: [416, 776]
+   Tempo de serviço: 90
+
+   • Chegada: 518.83
+   • ✓ Dentro da janela!
+   • Inicia serviço: 518.83
+   • Termina serviço: 608.83
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 36 (Passo 7)
+   Posição: (5.0, 45.0)
+   Demanda: 10
+   Janela de tempo: [511, 871]
+   Tempo de serviço: 90
+
+   • Chegada: 613.83
+   • ✓ Dentro da janela!
+   • Inicia serviço: 613.83
+   • Termina serviço: 703.83
+
+   ↓ viaja 43.46 unidades (tempo: 43.46)
+
+👤 Cliente 14 (Passo 8)
+   Posição: (22.0, 85.0)
+   Demanda: 10
+   Janela de tempo: [414, 774]
+   Tempo de serviço: 90
+
+   • Chegada: 747.29
+   • ✓ Dentro da janela!
+   • Inicia serviço: 747.29
+   • Termina serviço: 837.29
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 12 (Passo 9)
+   Posição: (25.0, 85.0)
+   Demanda: 20
+   Janela de tempo: [507, 867]
+   Tempo de serviço: 90
+
+   • Chegada: 840.29
+   • ✓ Dentro da janela!
+   • Inicia serviço: 840.29
+   • Termina serviço: 930.29
+
+   ↓ viaja 38.08 unidades (tempo: 38.08)
+
+🏢 Retorno ao Depósito
+   • Chegada: 968.37
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 152.91
+
+================================================================================
+VEÍCULO 9
+================================================================================
+
+📦 Carga total: 170/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 15.13 unidades (tempo: 15.13)
+
+👤 Cliente 5 (Passo 1)
+   Posição: (42.0, 65.0)
+   Demanda: 10
+   Janela de tempo: [15, 375]
+   Tempo de serviço: 90
+
+   • Chegada: 15.13
+   • ✓ Dentro da janela!
+   • Inicia serviço: 15.13
+   • Termina serviço: 105.13
+
+   ↓ viaja 1.00 unidades (tempo: 1.00)
+
+👤 Cliente 3 (Passo 2)
+   Posição: (42.0, 66.0)
+   Demanda: 10
+   Janela de tempo: [16, 376]
+   Tempo de serviço: 90
+
+   • Chegada: 106.13
+   • ✓ Dentro da janela!
+   • Inicia serviço: 106.13
+   • Termina serviço: 196.13
+
+   ↓ viaja 31.40 unidades (tempo: 31.40)
+
+👤 Cliente 92 (Passo 3)
+   Posição: (67.0, 85.0)
+   Demanda: 20
+   Janela de tempo: [225, 585]
+   Tempo de serviço: 90
+
+   • Chegada: 227.53
+   • ✓ Dentro da janela!
+   • Inicia serviço: 227.53
+   • Termina serviço: 317.53
+
+   ↓ viaja 2.00 unidades (tempo: 2.00)
+
+👤 Cliente 93 (Passo 4)
+   Posição: (65.0, 85.0)
+   Demanda: 40
+   Janela de tempo: [317, 677]
+   Tempo de serviço: 90
+
+   • Chegada: 319.53
+   • ✓ Dentro da janela!
+   • Inicia serviço: 319.53
+   • Termina serviço: 409.53
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 94 (Passo 5)
+   Posição: (65.0, 82.0)
+   Demanda: 10
+   Janela de tempo: [131, 491]
+   Tempo de serviço: 90
+
+   • Chegada: 412.53
+   • ✓ Dentro da janela!
+   • Inicia serviço: 412.53
+   • Termina serviço: 502.53
+
+   ↓ viaja 22.20 unidades (tempo: 22.20)
+
+👤 Cliente 85 (Passo 6)
+   Posição: (68.0, 60.0)
+   Demanda: 30
+   Janela de tempo: [404, 764]
+   Tempo de serviço: 90
+
+   • Chegada: 524.74
+   • ✓ Dentro da janela!
+   • Inicia serviço: 524.74
+   • Termina serviço: 614.74
+
+   ↓ viaja 2.83 unidades (tempo: 2.83)
+
+👤 Cliente 84 (Passo 7)
+   Posição: (70.0, 58.0)
+   Demanda: 20
+   Janela de tempo: [311, 671]
+   Tempo de serviço: 90
+
+   • Chegada: 617.57
+   • ✓ Dentro da janela!
+   • Inicia serviço: 617.57
+   • Termina serviço: 707.57
+
+   ↓ viaja 5.39 unidades (tempo: 5.39)
+
+👤 Cliente 88 (Passo 8)
+   Posição: (65.0, 60.0)
+   Demanda: 30
+   Janela de tempo: [497, 857]
+   Tempo de serviço: 90
+
+   • Chegada: 712.95
+   • ✓ Dentro da janela!
+   • Inicia serviço: 712.95
+   • Termina serviço: 802.95
+
+   ↓ viaja 26.93 unidades (tempo: 26.93)
+
+🏢 Retorno ao Depósito
+   • Chegada: 829.88
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 109.88
+
+================================================================================
+VEÍCULO 10
+================================================================================
+
+📦 Carga total: 130/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 16.00 unidades (tempo: 16.00)
+
+👤 Cliente 7 (Passo 1)
+   Posição: (40.0, 66.0)
+   Demanda: 20
+   Janela de tempo: [18, 378]
+   Tempo de serviço: 90
+
+   • Chegada: 16.00
+   • Espera até: 18.00 (aguarda 2.00 unidades)
+   • Inicia serviço: 18.00
+   • Termina serviço: 108.00
+
+   ↓ viaja 2.83 unidades (tempo: 2.83)
+
+👤 Cliente 8 (Passo 2)
+   Posição: (38.0, 68.0)
+   Demanda: 20
+   Janela de tempo: [110, 470]
+   Tempo de serviço: 90
+
+   • Chegada: 110.83
+   • ✓ Dentro da janela!
+   • Inicia serviço: 110.83
+   • Termina serviço: 200.83
+
+   ↓ viaja 21.63 unidades (tempo: 21.63)
+
+👤 Cliente 15 (Passo 3)
+   Posição: (20.0, 80.0)
+   Demanda: 40
+   Janela de tempo: [227, 587]
+   Tempo de serviço: 90
+
+   • Chegada: 222.46
+   • Espera até: 227.00 (aguarda 4.54 unidades)
+   • Inicia serviço: 227.00
+   • Termina serviço: 317.00
+
+   ↓ viaja 5.00 unidades (tempo: 5.00)
+
+👤 Cliente 16 (Passo 4)
+   Posição: (20.0, 85.0)
+   Demanda: 40
+   Janela de tempo: [322, 682]
+   Tempo de serviço: 90
+
+   • Chegada: 322.00
+   • ✓ Dentro da janela!
+   • Inicia serviço: 322.00
+   • Termina serviço: 412.00
+
+   ↓ viaja 7.07 unidades (tempo: 7.07)
+
+👤 Cliente 19 (Passo 5)
+   Posição: (15.0, 80.0)
+   Demanda: 10
+   Janela de tempo: [132, 492]
+   Tempo de serviço: 90
+
+   • Chegada: 419.07
+   • ✓ Dentro da janela!
+   • Inicia serviço: 419.07
+   • Termina serviço: 509.07
+
+   ↓ viaja 39.05 unidades (tempo: 39.05)
+
+🏢 Retorno ao Depósito
+   • Chegada: 548.12
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 91.58
+
+================================================================================
+VEÍCULO 11
+================================================================================
+
+📦 Carga total: 60/200
+   ✓ Capacidade respeitada
+
+⏱️  EXECUÇÃO DA ROTA:
+
+🏢 Depósito (ID: 0)
+   Posição: (40.0, 50.0)
+   Tempo de partida: 0.00
+
+   ↓ viaja 25.50 unidades (tempo: 25.50)
+
+👤 Cliente 87 (Passo 1)
+   Posição: (65.0, 55.0)
+   Demanda: 20
+   Janela de tempo: [25, 385]
+   Tempo de serviço: 90
+
+   • Chegada: 25.50
+   • ✓ Dentro da janela!
+   • Inicia serviço: 25.50
+   • Termina serviço: 115.50
+
+   ↓ viaja 1.00 unidades (tempo: 1.00)
+
+👤 Cliente 86 (Passo 2)
+   Posição: (66.0, 55.0)
+   Demanda: 10
+   Janela de tempo: [26, 386]
+   Tempo de serviço: 90
+
+   • Chegada: 116.50
+   • ✓ Dentro da janela!
+   • Inicia serviço: 116.50
+   • Termina serviço: 206.50
+
+   ↓ viaja 6.00 unidades (tempo: 6.00)
+
+👤 Cliente 83 (Passo 3)
+   Posição: (72.0, 55.0)
+   Demanda: 10
+   Janela de tempo: [122, 482]
+   Tempo de serviço: 90
+
+   • Chegada: 212.50
+   • ✓ Dentro da janela!
+   • Inicia serviço: 212.50
+   • Termina serviço: 302.50
+
+   ↓ viaja 3.00 unidades (tempo: 3.00)
+
+👤 Cliente 82 (Passo 4)
+   Posição: (75.0, 55.0)
+   Demanda: 20
+   Janela de tempo: [215, 575]
+   Tempo de serviço: 90
+
+   • Chegada: 305.50
+   • ✓ Dentro da janela!
+   • Inicia serviço: 305.50
+   • Termina serviço: 395.50
+
+   ↓ viaja 35.36 unidades (tempo: 35.36)
+
+🏢 Retorno ao Depósito
+   • Chegada: 430.85
+   • ✓ Retorno dentro do horário
+
+📏 Distância da rota: 70.85
+
+================================================================================
+RESUMO GERAL
+================================================================================
+
+📏 Distância total: 1290.09
+🚚 Veículos utilizados: 11
+
+✅ SOLUÇÃO VÁLIDA!
+   Todas as restrições foram respeitadas.
+
+================================================================================

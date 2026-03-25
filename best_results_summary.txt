@@ -6,53 +6,59 @@ MELHORES RESULTADOS POR INSTÂNCIA
 
 Instância    | Melhor Exec  | Veículos   | Distância      
 --------------------------------------------------------------------------------
-C101         | exec01       | 13         | 1245.20        
-C102         | exec05       | 11         | 1279.77        
-C103         | exec08       | 12         | 1414.95        
-C104         | exec07       | 10         | 1236.28        
-C105         | exec03       | 12         | 1372.91        
-C106         | exec02       | 11         | 1277.93        
-C107         | exec08       | 12         | 1308.22        
-C108         | exec07       | 12         | 1266.42        
-C109         | exec02       | 11         | 1299.83        
+C101         | exec04       | 13         | 1220.30        
+C102         | exec07       | 11         | 1281.25        
+C103         | exec07       | 12         | 1403.89        
+C104         | exec01       | 10         | 1225.17        
+C105         | exec06       | 12         | 1335.11        
+C106         | exec05       | 11         | 1188.60        
+C107         | exec05       | 13         | 1293.76        
+C108         | exec09       | 12         | 1218.42        
+C109         | exec10       | 11         | 1253.42        
 
 Estatísticas C1:
-  Distância média: 1300.17
-  Desvio padrão: 55.46
+  Melhor distância: 1188.60
+  Pior distância: 1403.89
+  Distância média: 1268.88
+  Desvio padrão: 64.02
 
 --- INSTÂNCIAS R1 ---
 
 Instância    | Melhor Exec  | Veículos   | Distância      
 --------------------------------------------------------------------------------
-R101         | exec10       | 22         | 1944.56        
-R102         | exec09       | 20         | 1870.18        
-R103         | exec05       | 16         | 1556.13        
-R104         | exec08       | 12         | 1304.57        
-R105         | exec03       | 17         | 1709.36        
-R106         | exec09       | 15         | 1589.13        
-R107         | exec03       | 13         | 1404.01        
-R108         | exec05       | 11         | 1224.98        
-R109         | exec05       | 15         | 1622.31        
+R101         | exec02       | 22         | 1936.83        
+R102         | exec05       | 20         | 1860.53        
+R103         | exec08       | 16         | 1561.43        
+R104         | exec04       | 12         | 1303.63        
+R105         | exec08       | 17         | 1701.59        
+R106         | exec06       | 16         | 1560.02        
+R107         | exec06       | 13         | 1392.83        
+R108         | exec07       | 11         | 1222.47        
+R109         | exec08       | 15         | 1606.10        
 
 Estatísticas R1:
-  Distância média: 1580.58
-  Desvio padrão: 228.32
+  Melhor distância: 1222.47
+  Pior distância: 1936.83
+  Distância média: 1571.71
+  Desvio padrão: 226.29
 
 --- INSTÂNCIAS RC1 ---
 
 Instância    | Melhor Exec  | Veículos   | Distância      
 --------------------------------------------------------------------------------
-RC101        | exec10       | 19         | 2200.38        
-RC102        | exec02       | 16         | 1902.47        
-RC103        | exec09       | 13         | 1597.38        
-RC104        | exec09       | 12         | 1462.29        
-RC105        | exec01       | 19         | 1902.88        
-RC106        | exec03       | 16         | 1874.78        
-RC107        | exec08       | 14         | 1773.16        
-RC108        | exec05       | 13         | 1549.94        
+RC101        | exec07       | 20         | 2199.68        
+RC102        | exec04       | 16         | 1868.03        
+RC103        | exec04       | 14         | 1628.39        
+RC104        | exec04       | 12         | 1443.78        
+RC105        | exec07       | 18         | 1862.72        
+RC106        | exec06       | 16         | 1829.89        
+RC107        | exec09       | 14         | 1732.91        
+RC108        | exec09       | 13         | 1532.31        
 
 Estatísticas RC1:
-  Distância média: 1782.91
-  Desvio padrão: 224.44
+  Melhor distância: 1443.78
+  Pior distância: 2199.68
+  Distância média: 1762.21
+  Desvio padrão: 220.87
 
 ================================================================================
