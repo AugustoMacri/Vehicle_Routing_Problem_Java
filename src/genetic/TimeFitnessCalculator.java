@@ -11,14 +11,28 @@ public class TimeFitnessCalculator implements FitnessCalculator {
     public double calculateFitness(Individual individual, List<Client> clients) {
         double totalTime = 0;
         int numViolations = 0;
+        int missingClients = 0;
+        boolean[] visited = new boolean[App.numClients];
+        visited[0] = true;
         Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double currentTime = 0;
             double vehicleDistance = 0;
             int numViolationsVehicle = 0;
+            int vehicleLoad = 0;
             Client firstClient = null;
             Client lastClient = null;
+
+            // Marca clientes visitados e calcula demanda da rota
+            for (int c = 0; c < App.numClients; c++) {
+                int cid = individual.getRoute()[v][c];
+                if (cid == -1) break;
+                if (cid > 0 && cid < App.numClients) {
+                    visited[cid] = true;
+                    vehicleLoad += clients.get(cid).getDemand();
+                }
+            }
 
             // Distância do depósito ao primeiro cliente
             int firstClientId = individual.getRoute()[v][0];
@@ -89,20 +103,22 @@ public class TimeFitnessCalculator implements FitnessCalculator {
             // Adding the time
             totalTime += currentTime;
 
-            // Debugging
-            // System.out.printf("Vehicle %d | Time: %.2f | TotalTime (vai no fitness): %.2f
-            // | ViolationsVehicle: %d | Violations: %d | SPEED: %d | Distance: %.2f%n",v,
-            // currentTime, totalTime, numViolationsVehicle, numViolations,
-            // App.VEHICLE_SPEED, vehicleDistance);
-
+            // Capacity violation (conta por veiculo sobrecarregado)
+            if (vehicleLoad > App.vehicleCapacity) {
+                numViolations++;
+            }
         }
 
-        // Calculating the total cost of the Individual
-        double fitnessTime = (numViolations * App.WEIGHT_NUM_VIOLATIONS) + (totalTime * 0.5); // Tava dando 50 pq total
-                                                                                              // time era 0, e já que
-                                                                                              // dava 100 violações com
-                                                                                              // peso de 0,50, então
-                                                                                              // dava 50 po
+        // Conta clientes ausentes
+        for (int i = 1; i < App.numClients; i++) {
+            if (!visited[i])
+                missingClients++;
+        }
+
+        // Penalidades equalizadas com NSGA-III
+        double fitnessTime = (totalTime * 0.5)
+                + (numViolations * App.WEIGHT_NUM_VIOLATIONS)
+                + (missingClients * App.WEIGHT_MISSING_CLIENT);
 
         return fitnessTime;
 

@@ -30,15 +30,21 @@ public class App {
     public static int numClients;
     public static int VEHICLE_SPEED = 1; // Solomon instances: travel time = euclidean distance
     public static int NUM_FUEL_TYPES = 3;
-    public static double G_FUEL_PRICE = 5.48;
-    public static double E_FUEL_PRICE = 3.99;
-    public static double D_FUEL_PRICE = 8.79;
-    public static double G_FUEL_CONSUMPTION = 7.53;
-    public static double E_FUEL_CONSUMPTION = 5;
-    public static double D_FUEL_CONSUMPTION = 12;
+    // Calibracao para frota VUC (Veiculo Urbano de Carga) homogenea
+    // Precos: media ANP 2026 (1o trimestre)
+    // Consumos: ciclo urbano VUC, com razao etanol/gasolina ~70% (poder calorifico)
+    public static double G_FUEL_PRICE = 5.80;        // R$/L
+    public static double E_FUEL_PRICE = 4.10;        // R$/L
+    public static double D_FUEL_PRICE = 6.20;        // R$/L (diesel S-10)
+    public static double G_FUEL_CONSUMPTION = 8.5;   // km/L
+    public static double E_FUEL_CONSUMPTION = 6.0;   // km/L (~70% da gasolina)
+    public static double D_FUEL_CONSUMPTION = 7.0;   // km/L (VUC urbano)
     public static double WEIGHT_NUM_VEHICLES = 0.25;
-    public static double WEIGHT_NUM_VIOLATIONS = 1000.0; // Penalty for time window violations (reduced to allow Solomon
-                                                         // I1 solutions)
+    // Penalidades equalizadas com o NSGA-III para garantir comparacao justa:
+    // - 100.000 por violacao (capacidade ou janela de tempo)
+    // - 200.000 por cliente ausente (garante cobertura total)
+    public static double WEIGHT_NUM_VIOLATIONS = 100000.0;
+    public static double WEIGHT_MISSING_CLIENT = 200000.0;
     public static double WEIGHT_TOTAL_COST = 0.75;
 
     // EAs Variables

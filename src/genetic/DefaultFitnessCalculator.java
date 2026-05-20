@@ -13,14 +13,32 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
         double totalTime = 0;
         double totalFuel = 0;
         int numViolations = 0;
+        int missingClients = 0;
+        int usedVehicles = 0;
+        boolean[] visited = new boolean[App.numClients];
+        visited[0] = true;
         Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double currentTime = 0;
             double vehicleDistance = 0;
             int numViolationsVehicle = 0;
+            int vehicleLoad = 0;
             Client firstClient = null;
             Client lastClient = null;
+
+            // Conta clientes da rota e demanda total
+            boolean hasClients = false;
+            for (int c = 0; c < App.numClients; c++) {
+                int cid = individual.getRoute()[v][c];
+                if (cid == -1) break;
+                if (cid > 0 && cid < App.numClients) {
+                    visited[cid] = true;
+                    vehicleLoad += clients.get(cid).getDemand();
+                    hasClients = true;
+                }
+            }
+            if (hasClients) usedVehicles++;
 
             // Distância do depósito ao primeiro cliente
             int firstClientId = individual.getRoute()[v][0];
@@ -29,6 +47,17 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 double depotToFirstDistance = calculateDistance(depot, firstClient);
                 vehicleDistance += depotToFirstDistance;
                 currentTime += depotToFirstDistance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
+
+                // Janela de tempo do primeiro cliente:
+                // - chega ANTES de readyTime -> ESPERA (nao eh violacao)
+                // - chega DEPOIS de dueTime -> VIOLACAO
+                if (currentTime < firstClient.getReadyTime()) {
+                    currentTime = firstClient.getReadyTime();
+                } else if (currentTime > firstClient.getDueTime()) {
+                    numViolations++;
+                    numViolationsVehicle++;
+                }
+                currentTime += firstClient.getServiceTime();
             }
 
             for (int c = 0; c < App.numClients - 1; c++) {
@@ -51,21 +80,17 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
                 // Calculating the time
                 currentTime += distance / App.VEHICLE_SPEED; // Travel time = distance (Solomon)
 
-                // Check if the vehicle arrives between the ready time and due time and if the
-                // service time plus current time is less than the due time (respect the due
-                // time)
-                if (currentTime < currentClient.getReadyTime() || currentTime > currentClient.getDueTime()) {
-
-                    // System.out.println("Vehicle " + v + " | Client Id " + currentClientId + " |
-                    // Current time: " + currentTime
-                    // + " | Ready time: " + currentClient.getReadyTime() + " | Due time: "
-                    // + currentClient.getDueTime());
-
+                // Apos viajar, veiculo esta no nextClient. Aplica logica de janela de tempo:
+                // - chega ANTES de readyTime -> ESPERA (nao eh violacao)
+                // - chega DEPOIS de dueTime -> VIOLACAO
+                if (currentTime < nextClient.getReadyTime()) {
+                    currentTime = nextClient.getReadyTime();
+                } else if (currentTime > nextClient.getDueTime()) {
                     numViolations++;
                     numViolationsVehicle++;
                 }
 
-                currentTime += currentClient.getServiceTime(); // Add service time
+                currentTime += nextClient.getServiceTime(); // service time do cliente atual (nextClient)
             }
 
             // Distância do último cliente de volta ao depósito
@@ -83,18 +108,27 @@ public class DefaultFitnessCalculator implements FitnessCalculator {
             totalTime += currentTime;
             totalFuel += fuelCost;
 
-            // Debugging
-            // System.out.printf("Vehicle %d | Distance: %.2f | Time: %.2f | Fuel: %.2f |
-            // ViolationsVehicle: %d | Violations: %d%n",v, vehicleDistance, currentTime,
-            // fuelCost(vehicleDistance), numViolationsVehicle, numViolations);
+            // Capacity violation (conta por veiculo sobrecarregado)
+            if (vehicleLoad > App.vehicleCapacity) {
+                numViolations++;
+            }
+        }
 
+        // Conta clientes ausentes
+        for (int i = 1; i < App.numClients; i++) {
+            if (!visited[i])
+                missingClients++;
         }
 
         // Calculating the total cost of the Individual
         double totalCost = (totalDistance * 1.0) + (totalTime * 0.5) + (totalFuel * 0.75);
 
         // Calculating the final fitness
-        double fitness = (App.numVehicles * App.WEIGHT_NUM_VEHICLES) + (numViolations * App.WEIGHT_NUM_VIOLATIONS)
+        // - Penaliza VEICULOS UTILIZADOS (nao mais a frota total)
+        // - Penalidades equalizadas com NSGA-III
+        double fitness = (usedVehicles * App.WEIGHT_NUM_VEHICLES)
+                + (numViolations * App.WEIGHT_NUM_VIOLATIONS)
+                + (missingClients * App.WEIGHT_MISSING_CLIENT)
                 + totalCost;
 
         return fitness;

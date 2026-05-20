@@ -11,12 +11,16 @@ public class DistanceFitnessCalculator implements FitnessCalculator {
     @Override
     public double calculateFitness(Individual individual, List<Client> clients) {
         double totalDistance = 0;
-        int numViolations = 0;
+        int numViolations = 0;        // janela de tempo + capacidade
+        int missingClients = 0;
+        boolean[] visited = new boolean[App.numClients];
+        visited[0] = true; // deposito
         Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double vehicleDistance = 0;
             double currentTime = 0;
+            int vehicleLoad = 0;
 
             // Collect all clients in this vehicle's route
             List<Integer> routeClients = new ArrayList<>();
@@ -25,6 +29,10 @@ public class DistanceFitnessCalculator implements FitnessCalculator {
                 if (clientId == -1)
                     break;
                 routeClients.add(clientId);
+                if (clientId > 0 && clientId < App.numClients) {
+                    visited[clientId] = true;
+                    vehicleLoad += clients.get(clientId).getDemand();
+                }
             }
 
             // If vehicle has no clients, skip
@@ -70,11 +78,23 @@ public class DistanceFitnessCalculator implements FitnessCalculator {
             vehicleDistance += calculateDistance(lastClient, depot);
 
             totalDistance += vehicleDistance;
+
+            // Capacity violation (conta por veiculo sobrecarregado, igual NSGA-III)
+            if (vehicleLoad > App.vehicleCapacity) {
+                numViolations++;
+            }
         }
 
-        // Calculating the total cost of the Individual with time window violations
-        // penalty
-        double fitnessDistance = (totalDistance * 1.0) + (numViolations * App.WEIGHT_NUM_VIOLATIONS);
+        // Conta clientes ausentes
+        for (int i = 1; i < App.numClients; i++) {
+            if (!visited[i])
+                missingClients++;
+        }
+
+        // Penalidades equalizadas com NSGA-III
+        double fitnessDistance = totalDistance
+                + (numViolations * App.WEIGHT_NUM_VIOLATIONS)
+                + (missingClients * App.WEIGHT_MISSING_CLIENT);
 
         return fitnessDistance;
 

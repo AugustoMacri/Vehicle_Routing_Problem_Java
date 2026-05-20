@@ -12,11 +12,15 @@ public class FuelFitnessCalculator implements FitnessCalculator {
     public double calculateFitness(Individual individual, List<Client> clients) {
         double totalFuel = 0;
         int numViolations = 0;
+        int missingClients = 0;
+        boolean[] visited = new boolean[App.numClients];
+        visited[0] = true;
         Client depot = clients.get(0); // Depósito sempre no índice 0
 
         for (int v = 0; v < App.numVehicles; v++) {
             double vehicleDistance = 0;
             double currentTime = 0;
+            int vehicleLoad = 0;
 
             // Collect all clients in this vehicle's route
             List<Integer> routeClients = new ArrayList<>();
@@ -25,6 +29,10 @@ public class FuelFitnessCalculator implements FitnessCalculator {
                 if (clientId == -1)
                     break;
                 routeClients.add(clientId);
+                if (clientId > 0 && clientId < App.numClients) {
+                    visited[clientId] = true;
+                    vehicleLoad += clients.get(clientId).getDemand();
+                }
             }
 
             // If vehicle has no clients, skip
@@ -75,15 +83,22 @@ public class FuelFitnessCalculator implements FitnessCalculator {
             // Adding the total distance, time and fuel
             totalFuel += fuelCost;
 
-            // Debugging
-            // System.out.printf("Vehicle %d | Distance: %.2f | Fuel: %.2f%n",v,
-            // vehicleDistance, fuelCost(vehicleDistance));
-
+            // Capacity violation (conta por veiculo sobrecarregado)
+            if (vehicleLoad > App.vehicleCapacity) {
+                numViolations++;
+            }
         }
 
-        // Calculating the total cost of the Individual with time window violations
-        // penalty
-        double fitnessFuel = (totalFuel * 0.75) + (numViolations * App.WEIGHT_NUM_VIOLATIONS);
+        // Conta clientes ausentes
+        for (int i = 1; i < App.numClients; i++) {
+            if (!visited[i])
+                missingClients++;
+        }
+
+        // Penalidades equalizadas com NSGA-III
+        double fitnessFuel = (totalFuel * 0.75)
+                + (numViolations * App.WEIGHT_NUM_VIOLATIONS)
+                + (missingClients * App.WEIGHT_MISSING_CLIENT);
 
         return fitnessFuel;
     }
