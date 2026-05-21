@@ -60,6 +60,7 @@ public class App {
 
     // Variável estática para armazenar o nome da instância (sem extensão)
     public static String instanceName = "";
+    public static String executionSuffix = "";
 
     // Variáveis para armazenar rotas inicial e final
     public static Individual initialBestIndividual = null;
@@ -73,10 +74,17 @@ public class App {
         int instanceChoice = 0;
 
         // Se argumentos foram passados via linha de comando
+        // Sintaxe: java main.App <instance_num> [exec_suffix]
+        //   instance_num: numero da instancia (1-9 = C1, 18-26 = R1, 41-48 = RC1)
+        //   exec_suffix:  opcional, ex: "_exec01" - sufixo anexado aos arquivos
         if (args.length > 0) {
             try {
                 instanceChoice = Integer.parseInt(args[0]);
                 System.out.println("Executando em modo automático com instância: " + instanceChoice);
+                if (args.length > 1) {
+                    executionSuffix = args[1];
+                    System.out.println("Sufixo de execucao: " + executionSuffix);
+                }
             } catch (NumberFormatException e) {
                 System.out.println("Erro: Argumento inválido. Use um número de instância.");
                 return;
@@ -482,9 +490,10 @@ public class App {
                 })
                 .orElse(null);
 
-        // Salvar os resultados em um arquivo
+        // Salvar os resultados em um arquivo (incluindo a frente de Pareto)
         saveResultsToFile(generationsList, bestDistanceFitnessList, bestTimeFitnessList,
-                bestFuelFitnessList, bestPonderationFitnessList, instance.getClients());
+                bestFuelFitnessList, bestPonderationFitnessList, instance.getClients(),
+                population.getParetoTable());
 
         // Salvar a tabela de nao-dominancia (Pareto) em arquivo separado
         savePareto(population.getParetoTable());
@@ -927,7 +936,8 @@ public class App {
             List<Double> timeFitness,
             List<Double> fuelFitness,
             List<Double> ponderationFitness,
-            List<Client> clients) {
+            List<Client> clients,
+            genetic.ParetoTable paretoTable) {
 
         try {
             // Criar diretório de resultados se não existir
@@ -939,7 +949,7 @@ public class App {
             // Usar nome da instância se disponível, senão usar timestamp
             String fileName;
             if (!instanceName.isEmpty()) {
-                fileName = "resultsMulti/evo_" + instanceName + ".txt";
+                fileName = "resultsMulti/evo_" + instanceName + executionSuffix + ".txt";
             } else {
                 String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
                 fileName = "resultsMulti/evolution_results_" + timestamp + ".txt";
@@ -988,6 +998,37 @@ public class App {
                 writer.println(formatRoutesForFile(finalBestIndividual, clients, "ROTAS FINAIS (Após 3000 Gerações)"));
             }
 
+            // Adiciona a FRENTE DE PARETO (tabela de nao-dominancia)
+            if (paretoTable != null) {
+                writer.println();
+                writer.println("================================================================================");
+                writer.println("FRENTE DE PARETO (TABELA DE NAO-DOMINANCIA)");
+                writer.println("================================================================================");
+                writer.println("# Algoritmo: AEMMT");
+                writer.println("# Instancia: " + (instanceName.isEmpty() ? "(desconhecida)" : instanceName));
+                writer.println("# Execucao:  " + (executionSuffix.isEmpty() ? "(unica)" : executionSuffix));
+                writer.println("# Tamanho:   " + paretoTable.size() + " solucoes nao-dominadas");
+                writer.println("# Formato:   idx | distancia | tempo | combustivel | veiculos");
+                writer.println("# Diagnostico: tentativas=" + paretoTable.getAttemptCount()
+                        + " inseridas=" + paretoTable.getInsertCount()
+                        + " rejeitadas_dominadas=" + paretoTable.getRejectedDominated()
+                        + " rejeitadas_equivalentes=" + paretoTable.getRejectedEquivalent());
+                writer.println();
+
+                List<Individual> paretoList = paretoTable.getAll();
+                int idx = 1;
+                for (Individual ind : paretoList) {
+                    int usedVehicles = countUsedVehicles(ind);
+                    writer.println(String.format("  %3d | %12.4f | %12.4f | %12.4f | %d",
+                            idx, ind.getFitnessDistance(), ind.getFitnessTime(),
+                            ind.getFitnessFuel(), usedVehicles));
+                    idx++;
+                }
+                writer.println();
+                writer.println("(Detalhamento das rotas de cada solucao da Pareto disponivel em pareto_"
+                        + instanceName + executionSuffix + ".txt se gerado em modo verbose.)");
+            }
+
             writer.close();
             System.out.println("\nResultados salvos em: " + fileName);
 
@@ -1013,7 +1054,7 @@ public class App {
 
             String fileName;
             if (!instanceName.isEmpty()) {
-                fileName = "resultsMulti/pareto_" + instanceName + ".txt";
+                fileName = "resultsMulti/pareto_" + instanceName + executionSuffix + ".txt";
             } else {
                 String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
                 fileName = "resultsMulti/pareto_" + timestamp + ".txt";
@@ -1072,7 +1113,7 @@ public class App {
             // Usar nome da instância se disponível, senão usar timestamp
             String fileName;
             if (!instanceName.isEmpty()) {
-                fileName = "resultsMulti/stats/stats_" + instanceName + ".txt";
+                fileName = "resultsMulti/stats/stats_" + instanceName + executionSuffix + ".txt";
             } else {
                 String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
                 fileName = "resultsMulti/stats/multi_stats_" + timestamp + ".txt";
