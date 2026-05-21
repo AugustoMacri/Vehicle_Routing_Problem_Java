@@ -16,9 +16,15 @@ public class Population {
     private List<Individual> subPopTime;
     private List<Individual> subPopFuel;
     private List<Individual> subPopPonderation;
+    private ParetoTable paretoTable;
 
     public Population(List<Individual> individuals) {
         this.individuals = individuals;
+        this.paretoTable = new ParetoTable();
+    }
+
+    public ParetoTable getParetoTable() {
+        return paretoTable;
     }
 
     public void initializePopulation(List<Client> clients) {
@@ -460,6 +466,12 @@ public class Population {
                 nextSubPopTime.set(i, newSonT.deepCopy());
                 nextSubPopFuel.set(i, newSonF.deepCopy());
                 nextSubPopPonderation.set(i, newSonP.deepCopy());
+
+                // Tenta inserir cada filho na tabela de nao-dominancia (Pareto)
+                paretoTable.tryInsert(newSonD);
+                paretoTable.tryInsert(newSonT);
+                paretoTable.tryInsert(newSonF);
+                paretoTable.tryInsert(newSonP);
             }
         } else {
 
@@ -537,6 +549,12 @@ public class Population {
                 compareSonSubPop(newSonT, subPopTime, nextSubPopTime, 1, elitismSize);
                 compareSonSubPop(newSonF, subPopFuel, nextSubPopFuel, 2, elitismSize);
                 compareSonSubPop(newSonP, subPopPonderation, nextSubPopPonderation, 3, elitismSize);
+
+                // Tenta inserir cada filho na tabela de nao-dominancia (Pareto)
+                paretoTable.tryInsert(newSonD);
+                paretoTable.tryInsert(newSonT);
+                paretoTable.tryInsert(newSonF);
+                paretoTable.tryInsert(newSonP);
             }
         }
 

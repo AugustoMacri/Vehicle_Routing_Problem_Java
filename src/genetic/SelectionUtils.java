@@ -82,6 +82,8 @@ public class SelectionUtils {
                         return Double.compare(ind1.getFitnessTime(), ind2.getFitnessTime());
                     case 2:
                         return Double.compare(ind1.getFitnessFuel(), ind2.getFitnessFuel());
+                    case 3:
+                        return Double.compare(ind1.getFitness(), ind2.getFitness());
                     default:
                         throw new IllegalArgumentException("Invalid fitness type");
                 }
@@ -135,45 +137,65 @@ public class SelectionUtils {
     public static List<Individual> subPopSelection(Population population) {
         Random rand = new Random();
 
-        // System.out.println("Entrou no subPopSelection");
-
-        // Lista de subpopulações disponíveis
+        // Lista de subpopulacoes escalares disponiveis (indices 0..3)
         List<List<Individual>> subPopulations = List.of(
                 population.getSubPopDistance(),
                 population.getSubPopTime(),
-                population.getSubPopFuel());
+                population.getSubPopFuel(),
+                population.getSubPopPonderation());
 
-        String[] subPopNames = { "subPopDistance", "subPopTime", "subPopFuel", "subPopPonderation" };
+        ParetoTable paretoTable = population.getParetoTable();
 
         List<Individual> selectedParents = new ArrayList<>();
 
-        // Limpa a lista de pais antes de selecionar novos
-        selectedParents.clear();
-
-        // Keep track of the ID of the winners
+        // Keep track of the ID of the winners (evita pegar o mesmo individuo 2x)
         Set<Integer> previousWinners = new HashSet<>();
 
-        // Select two subpopulations randomly
+        // Seleciona dois pais, cada um vindo de uma subpopulacao sorteada
         for (int i = 0; i < 2; i++) {
-            int subPopIndex = rand.nextInt(3); // Select a random subpopulation index (0, 1, or 2)
-            List<Individual> selectedSubPop = subPopulations.get(subPopIndex);
-            int fitnessType = subPopIndex; // Define o tipo de fitness com base na subpopulação
+            // Sorteia entre 5 fontes:
+            //   0 = Distance, 1 = Time, 2 = Fuel, 3 = Ponderation, 4 = Pareto
+            // A Pareto so participa do sorteio se tiver pelo menos 2 individuos
+            // (para que o "torneio" tenha sentido); caso contrario reamostra entre 0..3.
+            int sourceIndex;
+            if (paretoTable != null && paretoTable.size() >= 2) {
+                sourceIndex = rand.nextInt(5);
+            } else {
+                sourceIndex = rand.nextInt(4);
+            }
 
-            // System.out.println("Selected subpopulation: " + subPopNames[subPopIndex]);
+            Individual parent;
+            if (sourceIndex == 4) {
+                // Selecao da Pareto: pega um aleatorio (sem fitness escalar para torneio)
+                parent = paretoTable.getRandomMember();
+                if (parent != null && previousWinners.contains(parent.getId())) {
+                    // Reamostra se ja foi escolhido
+                    parent = paretoTable.getRandomMember();
+                }
+            } else {
+                List<Individual> selectedSubPop = subPopulations.get(sourceIndex);
+                int fitnessType = sourceIndex; // 0=Dist, 1=Time, 2=Fuel, 3=Ponderada
+                parent = tournamentSelection(selectedSubPop, App.tournamentSize, previousWinners, fitnessType);
+            }
 
-            // Realiza a seleção por torneio na subpopulação escolhida
-            Individual parent = tournamentSelection(selectedSubPop, App.tournamentSize, previousWinners, fitnessType);
-
-            // Adiciona o pai selecionado à lista de pais
             if (parent != null) {
                 selectedParents.add(parent);
                 previousWinners.add(parent.getId());
-            } else {
-                // System.out.println("ERRO: Não foi possível selecionar um pai");
             }
         }
 
-        // System.out.println("Selected parents: " + selectedParents.size());
+        // Fallback: se nao conseguiu 2 pais (raro), reabastece da subPopDistance
+        while (selectedParents.size() < 2) {
+            Individual fallback = tournamentSelection(
+                    population.getSubPopDistance(), App.tournamentSize, previousWinners, 0);
+            if (fallback != null) {
+                selectedParents.add(fallback);
+                previousWinners.add(fallback.getId());
+            } else {
+                break;
+            }
+        }
+
         return selectedParents;
     }
 

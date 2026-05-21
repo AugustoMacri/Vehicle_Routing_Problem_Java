@@ -352,6 +352,17 @@ public class App {
             ind.setFitness(fitnessPond);
         }
 
+        // Inicializa a tabela de nao-dominancia (Pareto) com individuos viaveis.
+        // Para cada individuo, calcula os 3 fitness e tenta inserir na Pareto.
+        System.out.println("Populando tabela de nao-dominancia com individuos iniciais...");
+        for (Individual ind : individuals) {
+            ind.setFitnessDistance(new DistanceFitnessCalculator().calculateFitness(ind, clients));
+            ind.setFitnessTime(new TimeFitnessCalculator().calculateFitness(ind, clients));
+            ind.setFitnessFuel(new FuelFitnessCalculator().calculateFitness(ind, clients));
+            population.getParetoTable().tryInsert(ind);
+        }
+        System.out.println("Tabela de Pareto inicializada com " + population.getParetoTable().size() + " individuos nao-dominados");
+
         // //
         // -----------------------------------------------------------------------------------------------------
         double first_fitness_before_evolution = population.getSubPopPonderation().stream()
@@ -474,6 +485,31 @@ public class App {
         // Salvar os resultados em um arquivo
         saveResultsToFile(generationsList, bestDistanceFitnessList, bestTimeFitnessList,
                 bestFuelFitnessList, bestPonderationFitnessList, instance.getClients());
+
+        // Salvar a tabela de nao-dominancia (Pareto) em arquivo separado
+        savePareto(population.getParetoTable());
+
+        // Resumo da Pareto no console
+        System.out.println();
+        System.out.println("=== TABELA DE NAO-DOMINANCIA (PARETO) ===");
+        System.out.println("Tamanho final: " + population.getParetoTable().size() + " solucoes nao-dominadas");
+        System.out.println("Diagnostico de insercoes:");
+        System.out.println("  Tentativas: " + population.getParetoTable().getAttemptCount());
+        System.out.println("  Inseridas:  " + population.getParetoTable().getInsertCount());
+        System.out.println("  Rejeitadas (dominadas):    " + population.getParetoTable().getRejectedDominated());
+        System.out.println("  Rejeitadas (equivalentes): " + population.getParetoTable().getRejectedEquivalent());
+        Individual paretoBestDist = population.getParetoTable().getBestByDistance();
+        Individual paretoBestTime = population.getParetoTable().getBestByTime();
+        Individual paretoBestFuel = population.getParetoTable().getBestByFuel();
+        if (paretoBestDist != null) {
+            System.out.println(String.format("Melhor distancia na Pareto: %.2f", paretoBestDist.getFitnessDistance()));
+        }
+        if (paretoBestTime != null) {
+            System.out.println(String.format("Melhor tempo na Pareto:     %.2f", paretoBestTime.getFitnessTime()));
+        }
+        if (paretoBestFuel != null) {
+            System.out.println(String.format("Melhor combustivel Pareto:  %.2f", paretoBestFuel.getFitnessFuel()));
+        }
 
         // Calcular estatísticas da última geração para a subpopulação de ponderação
         double bestPonderationFitness = findBestFitness(population.getSubPopPonderation(),
@@ -959,6 +995,69 @@ public class App {
             System.out.println("Erro ao salvar resultados: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Salva a tabela de nao-dominancia (Pareto) em arquivo dedicado.
+     * Formato: # Pareto front - <instancia> - <N> solucoes
+     *          # distancia tempo combustivel num_veiculos
+     *          1234.56 5678.90 600.00 12
+     *          ...
+     */
+    private static void savePareto(genetic.ParetoTable paretoTable) {
+        try {
+            File resultsDir = new File("resultsMulti");
+            if (!resultsDir.exists()) {
+                resultsDir.mkdir();
+            }
+
+            String fileName;
+            if (!instanceName.isEmpty()) {
+                fileName = "resultsMulti/pareto_" + instanceName + ".txt";
+            } else {
+                String timestamp = new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date());
+                fileName = "resultsMulti/pareto_" + timestamp + ".txt";
+            }
+
+            java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(fileName));
+
+            writer.println("# AEMMT - Frente de Pareto (tabela de nao-dominancia)");
+            writer.println("# Instancia: " + (instanceName.isEmpty() ? "(desconhecida)" : instanceName));
+            writer.println("# Tamanho: " + paretoTable.size() + " solucoes nao-dominadas");
+            writer.println("# Formato: distancia<TAB>tempo<TAB>combustivel<TAB>num_veiculos");
+            writer.println();
+
+            for (Individual ind : paretoTable.getAll()) {
+                int usedVehicles = countUsedVehicles(ind);
+                writer.println(String.format("%.6f\t%.6f\t%.6f\t%d",
+                        ind.getFitnessDistance(),
+                        ind.getFitnessTime(),
+                        ind.getFitnessFuel(),
+                        usedVehicles));
+            }
+
+            writer.close();
+            System.out.println("Frente de Pareto salva em: " + fileName);
+
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar Pareto: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private static int countUsedVehicles(Individual ind) {
+        int used = 0;
+        for (int v = 0; v < App.numVehicles; v++) {
+            for (int c = 0; c < App.numClients; c++) {
+                int cid = ind.getRoute()[v][c];
+                if (cid == -1) break;
+                if (cid > 0) {
+                    used++;
+                    break;
+                }
+            }
+        }
+        return used;
     }
 
     private static void saveMultiStatistics(double bestPonderationFitness, double avgPonderationFitness,
