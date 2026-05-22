@@ -1,0 +1,142 @@
+Subpopulação\Geração	g0	g100	g200	g300	g400	g500	g600	g700	g800	g900	g1000	g1100	g1200	g1300	g1400	g1500	g1600	g1700	g1800	g1900	g2000	g2100	g2200	g2300	g2400	g2500	g2600	g2700	g2800	g2900	g2999	
+subPopDistance	1394,40	1277,78	1268,39	1241,01	1239,25	1235,77	1233,65	1229,65	1224,33	1214,12	1185,67	1180,52	1161,14	1160,26	1156,37	1154,51	1154,51	1145,07	1133,77	1131,91	1131,91	1131,91	1131,91	1131,91	1131,91	1131,91	1131,91	1131,91	1131,91	1131,91	1131,91	
+subPopTime	5456,92	5357,41	5335,52	5335,52	5328,91	5318,97	5311,98	5277,82	5276,00	5273,73	5271,64	5250,01	5245,21	5233,46	5232,71	5231,09	5231,09	5231,08	5231,08	5225,14	5224,91	5224,56	5223,34	5223,24	5223,24	5223,23	5223,23	5223,23	5223,23	5223,23	5221,98	
+subPopFuel	704,63	651,97	636,75	627,00	622,65	621,37	620,85	619,87	618,00	609,00	594,60	591,30	581,78	579,68	578,70	578,70	578,70	573,83	567,68	567,68	567,68	567,68	567,68	567,68	567,68	567,68	567,68	567,68	567,68	567,68	567,68	
+subPopPonderation	7569,79	7342,75	7319,61	7301,82	7270,96	7270,96	7267,08	7220,50	7185,26	7157,60	7127,18	7101,28	7076,08	7062,32	7046,37	7022,34	7015,92	7015,38	7014,60	6985,44	6985,44	6985,44	6981,74	6981,28	6981,28	6981,28	6981,28	6981,28	6981,28	6981,28	6979,86	
+
+
+
+ROTAS INICIAIS (Antes da Evolução)
+================================================================================
+
+Fitness Distance do indivíduo: 0,00
+
+Veículo 0: Depósito(0) -> Cliente(13) -> Cliente(17) -> Cliente(8) -> Cliente(1) -> Cliente(11) -> Cliente(10) -> Cliente(7) -> Cliente(4) -> Cliente(6) -> Cliente(3) -> Cliente(5) -> Cliente(75) -> Depósito(0)
+    Clientes: 12 | Demanda: 190/200 | Distância: 109,53
+
+Veículo 1: Depósito(0) -> Cliente(68) -> Cliente(55) -> Cliente(57) -> Cliente(59) -> Cliente(40) -> Cliente(64) -> Cliente(61) -> Cliente(72) -> Cliente(66) -> Cliente(69) -> Cliente(63) -> Cliente(65) -> Depósito(0)
+    Clientes: 12 | Demanda: 190/200 | Distância: 104,90
+
+Veículo 2: Depósito(0) -> Cliente(81) -> Cliente(78) -> Cliente(76) -> Cliente(73) -> Cliente(82) -> Cliente(83) -> Cliente(86) -> Cliente(85) -> Cliente(88) -> Cliente(89) -> Cliente(91) -> Cliente(90) -> Depósito(0)
+    Clientes: 12 | Demanda: 200/200 | Distância: 137,49
+
+Veículo 3: Depósito(0) -> Cliente(67) -> Cliente(87) -> Cliente(20) -> Cliente(94) -> Cliente(84) -> Cliente(98) -> Cliente(96) -> Cliente(99) -> Cliente(97) -> Cliente(95) -> Cliente(2) -> Depósito(0)
+    Clientes: 11 | Demanda: 200/200 | Distância: 226,92
+
+Veículo 4: Depósito(0) -> Cliente(43) -> Cliente(41) -> Cliente(54) -> Cliente(53) -> Cliente(56) -> Cliente(58) -> Cliente(45) -> Cliente(46) -> Cliente(42) -> Depósito(0)
+    Clientes: 9 | Demanda: 200/200 | Distância: 105,19
+
+Veículo 5: Depósito(0) -> Cliente(24) -> Cliente(25) -> Cliente(93) -> Cliente(92) -> Cliente(100) -> Cliente(28) -> Cliente(26) -> Cliente(22) -> Cliente(21) -> Depósito(0)
+    Clientes: 9 | Demanda: 200/200 | Distância: 145,16
+
+Veículo 6: Depósito(0) -> Cliente(12) -> Cliente(14) -> Cliente(16) -> Cliente(15) -> Cliente(19) -> Cliente(18) -> Cliente(23) -> Cliente(30) -> Cliente(29) -> Cliente(27) -> Cliente(47) -> Depósito(0)
+    Clientes: 11 | Demanda: 190/200 | Distância: 134,95
+
+Veículo 7: Depósito(0) -> Cliente(52) -> Cliente(49) -> Cliente(62) -> Cliente(74) -> Cliente(80) -> Cliente(77) -> Cliente(79) -> Cliente(70) -> Cliente(71) -> Cliente(48) -> Cliente(50) -> Depósito(0)
+    Clientes: 11 | Demanda: 190/200 | Distância: 195,39
+
+Veículo 8: Depósito(0) -> Cliente(32) -> Cliente(33) -> Cliente(31) -> Cliente(35) -> Cliente(37) -> Cliente(38) -> Cliente(39) -> Cliente(36) -> Cliente(34) -> Depósito(0)
+    Clientes: 9 | Demanda: 200/200 | Distância: 97,23
+
+Veículo 9: Depósito(0) -> Cliente(51) -> Cliente(60) -> Cliente(44) -> Cliente(9) -> Depósito(0)
+    Clientes: 4 | Demanda: 50/200 | Distância: 137,65
+
+Total de veículos usados: 10
+Distância total: 1394,40
+================================================================================
+
+
+
+
+ROTAS FINAIS (Após 3000 Gerações)
+================================================================================
+
+Fitness Distance do indivíduo: 1131,91
+
+Veículo 0: Depósito(0) -> Cliente(13) -> Cliente(17) -> Cliente(8) -> Cliente(10) -> Cliente(11) -> Cliente(9) -> Cliente(7) -> Cliente(4) -> Cliente(6) -> Cliente(3) -> Cliente(5) -> Cliente(75) -> Depósito(0)
+    Clientes: 12 | Demanda: 190/200 | Distância: 98,72
+
+Veículo 1: Depósito(0) -> Cliente(42) -> Cliente(40) -> Cliente(57) -> Cliente(59) -> Cliente(68) -> Cliente(64) -> Cliente(61) -> Cliente(72) -> Cliente(66) -> Cliente(69) -> Cliente(63) -> Cliente(65) -> Depósito(0)
+    Clientes: 12 | Demanda: 200/200 | Distância: 96,19
+
+Veículo 2: Depósito(0) -> Cliente(81) -> Cliente(78) -> Cliente(76) -> Cliente(73) -> Cliente(82) -> Cliente(83) -> Cliente(86) -> Cliente(85) -> Cliente(88) -> Cliente(89) -> Cliente(91) -> Cliente(90) -> Depósito(0)
+    Clientes: 12 | Demanda: 200/200 | Distância: 137,49
+
+Veículo 3: Depósito(0) -> Cliente(20) -> Cliente(21) -> Cliente(1) -> Cliente(94) -> Cliente(97) -> Cliente(98) -> Cliente(100) -> Cliente(99) -> Cliente(96) -> Cliente(95) -> Cliente(2) -> Depósito(0)
+    Clientes: 11 | Demanda: 200/200 | Distância: 137,15
+
+Veículo 4: Depósito(0) -> Cliente(41) -> Cliente(55) -> Cliente(54) -> Cliente(53) -> Cliente(56) -> Cliente(58) -> Cliente(60) -> Cliente(51) -> Cliente(50) -> Cliente(52) -> Cliente(49) -> Depósito(0)
+    Clientes: 11 | Demanda: 200/200 | Distância: 110,99
+
+Veículo 5: Depósito(0) -> Cliente(87) -> Cliente(93) -> Cliente(92) -> Cliente(84) -> Cliente(23) -> Cliente(26) -> Cliente(22) -> Depósito(0)
+    Clientes: 7 | Demanda: 140/200 | Distância: 146,18
+
+Veículo 6: Depósito(0) -> Cliente(12) -> Cliente(14) -> Cliente(16) -> Cliente(15) -> Cliente(19) -> Cliente(18) -> Cliente(28) -> Cliente(30) -> Cliente(29) -> Cliente(27) -> Cliente(24) -> Depósito(0)
+    Clientes: 11 | Demanda: 200/200 | Distância: 109,05
+
+Veículo 7: Depósito(0) -> Cliente(67) -> Cliente(62) -> Cliente(74) -> Cliente(80) -> Cliente(77) -> Cliente(79) -> Cliente(70) -> Cliente(71) -> Depósito(0)
+    Clientes: 8 | Demanda: 160/200 | Distância: 131,40
+
+Veículo 8: Depósito(0) -> Cliente(32) -> Cliente(33) -> Cliente(31) -> Cliente(35) -> Cliente(37) -> Cliente(38) -> Cliente(39) -> Cliente(36) -> Cliente(34) -> Depósito(0)
+    Clientes: 9 | Demanda: 200/200 | Distância: 97,23
+
+Veículo 9: Depósito(0) -> Cliente(25) -> Cliente(46) -> Cliente(44) -> Cliente(45) -> Cliente(48) -> Cliente(47) -> Cliente(43) -> Depósito(0)
+    Clientes: 7 | Demanda: 120/200 | Distância: 67,51
+
+Total de veículos usados: 10
+Distância total: 1131,91
+================================================================================
+
+
+================================================================================
+FRENTE DE PARETO (TABELA DE NAO-DOMINANCIA)
+================================================================================
+# Algoritmo: AEMMT
+# Instancia: c104
+# Execucao:  _exec04
+# Tamanho:   40 solucoes nao-dominadas
+# Formato:   idx | distancia | tempo | combustivel | veiculos
+# Diagnostico: tentativas=2160600 inseridas=1340 rejeitadas_dominadas=1654355 rejeitadas_equivalentes=504905
+
+    1 |    1133,7726 |    5416,7124 |     567,6750 | 10
+    2 |    1131,9098 |    5416,9020 |     567,6750 | 10
+    3 |    1133,6601 |    5369,7807 |     567,8250 | 10
+    4 |    1134,5401 |    5369,0997 |     567,6750 | 10
+    5 |    1169,1809 |    5225,9429 |     588,6750 | 10
+    6 |    1139,6788 |    5367,7368 |     570,0750 | 10
+    7 |    1164,9231 |    5228,1853 |     585,6750 | 10
+    8 |    1137,2784 |    5367,8344 |     568,7250 | 10
+    9 |    1139,8739 |    5348,4671 |     572,7000 | 10
+   10 |    1165,2737 |    5227,1762 |     586,3500 | 10
+   11 |    1163,5997 |    5258,2402 |     586,3500 | 10
+   12 |    1173,4502 |    5224,1372 |     587,2500 | 10
+   13 |    1164,9664 |    5259,2643 |     584,8500 | 10
+   14 |    1171,0720 |    5224,5524 |     585,3750 | 10
+   15 |    1170,8807 |    5224,4568 |     587,4000 | 10
+   16 |    1164,7318 |    5228,0896 |     587,7000 | 10
+   17 |    1142,2743 |    5348,3695 |     574,0500 | 10
+   18 |    1162,8374 |    5259,0597 |     585,6750 | 10
+   19 |    1142,6147 |    5348,3043 |     574,0500 | 10
+   20 |    1136,9405 |    5369,0022 |     569,0250 | 10
+   21 |    1164,9344 |    5259,4446 |     584,8500 | 10
+   22 |    1140,2143 |    5348,4019 |     572,7000 | 10
+   23 |    1163,6317 |    5258,0599 |     586,3500 | 10
+   24 |    1163,7588 |    5257,6692 |     586,3500 | 10
+   25 |    1167,0672 |    5228,6100 |     584,8500 | 10
+   26 |    1168,6733 |    5226,4059 |     588,5250 | 10
+   27 |    1167,2682 |    5228,4980 |     584,8500 | 10
+   28 |    1138,7954 |    5350,5785 |     570,2250 | 10
+   29 |    1141,1958 |    5350,4810 |     571,5750 | 10
+   30 |    1165,8445 |    5226,7948 |     586,3500 | 10
+   31 |    1141,7283 |    5350,4158 |     571,5750 | 10
+   32 |    1144,8202 |    5304,1701 |     573,9750 | 10
+   33 |    1139,3279 |    5350,5134 |     570,2250 | 10
+   34 |    1150,4878 |    5303,5120 |     577,1250 | 10
+   35 |    1166,0968 |    5226,7085 |     588,3750 | 10
+   36 |    1165,6752 |    5222,7887 |     588,9000 | 10
+   37 |    1180,7732 |    5221,9813 |     593,1000 | 10
+   38 |    1143,4871 |    5305,3709 |     576,0000 | 10
+   39 |    1176,9019 |    5221,9813 |     595,0500 | 10
+   40 |    1179,2488 |    5221,9813 |     594,7500 | 10
+
+(Detalhamento das rotas de cada solucao da Pareto disponivel em pareto_c104_exec04.txt se gerado em modo verbose.)

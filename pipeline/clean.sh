@@ -12,9 +12,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$REPO_ROOT"
 
 # Source config
-if [ -z "$PIPELINE_CONFIG_LOADED" ]; then
-    source "$SCRIPT_DIR/config.sh"
-fi
+source "$SCRIPT_DIR/config.sh"
 
 log_info "Limpando resultados antigos em $REPO_ROOT..."
 

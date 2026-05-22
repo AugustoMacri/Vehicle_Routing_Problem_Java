@@ -1,0 +1,8 @@
+# AEMMT - Frente de Pareto (tabela de nao-dominancia)
+# Instancia: r104
+# Tamanho: 3 solucoes nao-dominadas
+# Formato: distancia<TAB>tempo<TAB>combustivel<TAB>num_veiculos
+
+1312,953000	1275,423853	664,650000	12
+1293,820231	1278,522361	653,850000	12
+1291,128406	1281,522361	652,350000	12
