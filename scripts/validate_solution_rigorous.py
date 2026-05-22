@@ -86,9 +86,13 @@ class SolutionValidator:
         self.num_vehicles_used = 0
 
     def load_solution(self):
-        """Carrega a solução do arquivo"""
-        with open(self.solution_file, 'r') as f:
-            content = f.read()
+        """Carrega a solução do arquivo (tolera UTF-8 e Latin-1/CP1252)"""
+        try:
+            with open(self.solution_file, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except UnicodeDecodeError:
+            with open(self.solution_file, 'r', encoding='latin-1') as f:
+                content = f.read()
 
         # Procura a seção de ROTAS FINAIS
         if 'ROTAS FINAIS' in content:
