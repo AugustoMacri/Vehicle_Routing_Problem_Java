@@ -49,7 +49,7 @@ public class App {
 
     // EAs Variables
     public static int pop_size = 600;
-    public static int sub_pop_size = (int) Math.floor((double) pop_size / 3);
+    public static int sub_pop_size = (int) Math.floor((double) pop_size / 4);
     public static double elitismRate = 0.1;
     public static int QUANTITYSELECTEDTOURNAMENT = 2;
     public static int tournamentSize = 2;

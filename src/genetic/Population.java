@@ -73,12 +73,18 @@ public class Population {
             subPopPonderation.add(new Individual(-1, 0, 0, 0, 0));
         }
 
-        // Distribute the population initialized in subpopulations
+        // Distribute the population initialized in subpopulations.
+        // Cada uma das 4 subpopulacoes (Distance, Time, Fuel, Ponderation) recebe
+        // um bloco DISJUNTO de sub_pop_size = pop_size/4 = 150 individuos.
+        //   i = 0..149   -> subPopDistance
+        //   i = 150..299 -> subPopTime
+        //   i = 300..449 -> subPopFuel
+        //   i = 450..599 -> subPopPonderation
         for (int i = 0; i < App.pop_size; i++) {
-            int index = i / App.sub_pop_size; // Determines the subpopulation (0, 1 or 2)
-            int index2 = i % App.sub_pop_size; // Determines the position in the subpopulation
+            int index = i / App.sub_pop_size; // 0, 1, 2 ou 3
+            int index2 = i % App.sub_pop_size; // posicao dentro da subpop
 
-            Individual source = individuals.get(i); // Take the individual from position i in the list and copy it
+            Individual source = individuals.get(i);
 
             for (int j = 0; j < App.numVehicles; j++) {
                 for (int k = 0; k < App.numClients; k++) {
@@ -98,21 +104,15 @@ public class Population {
                             subPopFuel.get(index2).setId(source.getId());
                             break;
 
+                        case 3:
+                            subPopPonderation.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
+                            subPopPonderation.get(index2).setId(source.getId());
+                            break;
+
                         default:
                             break;
                     }
                 }
-            }
-
-            // Will copy just the necessary individuals to the ponderation (before was
-            // overwriting every time)
-            if (i < App.sub_pop_size) {
-                for (int j = 0; j < App.numVehicles; j++) {
-                    for (int k = 0; k < App.numClients; k++) {
-                        subPopPonderation.get(index2).setClientInRoute(j, k, source.getRoute()[j][k]);
-                    }
-                }
-                subPopPonderation.get(index2).setId(source.getId());
             }
         }
     }
