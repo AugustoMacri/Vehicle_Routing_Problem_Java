@@ -21,8 +21,8 @@ Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 0 ---
 Melhor Fitness Distance: 1418.8864697081128
-Melhor Fitness Time: 1319.4314860364425
-Melhor Fitness Fuel: 719.0250000000001
+Melhor Fitness Time: 1320.0419866832283
+Melhor Fitness Fuel: 705.5250000000001
 Melhor Fitness Ponderado: 3460.953456391341
 
 Geração: 1
@@ -425,10 +425,10 @@ Geração: 100
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 100 ---
-Melhor Fitness Distance: 1372.2791298989596
-Melhor Fitness Time: 1299.128512253222
-Melhor Fitness Fuel: 700.5000000000001
-Melhor Fitness Ponderado: 3376.9419497509134
+Melhor Fitness Distance: 1381.436599566353
+Melhor Fitness Time: 1303.0967464401326
+Melhor Fitness Fuel: 701.1750000000001
+Melhor Fitness Ponderado: 3391.1407403408493
 
 Geração: 101
 Iniciando evolução...
@@ -830,10 +830,10 @@ Geração: 200
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 200 ---
-Melhor Fitness Distance: 1344.1231470751322
-Melhor Fitness Time: 1282.8565002563366
-Melhor Fitness Fuel: 691.1250000000001
-Melhor Fitness Ponderado: 3317.579647331469
+Melhor Fitness Distance: 1381.436599566353
+Melhor Fitness Time: 1303.0967464401326
+Melhor Fitness Fuel: 701.1750000000001
+Melhor Fitness Ponderado: 3391.1407403408493
 
 Geração: 201
 Iniciando evolução...
@@ -1235,10 +1235,10 @@ Geração: 300
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 300 ---
-Melhor Fitness Distance: 1323.1878436601446
-Melhor Fitness Time: 1280.5196109596463
-Melhor Fitness Fuel: 667.8000000000001
-Melhor Fitness Ponderado: 3281.812799522416
+Melhor Fitness Distance: 1346.4430484043219
+Melhor Fitness Time: 1287.435235090033
+Melhor Fitness Fuel: 682.1250000000001
+Melhor Fitness Ponderado: 3319.003283494355
 
 Geração: 301
 Iniciando evolução...
@@ -1640,10 +1640,10 @@ Geração: 400
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 400 ---
-Melhor Fitness Distance: 1322.313132843307
-Melhor Fitness Time: 1279.34624344694
-Melhor Fitness Fuel: 667.8000000000001
-Melhor Fitness Ponderado: 3281.812799522416
+Melhor Fitness Distance: 1344.4617142304385
+Melhor Fitness Time: 1286.4445680030915
+Melhor Fitness Fuel: 680.7
+Melhor Fitness Ponderado: 3316.03128223353
 
 Geração: 401
 Iniciando evolução...
@@ -2045,10 +2045,10 @@ Geração: 500
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 500 ---
-Melhor Fitness Distance: 1322.313132843307
-Melhor Fitness Time: 1279.34624344694
-Melhor Fitness Fuel: 667.8000000000001
-Melhor Fitness Ponderado: 3281.812799522416
+Melhor Fitness Distance: 1344.4617142304385
+Melhor Fitness Time: 1286.4445680030915
+Melhor Fitness Fuel: 680.7
+Melhor Fitness Ponderado: 3316.03128223353
 
 Geração: 501
 Iniciando evolução...
@@ -2450,10 +2450,10 @@ Geração: 600
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 600 ---
-Melhor Fitness Distance: 1312.1689729287828
-Melhor Fitness Time: 1272.3025844645936
-Melhor Fitness Fuel: 664.6500000000001
-Melhor Fitness Ponderado: 3257.405331618036
+Melhor Fitness Distance: 1344.4617142304385
+Melhor Fitness Time: 1286.4445680030915
+Melhor Fitness Fuel: 680.7
+Melhor Fitness Ponderado: 3316.03128223353
 
 Geração: 601
 Iniciando evolução...
@@ -2855,10 +2855,10 @@ Geração: 700
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 700 ---
-Melhor Fitness Distance: 1312.1689729287828
-Melhor Fitness Time: 1272.3025844645936
-Melhor Fitness Fuel: 664.6500000000001
-Melhor Fitness Ponderado: 3257.405331618036
+Melhor Fitness Distance: 1334.5541496752965
+Melhor Fitness Time: 1281.481473265941
+Melhor Fitness Fuel: 677.9250000000002
+Melhor Fitness Ponderado: 3296.969935400817
 
 Geração: 701
 Iniciando evolução...
@@ -3260,10 +3260,10 @@ Geração: 800
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 800 ---
-Melhor Fitness Distance: 1312.1689729287828
-Melhor Fitness Time: 1272.3025844645936
-Melhor Fitness Fuel: 664.6500000000001
-Melhor Fitness Ponderado: 3257.405331618036
+Melhor Fitness Distance: 1313.4651960399578
+Melhor Fitness Time: 1279.34624344694
+Melhor Fitness Fuel: 666.975
+Melhor Fitness Ponderado: 3266.4038280921354
 
 Geração: 801
 Iniciando evolução...
@@ -12172,7 +12172,7 @@ Melhor Fitness Fuel: 664.6500000000001
 Melhor Fitness Ponderado: 3257.405331618036
 
 === DEBUG: Selecionando melhor indivíduo ===
-ID: 410852
+ID: 454792
 getFitnessDistance(): 1312.1689729287828
 getFitness(): 3262.1344934253734
 
@@ -12186,16 +12186,16 @@ Frente de Pareto salva em: resultsMulti/pareto_r104_exec10.txt
 === TABELA DE NAO-DOMINANCIA (PARETO) ===
 Tamanho final: 2 solucoes nao-dominadas
 Diagnostico de insercoes:
-  Tentativas: 2160600
-  Inseridas:  39
-  Rejeitadas (dominadas):    1665951
-  Rejeitadas (equivalentes): 494610
+  Tentativas: 1620600
+  Inseridas:  23
+  Rejeitadas (dominadas):    1275825
+  Rejeitadas (equivalentes): 344752
 Melhor distancia na Pareto: 1312,17
 Melhor tempo na Pareto:     1272,30
 Melhor combustivel Pareto:  664,65
 
 Estatísticas salvas em: resultsMulti/stats/stats_r104_exec10.txt
-Tempo em milissegundos: 79437 ms
+Tempo em milissegundos: 65168 ms
 
 === DEBUG: USO DE VEÍCULOS ===
 Veículo 0: 13 clientes, demanda total: 194/200

@@ -20,9 +20,9 @@ Geração: 0
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 0 ---
-Melhor Fitness Distance: 2087.0318350486546
-Melhor Fitness Time: 1884.9034849134146
-Melhor Fitness Fuel: 1083.0
+Melhor Fitness Distance: 2172.100532666363
+Melhor Fitness Time: 1879.0730723259057
+Melhor Fitness Fuel: 1107.0000000000002
 Melhor Fitness Ponderado: 5082.844138472302
 
 Geração: 1
@@ -425,10 +425,10 @@ Geração: 100
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 100 ---
-Melhor Fitness Distance: 2018.1328378664423
-Melhor Fitness Time: 1830.660785508821
-Melhor Fitness Fuel: 1026.3000000000002
-Melhor Fitness Ponderado: 4813.189199810495
+Melhor Fitness Distance: 1993.9377509231858
+Melhor Fitness Time: 1797.6438257284308
+Melhor Fitness Fuel: 1035.0
+Melhor Fitness Ponderado: 4783.356339121557
 
 Geração: 101
 Iniciando evolução...
@@ -830,10 +830,10 @@ Geração: 200
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 200 ---
-Melhor Fitness Distance: 2018.1328378664423
-Melhor Fitness Time: 1830.6465251429959
-Melhor Fitness Fuel: 1026.3000000000002
-Melhor Fitness Ponderado: 4813.189199810495
+Melhor Fitness Distance: 1976.434498866925
+Melhor Fitness Time: 1756.2791832950566
+Melhor Fitness Fuel: 1003.8000000000001
+Melhor Fitness Ponderado: 4687.0426554683845
 
 Geração: 201
 Iniciando evolução...
@@ -1235,10 +1235,10 @@ Geração: 300
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 300 ---
-Melhor Fitness Distance: 2018.1328378664423
-Melhor Fitness Time: 1813.2404455147896
-Melhor Fitness Fuel: 1026.3000000000002
-Melhor Fitness Ponderado: 4813.189199810495
+Melhor Fitness Distance: 1944.9145447542455
+Melhor Fitness Time: 1742.701887570801
+Melhor Fitness Fuel: 987.4499999999999
+Melhor Fitness Ponderado: 4668.650912286385
 
 Geração: 301
 Iniciando evolução...
@@ -1640,10 +1640,10 @@ Geração: 400
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 400 ---
-Melhor Fitness Distance: 2014.0623668150765
-Melhor Fitness Time: 1813.2404455147896
-Melhor Fitness Fuel: 1024.4250000000002
-Melhor Fitness Ponderado: 4791.213906904484
+Melhor Fitness Distance: 1916.6997530778715
+Melhor Fitness Time: 1683.0651865031882
+Melhor Fitness Fuel: 967.7249999999999
+Melhor Fitness Ponderado: 4556.554654249698
 
 Geração: 401
 Iniciando evolução...
@@ -2045,10 +2045,10 @@ Geração: 500
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 500 ---
-Melhor Fitness Distance: 1991.1305214683528
-Melhor Fitness Time: 1810.6309636541766
-Melhor Fitness Fuel: 1009.5749999999999
-Melhor Fitness Ponderado: 4788.987527253969
+Melhor Fitness Distance: 1904.6829941195126
+Melhor Fitness Time: 1681.88589663626
+Melhor Fitness Fuel: 964.6500000000001
+Melhor Fitness Ponderado: 4537.268205828648
 
 Geração: 501
 Iniciando evolução...
@@ -2450,10 +2450,10 @@ Geração: 600
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 600 ---
-Melhor Fitness Distance: 1944.3280677514833
-Melhor Fitness Time: 1748.7108142852667
-Melhor Fitness Fuel: 990.4500000000003
-Melhor Fitness Ponderado: 4635.698494098502
+Melhor Fitness Distance: 1902.1803581511174
+Melhor Fitness Time: 1679.2214588175723
+Melhor Fitness Fuel: 960.75
+Melhor Fitness Ponderado: 4530.4206649785
 
 Geração: 601
 Iniciando evolução...
@@ -2855,10 +2855,10 @@ Geração: 700
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 700 ---
-Melhor Fitness Distance: 1898.7881603004328
-Melhor Fitness Time: 1699.6857383344877
-Melhor Fitness Fuel: 965.5500000000001
-Melhor Fitness Ponderado: 4568.408995985421
+Melhor Fitness Distance: 1902.1803581511174
+Melhor Fitness Time: 1678.042168950644
+Melhor Fitness Fuel: 960.75
+Melhor Fitness Ponderado: 4530.4206649785
 
 Geração: 701
 Iniciando evolução...
@@ -3260,10 +3260,10 @@ Geração: 800
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 800 ---
-Melhor Fitness Distance: 1861.3998272703122
-Melhor Fitness Time: 1669.9380923277326
-Melhor Fitness Fuel: 950.6999999999998
-Melhor Fitness Ponderado: 4471.366604561572
+Melhor Fitness Distance: 1902.1803581511174
+Melhor Fitness Time: 1678.042168950644
+Melhor Fitness Fuel: 960.75
+Melhor Fitness Ponderado: 4530.4206649785
 
 Geração: 801
 Iniciando evolução...
@@ -3665,10 +3665,10 @@ Geração: 900
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 900 ---
-Melhor Fitness Distance: 1854.7051780966933
-Melhor Fitness Time: 1642.4874900050684
-Melhor Fitness Fuel: 942.3
-Melhor Fitness Ponderado: 4439.537384010295
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 901
 Iniciando evolução...
@@ -4070,10 +4070,10 @@ Geração: 1000
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1000 ---
-Melhor Fitness Distance: 1849.8358387706503
-Melhor Fitness Time: 1637.8569083558157
-Melhor Fitness Fuel: 942.3
-Melhor Fitness Ponderado: 4439.537384010295
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1001
 Iniciando evolução...
@@ -4475,10 +4475,10 @@ Geração: 1100
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1100 ---
-Melhor Fitness Distance: 1849.8358387706503
-Melhor Fitness Time: 1637.8569083558157
-Melhor Fitness Fuel: 942.3
-Melhor Fitness Ponderado: 4439.537384010295
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1101
 Iniciando evolução...
@@ -4880,10 +4880,10 @@ Geração: 1200
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1200 ---
-Melhor Fitness Distance: 1849.8358387706503
-Melhor Fitness Time: 1637.8569083558157
-Melhor Fitness Fuel: 942.3
-Melhor Fitness Ponderado: 4439.537384010295
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1201
 Iniciando evolução...
@@ -5285,10 +5285,10 @@ Geração: 1300
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1300 ---
-Melhor Fitness Distance: 1825.8031492393889
-Melhor Fitness Time: 1628.4354502294393
-Melhor Fitness Fuel: 928.8749999999998
-Melhor Fitness Ponderado: 4389.088657410277
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1301
 Iniciando evolução...
@@ -5690,10 +5690,10 @@ Geração: 1400
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1400 ---
-Melhor Fitness Distance: 1825.8031492393889
-Melhor Fitness Time: 1624.5774621779983
-Melhor Fitness Fuel: 928.8749999999998
-Melhor Fitness Ponderado: 4389.088657410277
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1401
 Iniciando evolução...
@@ -6095,10 +6095,10 @@ Geração: 1500
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1500 ---
-Melhor Fitness Distance: 1825.8031492393889
-Melhor Fitness Time: 1624.5774621779983
-Melhor Fitness Fuel: 928.8749999999998
-Melhor Fitness Ponderado: 4389.088657410277
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1501
 Iniciando evolução...
@@ -6500,10 +6500,10 @@ Geração: 1600
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1600 ---
-Melhor Fitness Distance: 1818.7914067874353
-Melhor Fitness Time: 1624.5774621779983
-Melhor Fitness Fuel: 924.5249999999999
-Melhor Fitness Ponderado: 4374.2210437323465
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1601
 Iniciando evolução...
@@ -6905,10 +6905,10 @@ Geração: 1700
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1700 ---
-Melhor Fitness Distance: 1818.7914067874353
-Melhor Fitness Time: 1624.5774621779983
-Melhor Fitness Fuel: 924.5249999999999
-Melhor Fitness Ponderado: 4374.2210437323465
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1701
 Iniciando evolução...
@@ -7310,10 +7310,10 @@ Geração: 1800
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1800 ---
-Melhor Fitness Distance: 1818.7914067874353
-Melhor Fitness Time: 1624.5774621779983
-Melhor Fitness Fuel: 924.5249999999999
-Melhor Fitness Ponderado: 4374.2210437323465
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1801
 Iniciando evolução...
@@ -7715,10 +7715,10 @@ Geração: 1900
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 1900 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1614.8684402250462
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 1901
 Iniciando evolução...
@@ -8120,10 +8120,10 @@ Geração: 2000
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2000 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2001
 Iniciando evolução...
@@ -8525,10 +8525,10 @@ Geração: 2100
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2100 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2101
 Iniciando evolução...
@@ -8930,10 +8930,10 @@ Geração: 2200
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2200 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2201
 Iniciando evolução...
@@ -9335,10 +9335,10 @@ Geração: 2300
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2300 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2301
 Iniciando evolução...
@@ -9740,10 +9740,10 @@ Geração: 2400
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2400 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2401
 Iniciando evolução...
@@ -10145,10 +10145,10 @@ Geração: 2500
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2500 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2501
 Iniciando evolução...
@@ -10550,10 +10550,10 @@ Geração: 2600
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2600 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2601
 Iniciando evolução...
@@ -10955,10 +10955,10 @@ Geração: 2700
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2700 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2701
 Iniciando evolução...
@@ -11360,10 +11360,10 @@ Geração: 2800
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2800 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2801
 Iniciando evolução...
@@ -11765,10 +11765,10 @@ Geração: 2900
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2900 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 Geração: 2901
 Iniciando evolução...
@@ -12166,57 +12166,58 @@ Geração: 2999
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 2999 ---
-Melhor Fitness Distance: 1798.6691292306027
-Melhor Fitness Time: 1611.0104521736052
-Melhor Fitness Fuel: 913.425
-Melhor Fitness Ponderado: 4332.9376273970975
+Melhor Fitness Distance: 1879.9499621477592
+Melhor Fitness Time: 1666.9269709489652
+Melhor Fitness Fuel: 949.6500000000001
+Melhor Fitness Ponderado: 4485.975070973463
 
 === DEBUG: Selecionando melhor indivíduo ===
-ID: 1349380
-getFitnessDistance(): 1798.6691292306027
-getFitness(): 4332.9376273970975
+ID: 460452
+getFitnessDistance(): 1879.9499621477592
+getFitness(): 4485.975070973463
 
 Após cópia:
-getFitnessDistance(): 1798.6691292306027
-getFitness(): 4332.9376273970975
+getFitnessDistance(): 1879.9499621477592
+getFitness(): 4485.975070973463
 
 Resultados salvos em: resultsMulti/evo_rc105_exec05.txt
 Frente de Pareto salva em: resultsMulti/pareto_rc105_exec05.txt
 
 === TABELA DE NAO-DOMINANCIA (PARETO) ===
-Tamanho final: 3 solucoes nao-dominadas
+Tamanho final: 9 solucoes nao-dominadas
 Diagnostico de insercoes:
-  Tentativas: 2160600
-  Inseridas:  154
-  Rejeitadas (dominadas):    1790092
-  Rejeitadas (equivalentes): 370354
-Melhor distancia na Pareto: 1798,67
-Melhor tempo na Pareto:     1611,01
-Melhor combustivel Pareto:  913,43
+  Tentativas: 1620600
+  Inseridas:  146
+  Rejeitadas (dominadas):    1092473
+  Rejeitadas (equivalentes): 527981
+Melhor distancia na Pareto: 1879,95
+Melhor tempo na Pareto:     1666,93
+Melhor combustivel Pareto:  949,65
 
 Estatísticas salvas em: resultsMulti/stats/stats_rc105_exec05.txt
-Tempo em milissegundos: 79396 ms
+Tempo em milissegundos: 61367 ms
 
 === DEBUG: USO DE VEÍCULOS ===
 Veículo 0: 10 clientes, demanda total: 189/200
-Veículo 1: 7 clientes, demanda total: 119/200
+Veículo 1: 7 clientes, demanda total: 84/200
 Veículo 2: 10 clientes, demanda total: 170/200
 Veículo 3: 10 clientes, demanda total: 180/200
 Veículo 4: 10 clientes, demanda total: 187/200
-Veículo 5: 6 clientes, demanda total: 76/200
-Veículo 6: 9 clientes, demanda total: 160/200
-Veículo 7: 5 clientes, demanda total: 45/200
-Veículo 8: 4 clientes, demanda total: 102/200
+Veículo 5: 6 clientes, demanda total: 72/200
+Veículo 6: 9 clientes, demanda total: 167/200
+Veículo 7: 5 clientes, demanda total: 84/200
+Veículo 8: 4 clientes, demanda total: 70/200
 Veículo 9: 4 clientes, demanda total: 80/200
-Veículo 10: 5 clientes, demanda total: 95/200
-Veículo 11: 3 clientes, demanda total: 42/200
+Veículo 10: 5 clientes, demanda total: 99/200
+Veículo 11: 3 clientes, demanda total: 38/200
 Veículo 12: 3 clientes, demanda total: 55/200
-Veículo 13: 5 clientes, demanda total: 99/200
-Veículo 14: 3 clientes, demanda total: 33/200
-Veículo 15: 2 clientes, demanda total: 38/200
+Veículo 13: 5 clientes, demanda total: 90/200
+Veículo 14: 2 clientes, demanda total: 46/200
+Veículo 15: 2 clientes, demanda total: 50/200
 Veículo 16: 4 clientes, demanda total: 54/200
+Veículo 18: 1 clientes, demanda total: 9/200
 
-Total de veículos usados: 17
+Total de veículos usados: 18
 Total de veículos disponíveis: 25
 ================================
 
@@ -12239,30 +12240,30 @@ Cliente 34 [X: 85.0, Y: 35.0]
 Cliente 50 [X: 72.0, Y: 35.0]
   ↓ distância: 19,85
 Cliente 94 [X: 57.0, Y: 48.0]
-  ↓ distância: 5,66
-Cliente 93 [X: 61.0, Y: 52.0]
   ↓ distância: 6,32
 Cliente 96 [X: 55.0, Y: 54.0]
-  ↓ distância: 10,63
+  ↓ distância: 6,32
+Cliente 93 [X: 61.0, Y: 52.0]
+  ↓ distância: 14,87
 Cliente 80 [X: 47.0, Y: 47.0]
   ↓ distância: 7,62
 Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 10
-Distância total desta rota: 130,74
+Distância total desta rota: 135,65
 ================================
 
 
 === ROTA DO VEÍCULO 1 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 25,00
-Cliente 52 [X: 25.0, Y: 30.0]
-  ↓ distância: 31,62
-Cliente 51 [X: 55.0, Y: 20.0]
-  ↓ distância: 9,43
-Cliente 76 [X: 60.0, Y: 12.0]
-  ↓ distância: 17,26
+  ↓ distância: 20,62
+Cliente 95 [X: 56.0, Y: 37.0]
+  ↓ distância: 31,38
+Cliente 33 [X: 85.0, Y: 25.0]
+  ↓ distância: 22,09
+Cliente 85 [X: 63.0, Y: 23.0]
+  ↓ distância: 8,49
 Cliente 84 [X: 57.0, Y: 29.0]
   ↓ distância: 9,22
 Cliente 56 [X: 50.0, Y: 35.0]
@@ -12275,7 +12276,7 @@ Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 7
-Distância total desta rota: 123,23
+Distância total desta rota: 122,49
 ================================
 
 
@@ -12374,11 +12375,11 @@ Distância total desta rota: 117,13
 
 === ROTA DO VEÍCULO 5 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 20,62
-Cliente 95 [X: 56.0, Y: 37.0]
-  ↓ distância: 31,38
-Cliente 33 [X: 85.0, Y: 25.0]
-  ↓ distância: 5,83
+  ↓ distância: 14,76
+Cliente 82 [X: 27.0, Y: 43.0]
+  ↓ distância: 38,83
+Cliente 62 [X: 65.0, Y: 35.0]
+  ↓ distância: 23,54
 Cliente 30 [X: 88.0, Y: 30.0]
   ↓ distância: 4,00
 Cliente 28 [X: 92.0, Y: 30.0]
@@ -12391,7 +12392,7 @@ Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 6
-Distância total desta rota: 123,91
+Distância total desta rota: 143,21
 ================================
 
 
@@ -12401,15 +12402,15 @@ Depósito (0) [X: 40.0, Y: 50.0]
 Cliente 12 [X: 8.0, Y: 45.0]
   ↓ distância: 3,00
 Cliente 14 [X: 5.0, Y: 45.0]
-  ↓ distância: 3,00
-Cliente 47 [X: 2.0, Y: 45.0]
-  ↓ distância: 5,00
-Cliente 15 [X: 2.0, Y: 40.0]
-  ↓ distância: 2,00
+  ↓ distância: 7,07
 Cliente 16 [X: 0.0, Y: 40.0]
-  ↓ distância: 11,18
-Cliente 9 [X: 10.0, Y: 35.0]
+  ↓ distância: 2,00
+Cliente 15 [X: 2.0, Y: 40.0]
   ↓ distância: 5,00
+Cliente 47 [X: 2.0, Y: 45.0]
+  ↓ distância: 12,53
+Cliente 78 [X: 8.0, Y: 56.0]
+  ↓ distância: 16,12
 Cliente 10 [X: 10.0, Y: 40.0]
   ↓ distância: 7,07
 Cliente 13 [X: 5.0, Y: 35.0]
@@ -12420,19 +12421,19 @@ Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 9
-Distância total desta rota: 120,13
+Distância total desta rota: 136,68
 ================================
 
 
 === ROTA DO VEÍCULO 7 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 14,76
-Cliente 82 [X: 27.0, Y: 43.0]
-  ↓ distância: 38,83
-Cliente 62 [X: 65.0, Y: 35.0]
-  ↓ distância: 12,17
-Cliente 85 [X: 63.0, Y: 23.0]
-  ↓ distância: 3,61
+  ↓ distância: 25,00
+Cliente 52 [X: 25.0, Y: 30.0]
+  ↓ distância: 31,62
+Cliente 51 [X: 55.0, Y: 20.0]
+  ↓ distância: 9,43
+Cliente 76 [X: 60.0, Y: 12.0]
+  ↓ distância: 9,43
 Cliente 63 [X: 65.0, Y: 20.0]
   ↓ distância: 15,13
 Cliente 89 [X: 67.0, Y: 5.0]
@@ -12441,26 +12442,26 @@ Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 5
-Distância total desta rota: 136,98
+Distância total desta rota: 143,10
 ================================
 
 
 === ROTA DO VEÍCULO 8 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 42,43
-Cliente 59 [X: 10.0, Y: 20.0]
-  ↓ distância: 20,10
+  ↓ distância: 14,14
+Cliente 98 [X: 26.0, Y: 52.0]
+  ↓ distância: 21,63
 Cliente 11 [X: 8.0, Y: 40.0]
-  ↓ distância: 16,00
-Cliente 78 [X: 8.0, Y: 56.0]
-  ↓ distância: 22,36
+  ↓ distância: 15,62
+Cliente 53 [X: 20.0, Y: 50.0]
+  ↓ distância: 14,14
 Cliente 55 [X: 30.0, Y: 60.0]
   ↓ distância: 14,14
 Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 4
-Distância total desta rota: 115,03
+Distância total desta rota: 79,68
 ================================
 
 
@@ -12485,13 +12486,13 @@ Distância total desta rota: 102,38
 
 === ROTA DO VEÍCULO 10 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 20,62
-Cliente 64 [X: 45.0, Y: 30.0]
-  ↓ distância: 15,81
-Cliente 22 [X: 40.0, Y: 15.0]
-  ↓ distância: 2,00
-Cliente 20 [X: 42.0, Y: 15.0]
-  ↓ distância: 22,56
+  ↓ distância: 32,20
+Cliente 86 [X: 21.0, Y: 24.0]
+  ↓ distância: 15,56
+Cliente 9 [X: 10.0, Y: 35.0]
+  ↓ distância: 22,36
+Cliente 57 [X: 30.0, Y: 25.0]
+  ↓ distância: 11,18
 Cliente 74 [X: 20.0, Y: 20.0]
   ↓ distância: 11,18
 Cliente 58 [X: 15.0, Y: 10.0]
@@ -12500,24 +12501,24 @@ Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 5
-Distância total desta rota: 119,34
+Distância total desta rota: 139,65
 ================================
 
 
 === ROTA DO VEÍCULO 11 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 14,14
-Cliente 98 [X: 26.0, Y: 52.0]
-  ↓ distância: 5,00
-Cliente 69 [X: 31.0, Y: 52.0]
-  ↓ distância: 7,81
+  ↓ distância: 20,62
+Cliente 64 [X: 45.0, Y: 30.0]
+  ↓ distância: 19,65
+Cliente 99 [X: 26.0, Y: 35.0]
+  ↓ distância: 16,28
 Cliente 90 [X: 37.0, Y: 47.0]
   ↓ distância: 4,24
 Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 3
-Distância total desta rota: 31,20
+Distância total desta rota: 60,78
 ================================
 
 
@@ -12540,9 +12541,9 @@ Distância total desta rota: 95,43
 
 === ROTA DO VEÍCULO 13 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 32,20
-Cliente 86 [X: 21.0, Y: 24.0]
-  ↓ distância: 9,00
+  ↓ distância: 42,43
+Cliente 59 [X: 10.0, Y: 20.0]
+  ↓ distância: 4,47
 Cliente 87 [X: 12.0, Y: 24.0]
   ↓ distância: 10,00
 Cliente 97 [X: 4.0, Y: 18.0]
@@ -12555,39 +12556,37 @@ Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 5
-Distância total desta rota: 132,33
+Distância total desta rota: 138,03
 ================================
 
 
 === ROTA DO VEÍCULO 14 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 15,81
-Cliente 61 [X: 45.0, Y: 65.0]
-  ↓ distância: 22,14
+  ↓ distância: 9,22
+Cliente 69 [X: 31.0, Y: 52.0]
+  ↓ distância: 9,22
 Cliente 88 [X: 24.0, Y: 58.0]
-  ↓ distância: 8,94
-Cliente 53 [X: 20.0, Y: 50.0]
-  ↓ distância: 20,00
+  ↓ distância: 17,89
 Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
-Número de clientes atendidos: 3
-Distância total desta rota: 66,89
+Número de clientes atendidos: 2
+Distância total desta rota: 36,33
 ================================
 
 
 === ROTA DO VEÍCULO 15 ===
 Depósito (0) [X: 40.0, Y: 50.0]
-  ↓ distância: 20,52
-Cliente 99 [X: 26.0, Y: 35.0]
-  ↓ distância: 10,77
-Cliente 57 [X: 30.0, Y: 25.0]
-  ↓ distância: 26,93
+  ↓ distância: 35,00
+Cliente 22 [X: 40.0, Y: 15.0]
+  ↓ distância: 2,00
+Cliente 20 [X: 42.0, Y: 15.0]
+  ↓ distância: 35,06
 Depósito (0) [X: 40.0, Y: 50.0]
 
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 2
-Distância total desta rota: 58,21
+Distância total desta rota: 72,06
 ================================
 
 
@@ -12607,6 +12606,19 @@ Depósito (0) [X: 40.0, Y: 50.0]
 📊 RESUMO DA ROTA:
 Número de clientes atendidos: 4
 Distância total desta rota: 79,68
+================================
+
+
+=== ROTA DO VEÍCULO 18 ===
+Depósito (0) [X: 40.0, Y: 50.0]
+  ↓ distância: 15,81
+Cliente 61 [X: 45.0, Y: 65.0]
+  ↓ distância: 15,81
+Depósito (0) [X: 40.0, Y: 50.0]
+
+📊 RESUMO DA ROTA:
+Número de clientes atendidos: 1
+Distância total desta rota: 31,62
 ================================
 
 

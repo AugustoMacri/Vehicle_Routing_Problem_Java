@@ -425,7 +425,7 @@ Geração: 100
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 100 ---
-Melhor Fitness Distance: 1697.3494659550952
+Melhor Fitness Distance: 1698.4972871137254
 Melhor Fitness Time: 1506.383012049236
 Melhor Fitness Fuel: 863.6999999999999
 Melhor Fitness Ponderado: 4022.3536475522683
@@ -830,7 +830,7 @@ Geração: 200
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 200 ---
-Melhor Fitness Distance: 1697.3494659550952
+Melhor Fitness Distance: 1698.4972871137254
 Melhor Fitness Time: 1506.383012049236
 Melhor Fitness Fuel: 863.6999999999999
 Melhor Fitness Ponderado: 4022.3536475522683
@@ -1235,10 +1235,10 @@ Geração: 300
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 300 ---
-Melhor Fitness Distance: 1697.3494659550952
-Melhor Fitness Time: 1506.383012049236
-Melhor Fitness Fuel: 863.6999999999999
-Melhor Fitness Ponderado: 4022.3536475522683
+Melhor Fitness Distance: 1691.1409778367467
+Melhor Fitness Time: 1499.7379286150692
+Melhor Fitness Fuel: 860.625
+Melhor Fitness Ponderado: 4006.425075999753
 
 Geração: 301
 Iniciando evolução...
@@ -1640,10 +1640,10 @@ Geração: 400
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 400 ---
-Melhor Fitness Distance: 1691.1409778367467
+Melhor Fitness Distance: 1689.346446415536
 Melhor Fitness Time: 1499.7379286150692
-Melhor Fitness Fuel: 860.625
-Melhor Fitness Ponderado: 4006.425075999753
+Melhor Fitness Fuel: 859.2749999999999
+Melhor Fitness Ponderado: 4006.307417416239
 
 Geração: 401
 Iniciando evolução...
@@ -2045,10 +2045,10 @@ Geração: 500
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 500 ---
-Melhor Fitness Distance: 1691.1409778367467
+Melhor Fitness Distance: 1689.346446415536
 Melhor Fitness Time: 1499.7379286150692
-Melhor Fitness Fuel: 860.625
-Melhor Fitness Ponderado: 4006.425075999753
+Melhor Fitness Fuel: 859.2749999999999
+Melhor Fitness Ponderado: 4006.307417416239
 
 Geração: 501
 Iniciando evolução...
@@ -2450,10 +2450,10 @@ Geração: 600
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 600 ---
-Melhor Fitness Distance: 1691.1409778367467
+Melhor Fitness Distance: 1689.346446415536
 Melhor Fitness Time: 1499.7379286150692
-Melhor Fitness Fuel: 860.625
-Melhor Fitness Ponderado: 4006.425075999753
+Melhor Fitness Fuel: 859.2749999999999
+Melhor Fitness Ponderado: 4006.307417416239
 
 Geração: 601
 Iniciando evolução...
@@ -2855,10 +2855,10 @@ Geração: 700
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 700 ---
-Melhor Fitness Distance: 1673.2627477381516
-Melhor Fitness Time: 1490.7988135657715
-Melhor Fitness Fuel: 849.5999999999999
-Melhor Fitness Ponderado: 3968.58273085186
+Melhor Fitness Distance: 1671.468216316941
+Melhor Fitness Time: 1493.0759200219163
+Melhor Fitness Fuel: 848.25
+Melhor Fitness Ponderado: 3968.4650722683455
 
 Geração: 701
 Iniciando evolução...
@@ -3260,9 +3260,9 @@ Geração: 800
 Iniciando evolução...
 Evolução concluída!
 --- Estatísticas da geração 800 ---
-Melhor Fitness Distance: 1673.2627477381516
+Melhor Fitness Distance: 1671.468216316941
 Melhor Fitness Time: 1490.7988135657715
-Melhor Fitness Fuel: 848.9250000000001
+Melhor Fitness Fuel: 848.25
 Melhor Fitness Ponderado: 3968.4650722683455
 
 Geração: 801
@@ -12172,7 +12172,7 @@ Melhor Fitness Fuel: 848.25
 Melhor Fitness Ponderado: 3968.4650722683455
 
 === DEBUG: Selecionando melhor indivíduo ===
-ID: 592312
+ID: 345816
 getFitnessDistance(): 1671.468216316941
 getFitness(): 3968.4650722683455
 
@@ -12186,16 +12186,16 @@ Frente de Pareto salva em: resultsMulti/pareto_rc103_exec06.txt
 === TABELA DE NAO-DOMINANCIA (PARETO) ===
 Tamanho final: 4 solucoes nao-dominadas
 Diagnostico de insercoes:
-  Tentativas: 2160600
-  Inseridas:  8
-  Rejeitadas (dominadas):    1560026
-  Rejeitadas (equivalentes): 600566
+  Tentativas: 1620600
+  Inseridas:  11
+  Rejeitadas (dominadas):    1104276
+  Rejeitadas (equivalentes): 516313
 Melhor distancia na Pareto: 1671,47
 Melhor tempo na Pareto:     1490,80
 Melhor combustivel Pareto:  848,25
 
 Estatísticas salvas em: resultsMulti/stats/stats_rc103_exec06.txt
-Tempo em milissegundos: 80498 ms
+Tempo em milissegundos: 62127 ms
 
 === DEBUG: USO DE VEÍCULOS ===
 Veículo 0: 11 clientes, demanda total: 176/200
