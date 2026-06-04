@@ -1,0 +1,36 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar AEMMT (javac)",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "rm -rf bin && mkdir bin && javac -d bin -sourcepath src -encoding UTF-8 $(find src -name '*.java')"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$javac"
+            ],
+            "detail": "Compila todos os .java de src/ em bin/ usando javac com encoding UTF-8"
+        },
+        {
+            "label": "Executar AEMMT (instancia 1 - C101)",
+            "type": "shell",
+            "command": "java",
+            "args": [
+                "-cp",
+                "bin",
+                "main.App",
+                "1"
+            ],
+            "group": "test",
+            "dependsOn": "Compilar AEMMT (javac)",
+            "detail": "Roda o AEMMT na instancia C101"
+        }
+    ]
+}

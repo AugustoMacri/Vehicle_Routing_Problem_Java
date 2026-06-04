@@ -20,7 +20,8 @@ bin/
 
 # IDE files
 .idea/
-.vscode/
+.vscode/*
+!.vscode/tasks.json
 *.iml
 
 # OS files
